@@ -170,21 +170,6 @@
       </categories>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2021/12/11/hello-world/</url>
-    <content><![CDATA[<p>C、C++语言的打印<code>Hello World!</code>代码实现。</p>
-<span id="more"></span>
-
-<h1 id="C-语言"><a href="#C-语言" class="headerlink" title="C 语言"></a>C 语言</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Hello World!&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="C-语言-1"><a href="#C-语言-1" class="headerlink" title="C++ 语言"></a>C++ 语言</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::cout&lt;&lt;<span class="string">&quot;Hello World!&quot;</span>&lt;&lt;std::endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>C、C++</category>
-      </categories>
-  </entry>
-  <entry>
     <title>监听键盘输入 C语言</title>
     <url>/2021/12/11/%E7%9B%91%E5%90%AC%E9%94%AE%E7%9B%98%E8%BE%93%E5%85%A5-C%E8%AF%AD%E8%A8%80/</url>
     <content><![CDATA[<h1 id="监听键盘的输入"><a href="#监听键盘的输入" class="headerlink" title="监听键盘的输入"></a>监听键盘的输入</h1><p>程序编译： <code>gcc -o keyboard_listen keyboard_listen.c</code></p>
@@ -199,6 +184,21 @@
         <category>C、C++</category>
         <category>Linux</category>
         <category>C语言</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2021/12/11/hello-world/</url>
+    <content><![CDATA[<p>C、C++语言的打印<code>Hello World!</code>代码实现。</p>
+<span id="more"></span>
+
+<h1 id="C-语言"><a href="#C-语言" class="headerlink" title="C 语言"></a>C 语言</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Hello World!&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="C-语言-1"><a href="#C-语言-1" class="headerlink" title="C++ 语言"></a>C++ 语言</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::cout&lt;&lt;<span class="string">&quot;Hello World!&quot;</span>&lt;&lt;std::endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C、C++</category>
       </categories>
   </entry>
 </search>
