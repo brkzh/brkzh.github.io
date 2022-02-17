@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="C++知识类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++知识 -- Day02">
+<meta property="og:url" content="http://example.com/2022/02/17/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/04.C++%E7%9F%A5%E8%AF%86.%E7%B1%BB/index.html">
+<meta property="og:site_name" content="布鲁克的小溪流">
+<meta property="og:description" content="C++知识类">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-02-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-16T16:00:00.000Z">
+<meta property="article:author" content="YuanyiZh">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2022/02/17/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/04.C++%E7%9F%A5%E8%AF%86.%E7%B1%BB/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>C++知识 -- Day02 | 布鲁克的小溪流</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">布鲁克的小溪流</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">13</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/17/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/04.C++%E7%9F%A5%E8%AF%86.%E7%B1%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="YuanyiZh">
+      <meta itemprop="description" content="随风飘不如迎风上">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="布鲁克的小溪流">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++知识 -- Day02
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-02-17 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-17T00:00:00+08:00">2022-02-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C%E3%80%81C/" itemprop="url" rel="index"><span itemprop="name">C、C++</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C%E3%80%81C/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="C-知识"><a href="#C-知识" class="headerlink" title="C++知识"></a>C++知识</h1><h2 id="类"><a href="#类" class="headerlink" title="类"></a>类</h2><span id="more"></span>
+<p><strong>struct(结构)是成员默认为public的class(类)</strong></p>
+<p><strong>class的成员默认是private</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Time</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">int</span> Hour;</span><br><span class="line">    <span class="keyword">int</span> Minute;</span><br><span class="line">    <span class="keyword">int</span> Second;</span><br><span class="line">	</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">initTime</span><span class="params">(<span class="keyword">int</span> tmpH, <span class="keyword">int</span> tmpM, <span class="keyword">int</span> tmpS)</span></span></span><br><span class="line"><span class="function">    </span>&#123;  <span class="comment">// 成员函数</span></span><br><span class="line">        Hour = tmpH;</span><br><span class="line">        Minute = tmpM;</span><br><span class="line">        Second = tmpS;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">/* 类书写规范</span></span><br><span class="line"><span class="comment">把类定义(声明)和实现放在分开的.h头文件和.cpp源文件中书写。</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Time.h 头文件  类定义(声明)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Time</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">int</span> Hour;</span><br><span class="line">    <span class="keyword">int</span> Minute;</span><br><span class="line">    <span class="keyword">int</span> Second;</span><br><span class="line">	</span><br><span class="line">    <span class="built_in">Time</span>();  <span class="comment">// 构造函数</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">initTime</span><span class="params">(<span class="keyword">int</span> tmpH, <span class="keyword">int</span> tmpM, <span class="keyword">int</span> tmpS)</span></span>;  <span class="comment">// 普通成员函数</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Time.cpp 源文件   类实现</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;Time.h&quot;</span></span></span><br><span class="line">Time::<span class="built_in">Time</span>()</span><br><span class="line">&#123;</span><br><span class="line">    Hour = <span class="number">0</span>;</span><br><span class="line">    Minute = <span class="number">0</span>;</span><br><span class="line">    Second = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Time::initTime</span><span class="params">(<span class="keyword">int</span> tmpH, <span class="keyword">int</span> tmpM, <span class="keyword">int</span> tmpS)</span></span></span><br><span class="line"><span class="function"></span>&#123;  <span class="comment">// 成员函数</span></span><br><span class="line">    Hour = tmpH;</span><br><span class="line">    Minute = tmpM;</span><br><span class="line">    Second = tmpS;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="对象的复制"><a href="#对象的复制" class="headerlink" title="对象的复制"></a>对象的复制</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Time myt; 			<span class="comment">// 调用构造函数</span></span><br><span class="line">Time myt1 = myt;   <span class="comment">// 对象复制</span></span><br><span class="line"><span class="function">Time <span class="title">myt2</span><span class="params">(myt)</span></span>;   <span class="comment">// 对象复制</span></span><br><span class="line">Time myt3&#123;myt&#125;;   <span class="comment">// 对象复制</span></span><br><span class="line">Time myt4 = &#123;myt&#125;;   <span class="comment">// 对象复制</span></span><br><span class="line">Time myt5&#123;myt&#125;;   <span class="comment">// 对象复制</span></span><br><span class="line">Time myt6;</span><br><span class="line">myt6 = myt;   <span class="comment">// 通过赋值操作来复制对象</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">对象是可以复制的，复制后，每个对象都有不同的地址</span></span><br><span class="line"><span class="comment">（每个对象的内容都保存在不同的内存中，彼此互不影响）</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">默认情况下，这种类对象的复制是每个成员变量逐个复制。</span></span><br><span class="line"><span class="comment">也可以控制对象的这种逐个成员变量复制的行为，要给这个类定义一个恰当的&quot;赋值运算符(或类似的内容)&quot;即可</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="私有成员"><a href="#私有成员" class="headerlink" title="私有成员"></a>私有成员</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Time</span>&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> Millsecond;</span><br><span class="line">   	<span class="function"><span class="keyword">void</span> <span class="title">initMillTime</span><span class="params">(<span class="keyword">int</span> mls)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">私有成员变量和函数都只能在类内部调用，无法在类外部调用。</span></span><br><span class="line"><span class="comment">私有成员的设置目的，主要是希望这些接口不暴露在外面，不被其他使用者所知和所用，只为类内部的其他成员函数使用。</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="构造函数、explicit、初始化列表"><a href="#构造函数、explicit、初始化列表" class="headerlink" title="构造函数、explicit、初始化列表"></a>构造函数、explicit、初始化列表</h3><h4 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Time</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">int</span> j;</span><br><span class="line">    <span class="keyword">int</span> k;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Time</span>();</span><br><span class="line">    <span class="built_in">Time</span>(<span class="keyword">int</span> tmpi);</span><br><span class="line">    <span class="built_in">Time</span>(<span class="keyword">int</span> tmpi, <span class="keyword">int</span> tmpj, <span class="keyword">int</span> tmpk=<span class="number">12</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Time::<span class="built_in">Time</span>()</span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;Time::Time()构造函数执行了&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line">Time::<span class="built_in">Time</span>(<span class="keyword">int</span> tmpi):<span class="built_in">i</span>(tmpi)</span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;Time::Time(int tmpi)构造函数执行了&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line">Time::<span class="built_in">Time</span>(<span class="keyword">int</span> tmpi, <span class="keyword">int</span> tmpj, <span class="keyword">int</span> tmpk) : <span class="built_in">i</span>(tmpi), <span class="built_in">j</span>(tmpj), <span class="built_in">k</span>(tmpk)</span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;Time::Time(int tmpi, int tmpj, int tmpk)构造函数执行了&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">1.构造函数没有返回值</span></span><br><span class="line"><span class="comment">2.不可以手工调用构造函数，否则编译出错</span></span><br><span class="line"><span class="comment">3.通常情况，构造函数声明为public，能够被外界(系统)调用</span></span><br><span class="line"><span class="comment">4.构造函数如果有参数，则在创建对象的时候也要指定相应的参数</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="隐式转换和explicit"><a href="#隐式转换和explicit" class="headerlink" title="隐式转换和explicit"></a>隐式转换和explicit</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 单参数构造函数</span></span><br><span class="line">Time::<span class="built_in">Time</span>(<span class="keyword">int</span> t)</span><br><span class="line">&#123;</span><br><span class="line">    m_i = t;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 普通函数，参数为Time对象</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(Time myt)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 函数调用</span></span><br><span class="line"><span class="built_in">func</span>(<span class="number">16</span>);  <span class="comment">// 是可以执行成功的，调用了Time单参数构造函数</span></span><br><span class="line"><span class="comment">// 说明系统进行了一个数字16到对象myt(func函数的形参)的一个转换，产生了一个myt对象(临时对象)</span></span><br><span class="line">Time myt2 = <span class="number">12</span>;  <span class="comment">// 这也调用了单参数的构造函数，生成临时对象，并复制到了myt2</span></span><br><span class="line">Time myt3 = &#123;<span class="number">3</span>&#125;; <span class="comment">// 这也是一样</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">上面都存在隐式类型转换，容易让人糊涂。explicit关键字，明确要求构造函数不能做隐式转换。</span></span><br><span class="line"><span class="comment">如果构造函数声明中带有explicit关键字，则这个构造函数只能用于初始化和显示类型转换。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">explicit</span> <span class="title">Time</span><span class="params">(<span class="keyword">int</span> tmpi)</span></span>;  <span class="comment">// 假设单参数构造函数这样声明，则</span></span><br><span class="line">Time mytt = <span class="number">12</span>;  <span class="comment">// 编译失败。不允许隐式类型转换</span></span><br><span class="line">Time mytt2&#123;<span class="number">12</span>&#125;;  <span class="comment">// 可以</span></span><br><span class="line">Time mytt3 = &#123;<span class="number">12</span>&#125;;  <span class="comment">// 不可以</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>建议：一般来说，单参数的构造函数都声明为explicit，除非有特别的原因。</strong></p>
+<p><strong>当然，explicit也可以用于无参或者多个参数的构造函数中。</strong></p>
+<h4 id="构造函数初始化列表"><a href="#构造函数初始化列表" class="headerlink" title="构造函数初始化列表"></a>构造函数初始化列表</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 初始化列表的执行是在函数体执行之前就执行了的</span></span><br><span class="line">Time:<span class="built_in">Time</span>(<span class="keyword">int</span> tmj, <span class="keyword">int</span> tmk) : <span class="built_in">m_j</span>(tmj), <span class="built_in">m_k</span>(tmk) </span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="inline、const、mutable、this、static"><a href="#inline、const、mutable、this、static" class="headerlink" title="inline、const、mutable、this、static"></a>inline、const、mutable、this、static</h3><p><strong>inline</strong></p>
+<p><code>在类定义中实现成员函数inline，会被当做内联函数来处理。</code></p>
+<p><code>内联函数只是对编译器的建议，能不能inline成功，依旧取决于编译器。</code></p>
+<p><strong>const</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 成员函数末尾增加一个const</span></span><br><span class="line"><span class="comment">// 对于成员函数的声明和实现代码分开的情况下，不但要在成员函数的声明中增加const</span></span><br><span class="line"><span class="comment">//  也要在成员函数的实现中增加const。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// const的作用就是：告诉系统这个成员函数不会修改改对象里面的任何成员变量的值等。</span></span><br><span class="line"><span class="comment">//  也就是说这个成员函数不会修改类对象的任何状态。  这种函数也称为“常量成员函数”</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Time</span>&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> m_hour;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">getHour</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> m_hour;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Time mt ;  <span class="comment">// 普通对象</span></span><br><span class="line"><span class="keyword">const</span> Time c_mt;  <span class="comment">// const对象</span></span><br><span class="line"><span class="comment">// 常量成员函数，则不管是const对象还是非const对象，都可以调用</span></span><br><span class="line"><span class="comment">// 而非const成员函数，则只能被非const对象调用</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>mutable</strong>  不稳定的、容易改变的</p>
+<p><code>mutable的引入也是为了突破const的限制</code></p>
+<p>末尾有<code>const</code>修饰的成员函数是不允许修改成员变量值的，但是使用<code>mutable</code>修饰的成员变量在常量成员函数中是允许修改的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TM</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">mutable</span> <span class="keyword">int</span> m_h;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getMH</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(m_h  &lt; <span class="number">0</span>)</span><br><span class="line">            m_h = <span class="number">10</span>;  <span class="comment">// 允许修改，因为m_h是使用mutable修饰</span></span><br><span class="line">        <span class="keyword">return</span> m_h;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;; </span><br><span class="line"><span class="comment">/* 总结：引入mutable修饰符(关键字)来修饰一个成员变量。</span></span><br><span class="line"><span class="comment">一个成员变量一旦被mutable所修饰，就表示这个成员变量永远处于可变状态，</span></span><br><span class="line"><span class="comment">即使是在以const结尾的成员函数中。 */</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>返回自身对象的引用——this</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function">Time&amp; <span class="title">rtnHour</span><span class="params">(<span class="keyword">int</span> tmphour)</span></span>;  <span class="comment">// 返回自身的引用</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>this用在成员函数中是一个隐藏起来的函数参数，表示的是指向本对象的指针。</strong></p>
+<p>***this表示该指针指向的对象也是本对象 **</p>
+<p><strong>this本身是一个指针常量，总是指向对象本身，不可以让this再指向其他地方</strong></p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">关于this说法</span><br><span class="line">1.this指针只能再成员函数（普通成员函数，特殊成员函数(后面会讲到)）中使用，全局函数、静态函数等都不能使用this指针；</span><br><span class="line">2.在普通成员函数中，this是一个指向非const对象的指针常量；</span><br><span class="line">3.在const成员函数中，this指针是一个指向const对象的const指针</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>static成员</strong></p>
+<p><strong>static成员变量(静态成员变量)</strong>: <code>不属于某个对象，而是属于整个类</code></p>
+<p><code>这种成员变量可以通过对象名来修改(也可以通过对类名来修改)</code></p>
+<p><code>一旦通过该对象修改了这个成员变量的值，则其他该类对象也能够直接看到修改后的结果</code></p>
+<p><strong>类名::成员变量名</strong> <code>的方式可以对这种成员变量进行引用</code></p>
+<p><strong>成员函数也可以用static修饰，代表该函数不属于某个对象，而是属于类</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Time</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">int</span> mystatic;   <span class="comment">// 声明静态成员变量，但是还没有定义，没有分配内存空间</span></span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">getHour</span><span class="params">()</span></span>;   <span class="comment">// 静态成员函数声明</span></span><br><span class="line"><span class="comment">// 普通成员变量，在创建对象的时候就分配了内存； </span></span><br><span class="line"><span class="comment">// 静态成员变量定义，一般在某个.cpp源文件开头位置定义</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 假设 xx.cpp</span></span><br><span class="line"><span class="keyword">int</span> Time::mystatic = <span class="number">12</span>;   <span class="comment">// 此时Time::mystatic静态成员变量才定义，才分配内存</span></span><br><span class="line"> <span class="comment">// 注意：定义的时候，不要加 static ，可以不给初始值，则系统默认给0</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="类内初始化、默认构造函数、-default-和-delete"><a href="#类内初始化、默认构造函数、-default-和-delete" class="headerlink" title="类内初始化、默认构造函数、 =default; 和 =delete;"></a>类内初始化、默认构造函数、 =default; 和 =delete;</h3><h4 id="类内初始化"><a href="#类内初始化" class="headerlink" title="类内初始化"></a>类内初始化</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// c++11新标准里，可以为新成员变量提供一个类内部的初始值</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Time</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> Second&#123;<span class="number">0</span>&#125;;  <span class="comment">// 或者 int Second = 0;  </span></span><br><span class="line">   	<span class="built_in">Time</span>(<span class="keyword">int</span> tmpS) : <span class="built_in">Second</span>(tmpS) <span class="comment">// 通过初始化列表来给Second值 或者</span></span><br><span class="line">    &#123; </span><br><span class="line">    	Second = tmpS;  <span class="comment">// 通过赋值来给Second值</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="const成员变量的初始化"><a href="#const成员变量的初始化" class="headerlink" title="const成员变量的初始化"></a>const成员变量的初始化</h4><p><strong>对于类的const成员，只能使用初始化列表来初始化，而不能在构造函数内部进行赋值操作</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> testvalue;</span><br><span class="line">Time::<span class="built_in">Time</span>(<span class="keyword">int</span> tmpH, <span class="keyword">int</span> tmpM, <span class="keyword">int</span> tmpval): <span class="built_in">m_h</span>(tmpH), <span class="built_in">m_m</span>(tmpM), <span class="built_in">testvalue</span>(<span class="number">18</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="默认构造函数"><a href="#默认构造函数" class="headerlink" title="默认构造函数"></a>默认构造函数</h4><p><strong>没有参数的构造函数称为默认构造函数</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Time.h 头文件</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> __TIME_H__</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __TIME_H__</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Time</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">Time</span><span class="params">()</span></span>;   <span class="comment">// explicit禁止隐式类型转换</span></span><br><span class="line">    <span class="keyword">int</span> m_H;</span><br><span class="line">    <span class="keyword">int</span> m_M;</span><br><span class="line">    <span class="keyword">int</span> m_S &#123;<span class="number">0</span>&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> </span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Time.cpp 源文件</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;Time.h&quot;</span></span></span><br><span class="line">Time::<span class="built_in">Time</span>()  <span class="comment">// 构造函数</span></span><br><span class="line">&#123;</span><br><span class="line">    m_H = <span class="number">12</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// main 主函数中</span></span><br><span class="line">Time mytime;   <span class="comment">// 生成对象会调用构造函数</span></span><br><span class="line"><span class="comment">/*  结论：</span></span><br><span class="line"><span class="comment">如果一个类中没有构造函数，那么也是能够生成一个对象的。</span></span><br><span class="line"><span class="comment">如果一个类没有自己的构造函数，编译器会在满足一定情形之下才会生成这个&quot;合成的默认构造函数&quot;.</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>一旦程序员书写了自己的构造函数，那么在创建对象的时候，</strong></p>
+<p><strong>必须提供与书写的构造函数形参相符合的实参，才能成功创建对象。</strong></p>
+<h4 id="default；和-delete；"><a href="#default；和-delete；" class="headerlink" title="=default；和 =delete；"></a>=default；和 =delete；</h4><h5 id="default"><a href="#default" class="headerlink" title="=default;"></a>=default;</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Time</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Time</span>(<span class="keyword">int</span> h) : <span class="built_in">m_h</span>(h) &#123; cout &lt;&lt; <span class="string">&quot;Time(int)构造函数执行了&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line">    <span class="built_in">Time</span>() = <span class="keyword">default</span>;</span><br><span class="line">    <span class="comment">// 编译器能够为这种 =default; 的函数自动生成函数体，此时Time就有了默认构造函数了</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> m_h;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="delete"><a href="#delete" class="headerlink" title="=delete;"></a>=delete;</h5><p><strong>让程序员 显示地禁用某个函数</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Time</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Time</span>() =<span class="keyword">delete</span>;  <span class="comment">// 禁用编译器生成这个 “合成的默认构造函数”</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> m_h &#123;<span class="number">10</span>&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="拷贝构造函数"><a href="#拷贝构造函数" class="headerlink" title="拷贝构造函数"></a>拷贝构造函数</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CAS</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">CAS</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;CAS构造函数执行&quot;</span>&lt;&lt;endl;</span><br><span class="line">        mp = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">100</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">CAS</span>(<span class="keyword">const</span> CAS&amp; tmp)</span><br><span class="line">    &#123;</span><br><span class="line">        m1 = tmp.m1;</span><br><span class="line">        mp = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">100</span>];</span><br><span class="line">        <span class="built_in">memcpy</span>(mp, tmp.mp, <span class="number">100</span>);</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;CAS拷贝构造函数执行&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    ~<span class="built_in">CAS</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;~CAS析构函数执行了&quot;</span>&lt;&lt;endl;</span><br><span class="line">        <span class="keyword">delete</span>[] mp;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> m1;</span><br><span class="line">    <span class="keyword">char</span>* mp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CAS cas;				<span class="comment">//  这会调用默认构造函数(不带参数的</span></span><br><span class="line">CAS cas2 = cas;			<span class="comment">//  调用了拷贝构造函数</span></span><br><span class="line"><span class="function">CAS <span class="title">cas3</span><span class="params">(cas)</span></span>;			<span class="comment">//  调用了拷贝构造函数</span></span><br><span class="line">CAS cas3&#123;cas&#125;;			<span class="comment">//  调用了拷贝构造函数</span></span><br><span class="line">CAS cas4 = &#123;cas&#125;;		<span class="comment">//  调用了拷贝构造函数</span></span><br><span class="line">CAS cas6;				<span class="comment">//	这会调用默认构造函数(不带参数的</span></span><br><span class="line">cas6 = cas;				<span class="comment">//  没有调用拷贝构造函数</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>①单参数的构造函数，一般声明为explicit，以防止出现代码模糊不清的问题</strong></p>
+<p><strong>②拷贝构造函数，一般都不声明为explicit</strong></p>
+<p><strong>小总结</strong></p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1.如果一个类没有自己的拷贝构造函数，编译器可能会合成一个&quot;拷贝构造函数&quot;，</span><br><span class="line"> 也可能不会合成&quot;拷贝构造函数&quot;，是否合成取决于具体需要。</span><br><span class="line">2.如果是编译器合成的拷贝构造函数，大概应该是这样的(以Time类为例子):</span><br><span class="line"> Time::Time(const Time<span class="built_in">&amp;</span> tmptime ... ) &#123; ... &#125;</span><br><span class="line"> 这个合成的拷贝构造函数一般也是会将参数tmptime的成员逐个复制(利用了赋值语句)到正在创建的对象中</span><br><span class="line"> 成员变量的类型决定了该成员如何复制，如整型等类型，就直接进行值复制</span><br><span class="line"> 如果是类类型，那就会调用这个类的拷贝构造函数来进行复制。</span><br><span class="line">3.如果定义了自己的拷贝构造函数，那么就取代了编译器合成的拷贝构造函数(假如编译器合成了拷贝构造函数)</span><br><span class="line"> 这时就必须在自己的拷贝构造函数中给类中成员逐个赋值(复制)。</span><br></pre></td></tr></table></figure>
+
+<p>一些会调用拷贝构造函数的情形</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1.将一个对象作为实参传递给一个非引用类型的形参</span></span><br><span class="line">	<span class="comment">// 因为要进行复制构造，因此这种写法效率低，不提倡使用</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(Time mt)</span> </span>&#123; <span class="keyword">return</span>; &#125;</span><br><span class="line"><span class="comment">// main函数中调用</span></span><br><span class="line">Time myt;</span><br><span class="line"><span class="built_in">func</span>(myt);   </span><br><span class="line"></span><br><span class="line"><span class="comment">// 2.从一个函数中返回一个对象</span></span><br><span class="line"><span class="function">Time <span class="title">func</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Time myt;  <span class="comment">// 调用构造函数</span></span><br><span class="line">    <span class="keyword">return</span> myt;  <span class="comment">// 调用了 拷贝构造函数</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// main函数中调用</span></span><br><span class="line"><span class="built_in">func</span>(); <span class="comment">// 或者 Time mtm = func();</span></span><br><span class="line"><span class="comment">/* 注意：</span></span><br><span class="line"><span class="comment">系统调用了拷贝构造函数，这说明return回去的这个对象并不是在func函数里产生的这个临时对象myt。</span></span><br><span class="line"><span class="comment">实际上可以这样理解：</span></span><br><span class="line"><span class="comment">func函数return的时候，系统会产生一个临时对象，这个临时对象的内容来源是myt对象，</span></span><br><span class="line"><span class="comment">然后系统把这个临时对象当作上面的myt来用。</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/16/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03.C++%E7%9F%A5%E8%AF%86/" rel="prev" title="C++ 知识 -- Day01">
+      <i class="fa fa-chevron-left"></i> C++ 知识 -- Day01
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#C-%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">C++知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB"><span class="nav-number">1.1.</span> <span class="nav-text">类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%A4%8D%E5%88%B6"><span class="nav-number">1.1.1.</span> <span class="nav-text">对象的复制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%81%E6%9C%89%E6%88%90%E5%91%98"><span class="nav-number">1.1.2.</span> <span class="nav-text">私有成员</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E3%80%81explicit%E3%80%81%E5%88%9D%E5%A7%8B%E5%8C%96%E5%88%97%E8%A1%A8"><span class="nav-number">1.1.3.</span> <span class="nav-text">构造函数、explicit、初始化列表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">构造函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2%E5%92%8Cexplicit"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">隐式转换和explicit</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%88%9D%E5%A7%8B%E5%8C%96%E5%88%97%E8%A1%A8"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">构造函数初始化列表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#inline%E3%80%81const%E3%80%81mutable%E3%80%81this%E3%80%81static"><span class="nav-number">1.1.4.</span> <span class="nav-text">inline、const、mutable、this、static</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB%E5%86%85%E5%88%9D%E5%A7%8B%E5%8C%96%E3%80%81%E9%BB%98%E8%AE%A4%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E3%80%81-default-%E5%92%8C-delete"><span class="nav-number">1.1.5.</span> <span class="nav-text">类内初始化、默认构造函数、 &#x3D;default; 和 &#x3D;delete;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B1%BB%E5%86%85%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">类内初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#const%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">const成员变量的初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.5.3.</span> <span class="nav-text">默认构造函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#default%EF%BC%9B%E5%92%8C-delete%EF%BC%9B"><span class="nav-number">1.1.5.4.</span> <span class="nav-text">&#x3D;default；和 &#x3D;delete；</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#default"><span class="nav-number">1.1.5.4.1.</span> <span class="nav-text">&#x3D;default;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#delete"><span class="nav-number">1.1.5.4.2.</span> <span class="nav-text">&#x3D;delete;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.6.</span> <span class="nav-text">拷贝构造函数</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YuanyiZh"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">YuanyiZh</p>
+  <div class="site-description" itemprop="description">随风飘不如迎风上</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/" title="GitHub → https:&#x2F;&#x2F;github.com" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/Bulk_Zhang" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;Bulk_Zhang" rel="noopener" target="_blank"><i class="fa fa-fighter-jet fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.baidu.com/" title="BaiDu → https:&#x2F;&#x2F;www.baidu.com&#x2F;" rel="noopener" target="_blank"><i class="fa fa-bold fa-fw"></i>BaiDu</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YuanyiZh</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">47k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">43 分钟</span>
+</div>
+  <div class="powered-by"><a href="https://brkzh.github.io/" class="theme-link" rel="noopener" target="_blank">布鲁克的小溪流</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
