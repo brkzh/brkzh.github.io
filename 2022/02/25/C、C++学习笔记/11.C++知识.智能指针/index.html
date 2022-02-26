@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="C++知识智能指针 shared_ptr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++知识 -- Day09">
+<meta property="og:url" content="http://example.com/2022/02/25/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/11.C++%E7%9F%A5%E8%AF%86.%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/index.html">
+<meta property="og:site_name" content="布鲁克的小溪流">
+<meta property="og:description" content="C++知识智能指针 shared_ptr">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/brookzhyy/picture-md/raw/master/PicGo/202202260945110.png">
+<meta property="og:image" content="https://gitee.com/brookzhyy/picture-md/raw/master/PicGo/202202260945913.png">
+<meta property="og:image" content="https://gitee.com/brookzhyy/picture-md/raw/master/PicGo/202202260945083.png">
+<meta property="article:published_time" content="2022-02-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-24T16:00:00.000Z">
+<meta property="article:author" content="YuanyiZh">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/brookzhyy/picture-md/raw/master/PicGo/202202260945110.png">
+
+<link rel="canonical" href="http://example.com/2022/02/25/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/11.C++%E7%9F%A5%E8%AF%86.%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>C++知识 -- Day09 | 布鲁克的小溪流</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">布鲁克的小溪流</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">19</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/25/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/11.C++%E7%9F%A5%E8%AF%86.%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="YuanyiZh">
+      <meta itemprop="description" content="随风飘不如迎风上">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="布鲁克的小溪流">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++知识 -- Day09
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-02-25 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-25T00:00:00+08:00">2022-02-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C%E3%80%81C/" itemprop="url" rel="index"><span itemprop="name">C、C++</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C%E3%80%81C/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>12k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>11 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="C-知识"><a href="#C-知识" class="headerlink" title="C++知识"></a>C++知识</h1><h2 id="智能指针-shared-ptr"><a href="#智能指针-shared-ptr" class="headerlink" title="智能指针 shared_ptr"></a>智能指针 shared_ptr</h2><span id="more"></span>
+
+<h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>在函数内定义一个变量(对象)，那么一旦离开这个函数，这个变量的声明周期就结束了。而局部静态变量(static变量/对象)是在第一次使用前分配内存，这个变量的内存即使离开这个函数也不释放，一直到程序结束的时候才释放。</p>
+<p>上面谈的 变量(对象)一般都是在栈或者静态内存上分配和释放变量所需要的空间，不需要程序员去干涉。</p>
+<p>对象也可以new出来，new一个对象实际上是在堆上分配内存。而自己new出来的对象必须自己用delete释放。</p>
+<p>由程序员自己用new出来的对象分配内存（new返回的是该对象的指针）的方式叫做动态分配。这种动态分配的内存的方式就相当于对内存直接进行管理，具体地说就是针对new和delete的应用。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *pointi = <span class="keyword">new</span> <span class="keyword">int</span>;   <span class="comment">// pointi指向一个int类型</span></span><br><span class="line"><span class="keyword">delete</span> pointi;   <span class="comment">// 释放内存</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// new一个类类型的对象</span></span><br><span class="line">string *str = <span class="keyword">new</span> string;  </span><br><span class="line"><span class="keyword">delete</span> str;</span><br></pre></td></tr></table></figure>
+
+<p>C++11中，auto可以和new一起使用</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">string* str = <span class="keyword">new</span> <span class="built_in">string</span>(<span class="number">5</span>,<span class="string">&#x27;a&#x27;</span>);  <span class="comment">// &quot;aaaaa&quot;</span></span><br><span class="line"><span class="keyword">auto</span> str2 = <span class="keyword">new</span> <span class="built_in"><span class="keyword">auto</span></span>(str);  <span class="comment">// 注意这种写法，str2会被推断成string**类型</span></span><br><span class="line">string** str3 = <span class="built_in"><span class="keyword">new</span></span> (string*)(str);</span><br><span class="line"><span class="keyword">delete</span> str;</span><br><span class="line"><span class="keyword">delete</span> str2;</span><br><span class="line"><span class="keyword">delete</span> str3;</span><br></pre></td></tr></table></figure>
+
+<p>const对象也可以动态分配内存</p>
+<p><code>cosnt int* poc = new const int(22);</code>   new后面这个const可以不写，似乎都差不多，当然cosnt对象不能修改其值。</p>
+<p>关于new和delete的说明：</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1、new和delete成对使用，有new必然有delete。delete的作用是回收一块new分配的内存，也就是释放内存。</span><br><span class="line">没有用new分配的内存，不能用delete来释放。</span><br><span class="line">2、delete一块内存，只能delete一次，不可以delete多次(因为第一次delete之后，这块内存就不是自己的了)，否则报异常。</span><br></pre></td></tr></table></figure>
+
+<p>当然，可以给delete传递一个空指针，这样确实能delete指针(空指针)多次。但是delete一个空指针多次并没有什么实际意义。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span>* pci = <span class="keyword">new</span> <span class="keyword">const</span> <span class="built_in"><span class="keyword">int</span></span>(<span class="number">400</span>);</span><br><span class="line"><span class="keyword">delete</span> pci;    <span class="comment">// 可以</span></span><br><span class="line"><span class="comment">// const对象值不能被改变，但是可以被delete</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意事项总结：</strong></p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1、new出来的内存千万不要忘记delete释放，否则内存泄露。</span><br><span class="line">2、delete后的内存不能继续使用，否则编译不报错，但是执行的时候报告异常。</span><br><span class="line">int *pci = new int(10);</span><br><span class="line">delete pci;</span><br><span class="line">*pci = 800;    // 异常</span><br><span class="line">提倡写法：在delete了一个指针后，把该指针设置为空(pci=nullptr;)</span><br><span class="line">3、内存被释放后千万不可以再对其读或者写。</span><br></pre></td></tr></table></figure>
+
+<h3 id="new-delete探秘"><a href="#new-delete探秘" class="headerlink" title="new/delete探秘"></a>new/delete探秘</h3><h4 id="new-delete是什么"><a href="#new-delete是什么" class="headerlink" title="new/delete是什么"></a>new/delete是什么</h4><p>new和delete都是关键字(也叫运算符/操作符)，都不是函数。</p>
+<p>new/delete这一对比malloc/free这一对多做了不少事情，例如，new相比于malloc不但分配了内存，还会额外做一些初始化工作，而delete相比于free不但释放了内存，还会额外做了一些清理工作。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">A</span>()</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;A构造函数:this=&quot;</span>&lt;&lt;<span class="keyword">this</span> &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	~<span class="built_in">A</span>()</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;~A析构函数:this=&quot;</span>&lt;&lt;<span class="keyword">this</span> &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    A* pa = <span class="keyword">new</span> <span class="built_in">A</span>();   <span class="comment">// 类A的构造函数被调用</span></span><br><span class="line">	<span class="keyword">delete</span> pa;			<span class="comment">// 类A的析构函数被调用</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/brookzhyy/picture-md/raw/master/PicGo/202202260945110.png" alt="image-20220225211226603"></p>
+<p>既然后调用构造函数和析构函数的能力，这就意味着new和delete具备针对堆所分配的内存进行初始化(把初始化代码放在类的构造函数)和释放(把释放相关的代码放在类的析构函数中)的能力，而这些能力是malloc和free所不具备的。</p>
+<h4 id="operator-new-和operator-delete"><a href="#operator-new-和operator-delete" class="headerlink" title="operator new()和operator delete()"></a>operator new()和operator delete()</h4><p><img src="https://gitee.com/brookzhyy/picture-md/raw/master/PicGo/202202260945913.png" alt="image-20220225211519646">                <img src="https://gitee.com/brookzhyy/picture-md/raw/master/PicGo/202202260945083.png" alt="image-20220225211549724"></p>
+<p>重载运算符实际的表现就是一个函数，所以<code>operator new(...)</code> 和 <code>operator delete(...)</code> 实际上是函数。</p>
+<p>那么这两个函数和new/delete操作符有什么关系呢？</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1、new运算符做了两件事情：①分配内存；②调用构造函数初始化该内存。</span><br><span class="line"> new运算符怎么分配内存呢？ new运算符就是通过operator new(...)来分配内存的。</span><br><span class="line"> void* myorgp = operator new(100);  // 分配100字节内存，一般没人这样做</span><br><span class="line">2、delete运算符也干了两件事：①调用析构函数；②释放内存。</span><br><span class="line"> delete运算符就是通过调用operator delete()来释放内存的。</span><br></pre></td></tr></table></figure>
+
+<h4 id="new如何记录分配的内存大小供delete使用"><a href="#new如何记录分配的内存大小供delete使用" class="headerlink" title="new如何记录分配的内存大小供delete使用"></a>new如何记录分配的内存大小供delete使用</h4><p>不同的编译器的new内部有不同的实现方式。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p = <span class="keyword">new</span> <span class="keyword">int</span>;   <span class="comment">// 分配出去4字节</span></span><br><span class="line"><span class="keyword">delete</span> p;   <span class="comment">// 回收内存的时候，编译器怎样知道要回收4字节？</span></span><br><span class="line"><span class="comment">// 这就是new内部有记录机制，它分配出去多少，它会找个地方记录下来，回收的时候就按这个字节数回收。</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="申请和释放一个数组"><a href="#申请和释放一个数组" class="headerlink" title="申请和释放一个数组"></a>申请和释放一个数组</h4><p>先给出结论：</p>
+<p>为数组动态分配内存时，往往需要用到[]，如new[…]，而释放数组时，往往也要用到[]，如delete[…]，这意味着往往<strong>new[]和delete[]要配套使用。</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">A</span>()</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;A构造函数:this=&quot;</span>&lt;&lt;<span class="keyword">this</span> &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	~<span class="built_in">A</span>()</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;~A析构函数:this=&quot;</span>&lt;&lt;<span class="keyword">this</span> &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span>* p = <span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(<span class="number">100</span>);   <span class="comment">// 不delete发现泄露4字节内存</span></span><br><span class="line">	<span class="keyword">int</span>* p2 = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>];    <span class="comment">// 动态分配一个整型数组，有2个元素，如果不释放，泄露8个字节</span></span><br><span class="line">	<span class="keyword">int</span> ilen = <span class="built_in"><span class="keyword">sizeof</span></span>(A);    <span class="comment">// 1字节</span></span><br><span class="line">	A* pa = <span class="keyword">new</span> <span class="built_in">A</span>();  <span class="comment">// 不释放，泄露1个字节。类A里面没有任何成员变量，为什么不是0字节？</span></span><br><span class="line">	  <span class="comment">// 因为一个类对象肯定有地址，一个内存地址至少能保存一个字节，所以这里是1字节而不会是0字节</span></span><br><span class="line">	A* pa2 = <span class="keyword">new</span> A[<span class="number">2</span>]();  <span class="comment">// 释放，泄露6字节。为啥不是2字节而是6字节，多出了4字节，稍后会解释</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>内存的释放。new[]分配的内存要用delete[]来释放。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *pa = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>];</span><br><span class="line"><span class="comment">// delete pa;    // 没有使用[]释放内存，似乎也可以直接释放pa这个int数组，并没有内存泄露</span></span><br><span class="line"><span class="keyword">delete</span>[] pa;     <span class="comment">// 这种释放方法是规范的，没有问题的</span></span><br><span class="line"><span class="comment">// 但是 对于代码行</span></span><br><span class="line">A* pA = <span class="keyword">new</span> A[<span class="number">2</span>]();</span><br><span class="line"><span class="comment">// delete pA;   // 系统报异常，</span></span><br><span class="line"><span class="keyword">delete</span>[] pA;    <span class="comment">// 这种释放方法是规范的，没有问题的，调用了两次析构函数(因为分配内存时调用了两次构造函数)</span></span><br></pre></td></tr></table></figure>
+
+<p>这里就有个问题：delete [] pA; 为啥这个调用会导致调用两次类A的析构函数？系统如何知道new的时候出来几个数组元素(类A对象)呢？</p>
+<p><strong>记住：</strong>c++的做法是在分配数组空间时<strong>多分配了4字节</strong>的大小(这就是上面 A*pa = new A<a href="">2</a>; 为啥会多分配出4字节内存的原因)，<strong>专门保存数组的大小</strong>，在delete[]时就可以取出这个数组大小的数字，就知道了需要调用析构函数多少次了。</p>
+<h4 id="为什么new-delete、new-delete-要配对使用"><a href="#为什么new-delete、new-delete-要配对使用" class="headerlink" title="为什么new/delete、new[]/delete[]要配对使用"></a>为什么new/delete、new[]/delete[]要配对使用</h4><p>代码行 <code>int* p = new int[2];</code> 并没有多分配出4字节内存，释放的时候 <code>delete p;</code> 也能正确释放。</p>
+<p>这种内置类型如int类型，double类型，delete的时候不存在调用类的析构函数的说法(只有类对象或者类对象数组delete的时候才会存在调用析构函数的说法)，所以new的时候系统并没有多分配4字节内存，系统在调用operator delete(…)函数来释放内存时，因为new内部还有一些其他深入的工作原理，系统能够知道要释放的内存带线啊哦究竟是多少。</p>
+<p>如果把类A的析构函数注释掉，就会发现</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">A* pa = <span class="keyword">new</span> A[<span class="number">2</span>];   <span class="comment">// 这里不再分配6字节，而是2字节了</span></span><br><span class="line"><span class="keyword">delete</span> pa;    <span class="comment">// 这里不再出现内存泄露，也不再报异常</span></span><br></pre></td></tr></table></figure>
+
+<p>如果类A<strong>写了自己的析构函数</strong>，则用new[]为对象数组分配内存，而用单独的delete来释放内存，就会报异常</p>
+<p>报异常的原因时，代码行<code>delete pa;</code>做了两件事：</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1、调用一次类A的析构函数。</span><br><span class="line">2、调用&quot;operator delete(pa);&quot;来释放内存。系统报异常其实就是执行这行代码的调用导致的。</span><br><span class="line">就是因为多分配了这4字节的问题导致系统释放的内存空间错乱。</span><br></pre></td></tr></table></figure>
+
+<p><strong>所以 new/delete、new[]/delete[]要配对使用。</strong></p>
+<h3 id="智能指针总述"><a href="#智能指针总述" class="headerlink" title="智能指针总述"></a>智能指针总述</h3><p>直接new一个对象的方式返回的时一个对象的指针，这个对象的指针很多人称其为<strong>裸指针</strong>。</p>
+<p>智能指针可以理解成对“裸指针”进行了包装。最突出的就是智能指针能够“自动释放所指向的对象”。</p>
+<p>在c++11中，已经抛弃了 <code>std::auto_ptr</code> 这种智能指针。</p>
+<p><code>std::unique_ptr</code>, <code>std::shared_ptr</code>, <code>std::weak_ptr</code>　这三种智能指针在c++11中推荐使用。</p>
+<p>这三种智能指针其实都是类模板，可以将new获得的地址赋给它们。</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">①shared<span class="built_in">_</span>ptr是共享式指针的概念。</span><br><span class="line">	多个指针指向同一个对象，最后一个指针被销毁时，这个对象就会被释放。</span><br><span class="line">②weak<span class="built_in">_</span>ptr这个智能指针是用来辅助shared<span class="built_in">_</span>ptr工作的。</span><br><span class="line">③unique<span class="built_in">_</span>ptr是一种独占式指针的概念。</span><br><span class="line">	同一个时间内只有要给指针能够指向该对象，当然，该对象的拥有权(所有权)是可以移交出去的。</span><br><span class="line">④智能指针，程序员不用担心内存的释放问题，即便忘记了delete，系统也能够帮助程序员delete，这是智能指针的本职工作。</span><br><span class="line">    实际上也不需要程序员自己delete一个智能指针，如果自己手动delete，甚至还会导致报错呢。</span><br></pre></td></tr></table></figure>
+
+<h3 id="shared-ptr基础"><a href="#shared-ptr基础" class="headerlink" title="shared_ptr基础"></a>shared_ptr基础</h3><p>shared_ptr指针采用的是共享所有权来管理所指向对象的生存期。所以，对象不仅仅能被一个特定的shared_ptr所拥有，而是能够被多个shared_ptr所拥有。</p>
+<p>在决定是否要采用这种指针时首先得想一个问题：所指向的对象是否需要被共享，如果需要被共享(类似于多个指针都需要指向同一块内存)，那就是用shared_ptr，如果只需要独享(只有一个指针指向这块内存)，就建议使用unique_ptr智能指针。</p>
+<p><strong>shared_ptr的工作机制是使用引用计数</strong>，每一个shared_ptr指向相同的对象(内存)，所以只有最后一个指向该对象的shared_ptr指针不需要再指向该对象时，这个shared_ptr才回去析构所指向的对象。</p>
+<p>最后要给指向该对象的shared_ptr在什么情况下会释放该对象呢？</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1.这个shared<span class="built_in">_</span>ptr被析构时。如离开作用域，shared<span class="built_in">_</span>ptr就要被销毁。</span><br><span class="line">2.这个shared<span class="built_in">_</span>ptr被指向其他对象时。</span><br></pre></td></tr></table></figure>
+
+<p>shared_ptr的 一般形式：<code>shared_ptr&lt;指向的类型&gt; 智能指针名;</code></p>
+<p><code>shared_ptr&lt;string&gt; sps;</code>   一个指向string的智能指针，名字为sps</p>
+<p>这种默认初始化的情形，该智能指针里面保存的是一个空指针nulltr(可以指向类型为string的对象)。</p>
+<h4 id="常规初始化-shared-ptr和new配合使用"><a href="#常规初始化-shared-ptr和new配合使用" class="headerlink" title="常规初始化(shared_ptr和new配合使用)"></a>常规初始化(shared_ptr和new配合使用)</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">shared_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">pi</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">100</span>))</span></span>;    <span class="comment">// pi指向一个值为100的int型数据</span></span><br><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt; pi2 = <span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(<span class="number">100</span>);   <span class="comment">// 这个写法不可以，智能指针是explicit，是不可以进行隐式类型转换的</span></span><br><span class="line">  <span class="comment">// 必须用直接初始化形式，而带等号的一般都表示要隐式雷西那个转换</span></span><br></pre></td></tr></table></figure>
+
+<p>对于返回值为shared_ptr<int>类型</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">shared_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">makes</span><span class="params">(<span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(value);   <span class="comment">// 不可以，因为无法把new得到的int*转换成shared_ptr</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 所以修改为</span></span><br><span class="line"><span class="function">shared_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">makes</span><span class="params">(<span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> shared_ptr&lt;<span class="keyword">int</span>&gt;(<span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(value));    <span class="comment">// 可以，显式用int*创建shared_ptr&lt;int&gt;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>裸指针可以初始化shared_ptr，但这是一种不被推荐的用法，智能指针和裸指针不要穿插使用。</p>
+<h4 id="make-shared函数"><a href="#make-shared函数" class="headerlink" title="make_shared函数"></a>make_shared函数</h4><p>这个一个标准库里的函数模板，被认为是最安全和更高效的分配和使用shared_ptr智能指针的一个函数模板。</p>
+<p>它能够在动态内存(堆)中分配并初始化一个对象，然后返回指向此对象的shared_ptr。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt; pi = std::make_shared&lt;<span class="keyword">int</span>&gt;(<span class="number">100</span>);   <span class="comment">// 这个shared_ptr指向一个值为100的整型的内存，类似于 int*pi = new int(100);</span></span><br><span class="line">shared_ptr&lt;string&gt; spi = std::make_shared&lt;string&gt;(<span class="number">5</span>, <span class="string">&#x27;a&#x27;</span>);</span><br><span class="line">	<span class="comment">// 5个字符a，类似于 string mystr(5,&#x27;a&#x27;);</span></span><br><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt; pi2 = std::make_shared&lt;<span class="keyword">int</span>&gt;();   <span class="comment">// 指向一个int，int里面保存的是0，这个就是值初始化</span></span><br><span class="line">pi2 = make_shared&lt;<span class="keyword">int</span>&gt;(<span class="number">400</span>);   <span class="comment">// pi2释放刚才指向的对象(只有一个指针指向该对象，才释放，如果不是，则是引用计数减1)，重新指向新对象</span></span><br><span class="line"><span class="keyword">auto</span> pi3 = std::make_shared&lt;string&gt;(<span class="number">5</span>,<span class="string">&#x27;a&#x27;</span>);  <span class="comment">// 用auto保存makr_shared结果，写法比较简单</span></span><br></pre></td></tr></table></figure>
+
+<p>make_shared使用起来还行，但是如果自定义<strong>删除器</strong>，那么使用make_shared方法生成的shared_ptr对象，就没有版本自定义删除器了。</p>
+<h3 id="shared-ptr常用操作、计数与自定义删除器等"><a href="#shared-ptr常用操作、计数与自定义删除器等" class="headerlink" title="shared_ptr常用操作、计数与自定义删除器等"></a>shared_ptr常用操作、计数与自定义删除器等</h3><h4 id="shared-ptr引用计数的增加和减少"><a href="#shared-ptr引用计数的增加和减少" class="headerlink" title="shared_ptr引用计数的增加和减少"></a>shared_ptr引用计数的增加和减少</h4><h5 id="1-引用计数的增加"><a href="#1-引用计数的增加" class="headerlink" title="1.引用计数的增加"></a>1.引用计数的增加</h5><p>每个shared_ptr都会记录有多少个其他shared_ptr指向相同的对象：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> p6 = std::make_shared&lt;<span class="keyword">int</span>&gt;(<span class="number">100</span>);   <span class="comment">// 目前p6所指的对象只有p6一个引用者</span></span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">p7</span><span class="params">(p6)</span></span>;  <span class="comment">// 写成 auto p7 = p6;也可以，智能指针复制，此时引用计数为2</span></span><br></pre></td></tr></table></figure>
+
+<p>每个shared_ptr都关联这一个引用计数，当下述几种情况下，所有指向这个对象的shared_ptr引用计数都会增加1</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">1.用智能指针来初始化其他智能指针，auto p7 = p6; </span><br><span class="line">2.把智能指针当成实参往函数里传递。</span><br><span class="line">void myfunc(shared<span class="built_in">_</span>ptr&lt;int&gt; ptmp)  // 如果传递引用作为形参进来，则引用计数不会增加</span><br><span class="line">&#123;</span><br><span class="line">	return;</span><br><span class="line">&#125;  // 离开函数，返回后，这个引用计数会减去1，恢复原来的</span><br><span class="line">3.作为函数的返回值</span><br><span class="line">shared<span class="built_in">_</span>ptr&lt;int&gt; myfunc2(shared<span class="built_in">_</span>ptr&lt;int&gt;<span class="built_in">&amp;</span> ptmp)  // 这里是引用，所以引用计数不会增加</span><br><span class="line">&#123;</span><br><span class="line">	return ptmp;</span><br><span class="line">&#125;</span><br><span class="line">auto p8 = myfunc2(p7);  // 如果有p8接收myfunc2函数返回值，则引用计数会增加1</span><br><span class="line">如果没有变量来接收myfunc2调用的返回值，则引用计数不会增加</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-引用计数的减少"><a href="#2-引用计数的减少" class="headerlink" title="2.引用计数的减少"></a>2.引用计数的减少</h5><p>1)给shared_ptr赋一个新值，让该shared_ptr指向一个新对象。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt; p1 = std::make_shared&lt;<span class="keyword">int</span>&gt;(<span class="number">100</span>);</span><br><span class="line"><span class="keyword">auto</span> p2 = p1;</span><br><span class="line"><span class="keyword">auto</span> p3 = p1;</span><br><span class="line">p2 = make_shared&lt;<span class="keyword">int</span>&gt;(<span class="number">444</span>);  <span class="comment">// p1、p3的引用计数减一，p2指向新对象，引用计数为1</span></span><br></pre></td></tr></table></figure>
+
+<p>2)局部的shared_ptr离开其作用域</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> p6 = std::make_shared&lt;<span class="keyword">int</span>&gt;(<span class="number">222</span>);   <span class="comment">// 1个引用计数</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">auto</span> <span class="title">p7</span><span class="params">(p6)</span></span>;  <span class="comment">// p7和p6指向同一个对象，引用计数为2    </span></span><br><span class="line">&#125;  <span class="comment">// 当程序离开 &#123;&#125; 括起来的范围是，p7就离开了其作用域，p6的引用计数减一</span></span><br></pre></td></tr></table></figure>
+
+<p>3)当一个shared_ptr引用计数变为0，它会自动释放自己所管理的对象</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> p9 = std::make_shared&lt;<span class="keyword">int</span>&gt;(<span class="number">100</span>);</span><br><span class="line"><span class="keyword">auto</span> p10 = make_shared&lt;<span class="keyword">int</span>&gt;(<span class="number">100</span>);</span><br><span class="line">p6 = p10;   <span class="comment">// 给p9赋值，p9指向p10，原来p9指向的对象引用计数变为0，所以会被自动释放</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="shared-ptr指针常用操作"><a href="#shared-ptr指针常用操作" class="headerlink" title="shared_ptr指针常用操作"></a>shared_ptr指针常用操作</h4><h5 id="1-use-count成员函数"><a href="#1-use-count成员函数" class="headerlink" title="1.use_count成员函数"></a>1.use_count成员函数</h5><p>该成员函数用于返回多少个智能指针指向某个对象。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt;<span class="built_in">myp</span>(<span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(<span class="number">100</span>));</span><br><span class="line"><span class="keyword">int</span> icount = myp.<span class="built_in">use_count</span>();  <span class="comment">// 1</span></span><br><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt;<span class="built_in">myp2</span>(myp);</span><br><span class="line"><span class="keyword">int</span> icount = myp.<span class="built_in">use_count</span>();  <span class="comment">// 2</span></span><br><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt;myp3;</span><br><span class="line">myp3 = myp2;</span><br><span class="line"><span class="keyword">int</span> icount = myp.<span class="built_in">use_count</span>();  <span class="comment">// 3</span></span><br><span class="line"><span class="keyword">int</span> icount = myp3.<span class="built_in">use_count</span>();  <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="2-unique成员函数"><a href="#2-unique成员函数" class="headerlink" title="2.unique成员函数"></a>2.unique成员函数</h5><p>是否该智能指针独占某个指向的对象，也就是若只有一个指针指针指向某个对象，则unique返回true，否则返回false</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">shared_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">myp</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">100</span>))</span></span>;</span><br><span class="line"><span class="keyword">if</span>(myp.<span class="built_in">unique</span>())  <span class="comment">// 本条件成立</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// myp独占所指向的对象</span></span><br><span class="line">    cout &lt;&lt;<span class="string">&quot;myp unique ok&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt;<span class="built_in">myp2</span>(myp);</span><br><span class="line"><span class="keyword">if</span>(myp.<span class="built_in">unique</span>())  <span class="comment">// 本条件不再成立</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// myp独占所指向的对象</span></span><br><span class="line">    cout &lt;&lt;<span class="string">&quot;myp unique ok&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-reset成员函数"><a href="#3-reset成员函数" class="headerlink" title="3.reset成员函数"></a>3.reset成员函数</h5><p><strong>(1)当reset不带参数时</strong></p>
+<p>若pi是唯一指向该对象的指针，则释放pi指向的对象，将pi置空。</p>
+<p>若pi不是唯一指向该对象的指针，则不释放pi指向的对象，但指向该对象引用计数会减1，同时将pi置空。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt;<span class="built_in">pi</span>(<span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(<span class="number">100</span>));</span><br><span class="line">pi.<span class="built_in">reset</span>();   <span class="comment">// 释放pi指向的对象，将pi置空</span></span><br><span class="line"><span class="keyword">if</span>(pi == <span class="literal">nullptr</span>)  <span class="comment">// 条件成立</span></span><br><span class="line">&#123;</span><br><span class="line">    cout &lt;&lt;<span class="string">&quot;pi被置空&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">shared_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">pi</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">100</span>))</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">pi2</span><span class="params">(pi)</span></span>;   <span class="comment">// pi2的引用计数为2</span></span><br><span class="line">pi.<span class="built_in">reset</span>();   <span class="comment">// pi被置空，pi2引用计数变为1</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>(2)当reset带参数(一般是一个new出来的指针)时</strong></p>
+<p>若pi是唯一指向该对象的指针，则释放pi指向的对象，让pi指向新内存。</p>
+<p>若pi不是唯一指向该对象的指针，则不释放pi指向对象，但指向该对象的引用计数会减1，同时让pi指向新内存。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt;<span class="built_in">pi</span>(<span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(<span class="number">100</span>));</span><br><span class="line">pi.<span class="built_in">reset</span>(<span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(<span class="number">1</span>));   <span class="comment">// 释放原内存(内容为100的内存),指向新内存(内容为1的内存)</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt;<span class="built_in">pi</span>(<span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(<span class="number">88</span>));</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">pi2</span><span class="params">(pi)</span></span>;   <span class="comment">// pi2的引用计数现在为2</span></span><br><span class="line">pi.<span class="built_in">reset</span>(<span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(<span class="number">66</span>));  <span class="comment">// pi引用计数变为1，pi2引用计数变为1</span></span><br><span class="line"><span class="keyword">if</span>(pi.<span class="built_in">unique</span>())   <span class="comment">// 条件成立</span></span><br><span class="line">&#123;</span><br><span class="line">    cout &lt;&lt;<span class="string">&quot;pi unique ok&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(pi2.<span class="built_in">unique</span>())  <span class="comment">// 条件也成立</span></span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;pi2 目前独占&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>(3)空指针也可以通过reset来重新初始化</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt; p;   <span class="comment">// p现在是空指针</span></span><br><span class="line">p.<span class="built_in">reset</span>(<span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(<span class="number">100</span>));  </span><br></pre></td></tr></table></figure>
+
+<h5 id="4-解引用"><a href="#4-解引用" class="headerlink" title="4. *解引用"></a>4. *解引用</h5><p>*p：解引用的感觉，获得p指向的对象。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">shared_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">pot</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">666</span>))</span></span>;</span><br><span class="line"><span class="keyword">char</span> buf[<span class="number">1024</span>];</span><br><span class="line"><span class="built_in">sprintf</span>(buf, <span class="string">&quot;%d&quot;</span>, *pot);  <span class="comment">// buf中的内容就是666，pot不发生任何变化</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="5-get成员函数"><a href="#5-get成员函数" class="headerlink" title="5.get成员函数"></a>5.get成员函数</h5><p>p.get()：返回p中保存的指针。<strong>小心使用</strong>，若智能指针释放了所指向的对象，则返回的这个所指向的对象也就变的无效了。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt;<span class="built_in">myp</span>(<span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(<span class="number">888</span>));</span><br><span class="line"><span class="keyword">int</span>*p = myp.<span class="built_in">get</span>();</span><br><span class="line">*p = <span class="number">666</span>;</span><br></pre></td></tr></table></figure>
+
+<p>为啥要有这个函数？因为有些函数的参数需要的是一个内置指针(裸指针)，所以需要通过get取得这个内置指针并传递给这样的函数。</p>
+<p>但是注意，不要delete这个get到的指针，否则会产生不可预料的后果。</p>
+<h5 id="6-swap成员函数"><a href="#6-swap成员函数" class="headerlink" title="6.swap成员函数"></a>6.swap成员函数</h5><p>用于交换两个智能指针所指向的对象。引用计数并不会发生变化</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;string&gt;<span class="built_in">ps1</span>(<span class="keyword">new</span> <span class="built_in">string</span>(<span class="string">&quot;Brook&quot;</span>));</span><br><span class="line">shared_ptr&lt;string&gt;<span class="built_in">ps2</span>(<span class="keyword">new</span> <span class="built_in">string</span>(<span class="string">&quot;Hello&quot;</span>));</span><br><span class="line">std::<span class="built_in">swap</span>(ps1, ps2);  <span class="comment">// 可以</span></span><br><span class="line">ps1.<span class="built_in">swap</span>(ps2);    <span class="comment">// 也可以</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="7-nullptr"><a href="#7-nullptr" class="headerlink" title="7. =nullptr"></a>7. =nullptr</h5><p>· 将所指向对象的引用计数减1，若引用计数变为0，则释放智能指针所指向的对象</p>
+<p>· 将智能指针置空</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt;<span class="built_in">ps1</span>(<span class="keyword">new</span> <span class="built_in">string</span>(<span class="string">&quot;Hello World&quot;</span>));</span><br><span class="line">ps1 = <span class="literal">nullptr</span>;</span><br></pre></td></tr></table></figure>
+
+<h5 id="8-智能指针名字作为判断条件"><a href="#8-智能指针名字作为判断条件" class="headerlink" title="8.智能指针名字作为判断条件"></a>8.智能指针名字作为判断条件</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt;<span class="built_in">ps1</span>(<span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(<span class="number">666</span>));</span><br><span class="line"><span class="comment">// 若ps1指向一个对象，则条件成立</span></span><br><span class="line"><span class="keyword">if</span>(ps1)   <span class="comment">// 条件成立</span></span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;ps1&quot;</span>&lt;&lt;endl; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="9-指定删除器和数组问题"><a href="#9-指定删除器和数组问题" class="headerlink" title="9.指定删除器和数组问题"></a>9.指定删除器和数组问题</h5><p><strong>1)指定删除器</strong></p>
+<p>智能指针在一定的时机自动删除它所指向的对象。默认情况下，shared_ptr正是使用delete运算符作为默认的删除它所指向的对象的方式。</p>
+<p>同时，程序员可以指定自己的删除器，这样当智能指针需要删除一个它所指向的对象时，它不再去调用默认的delete运算符来删除对象，而是调用程序员为它提供的删除器来删除它所指向的对象。</p>
+<p>shared_ptr指定删除器的方法比较简单，一般只需要在参数中添加具体的删除器函数即可（注意，<strong>删除器是一个单形参的函数</strong>）。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 自己的删除器函数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myDelete</span><span class="params">(<span class="keyword">int</span> *p)</span></span></span><br><span class="line"><span class="function"></span>&#123; <span class="comment">// 自己的删除器，删除整型指针用的。当p的引用计数为0时，则自动调用这个删除器删除对象，释放内存</span></span><br><span class="line">    <span class="keyword">delete</span> p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt;<span class="built_in">p</span>(<span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(<span class="number">888</span>));</span><br><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt;<span class="built_in">p2</span>(p);</span><br><span class="line">p2.<span class="built_in">reset</span>();</span><br><span class="line">p.<span class="built_in">reset</span>();  <span class="comment">// 引用计数变为0，调用自己的删除器myDelete,同时p置空</span></span><br></pre></td></tr></table></figure>
+
+<p>删除器也可以是一个lambda表达式，lambda可以理解为一个匿名函数(是一个表达式，但使用起来也比较像一个匿名函数)。注意，用{}包着的部分就是lambda表达式组成部分，直接作为一个参数来用：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt;<span class="built_in">p</span>(<span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(<span class="number">666</span>), [](<span class="keyword">int</span>* p)&#123;</span><br><span class="line">    <span class="keyword">delete</span> p;</span><br><span class="line">&#125;);</span><br><span class="line">p.<span class="built_in">reset</span>();   <span class="comment">// 会调用删除器(lambda表达式)</span></span><br></pre></td></tr></table></figure>
+
+<p>常规情况下，默认的删除器工作是挺好，但是有一些情况需要自己指定删除器，默认的删除器处理不了。</p>
+<p>用shared_ptr管理动态数组的时候，就需要指定自己的删除器，默认的删除器不支持数组对象。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;<span class="keyword">int</span>[]&gt;<span class="built_in">p</span>(<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>], [](<span class="keyword">int</span>* p)&#123;</span><br><span class="line">    <span class="keyword">delete</span>[] p;</span><br><span class="line">&#125;);</span><br><span class="line">p.<span class="built_in">reset</span>();</span><br></pre></td></tr></table></figure>
+
+<p>如果一个类定义中带有析构函数，那么程序员必须指定自己的删除器，否则会报异常。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">A</span>()</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;A构造函数:this=&quot;</span>&lt;&lt;<span class="keyword">this</span> &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	~<span class="built_in">A</span>()</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;~A析构函数:this=&quot;</span>&lt;&lt;<span class="keyword">this</span> &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// main主函数</span></span><br><span class="line"><span class="function">shared_ptr&lt;A&gt; <span class="title">pA</span><span class="params">(<span class="keyword">new</span> A[<span class="number">10</span>])</span></span>;  <span class="comment">// 异常，因为系统释放pA是使用delete pA而不是delete[] pA</span></span><br><span class="line"><span class="comment">// 改造，写自己的删除器</span></span><br><span class="line">shared_ptr&lt;A&gt;<span class="built_in">pA</span>(<span class="keyword">new</span> A[<span class="number">10</span>], [](A*p)&#123;</span><br><span class="line">    <span class="keyword">delete</span>[] p;</span><br><span class="line">&#125;);  <span class="comment">// 一切正常</span></span><br></pre></td></tr></table></figure>
+
+<p>此外还可以将<code>default_delete</code>作为删除器，这是一个标准库里的类模板，注意写法，这个删除器的内部也是通过delete来实现功能的：</p>
+<p><code>shared_ptr&lt;A&gt;pA(new A[10], std::default_delete&lt;A[]&gt;());</code> </p>
+<p>当遇到数组的时候，程序员做的很多工作都是为了<strong>保证数组能够正常释放</strong>。</p>
+<p>其实，在定义的时候如果写成下面的形式，即使不写自己的删除器，也能正常释放内存。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">shared_ptr&lt;A[]&gt; <span class="title">pA</span><span class="params">(<span class="keyword">new</span> A[<span class="number">10</span>])</span></span>;  </span><br><span class="line">shared_ptr&lt;<span class="keyword">int</span>[]&gt;<span class="built_in">p</span>(<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>]); <span class="comment">// &lt;&gt;中加个[]就行了，而且加了[]后，引用也方便，如p[0],p[1],...,p[9]</span></span><br></pre></td></tr></table></figure>
+
+<p>建议：**定义数组时在尖括号”&lt;&gt;”中都加”[]”**。</p>
+<p>另外，也可以 <strong>自己写一个函数模板来封装shared_ptr数组</strong>，</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">shared_ptr&lt;T&gt;<span class="built_in">make_shared_array</span>(<span class="keyword">size_t</span> size)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> shared_ptr&lt;T&gt;(<span class="keyword">new</span> T[size], default_delete&lt;T[]&gt;());  <span class="comment">// 指定了删除器</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// main函数</span></span><br><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt;pintArr = make_shared_array&lt;<span class="keyword">int</span>&gt;(<span class="number">5</span>);  <span class="comment">// 末尾数字代表数组元素个数</span></span><br><span class="line">shared_ptr&lt;A&gt;pAArr = make_shared_array&lt;A&gt;(<span class="number">10</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>2)指定删除器额外说明</strong></p>
+<p>就算是两个shared_ptr指定的删除器不同，只要他们所指向的对象相同，那么这两个shared_ptr也属于同一个类型。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main函数中</span></span><br><span class="line"><span class="keyword">auto</span> lambda1 = [](<span class="keyword">int</span>*p)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">delete</span> p;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">auto</span> lambda2 = [](<span class="keyword">int</span>*p)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">delete</span> p;</span><br><span class="line">&#125;;</span><br><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt;<span class="built_in">p1</span>(<span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(<span class="number">100</span>), lambda1);  <span class="comment">// 指定lambda1为删除器</span></span><br><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt;<span class="built_in">p2</span>(<span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(<span class="number">200</span>), lambda2);  <span class="comment">// 指定lambda2为删除器</span></span><br><span class="line">p2 = p1;  <span class="comment">// p2会先调用lambda2把自己所指对象释放，然后指向p1所致对象</span></span><br><span class="line"><span class="comment">// 整个main函数执行完毕后还会调用lambda1释放p1、p2共同指向的对象。</span></span><br></pre></td></tr></table></figure>
+
+<p>同一个类型有个明显的好处，就是可以放到元素类型为该对象类型的容器里，方便操作</p>
+<p><code>vector&lt;shared_ptr&lt;int&gt;&gt; pvec&#123;p1, p2&#125;;</code>  </p>
+<p><code>make_shared</code>是被提倡的生成<code>shared_ptr</code>的方法，但是如果用<code>make_shared</code>方法生成<code>shared_ptr</code>对象，那就没有办法自定义删除器了。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/23/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/09.C++%E7%9F%A5%E8%AF%86.%E6%A8%A1%E6%9D%BF%E4%B8%8E%E6%B3%9B%E5%9E%8B%E7%BC%96%E7%A8%8B-%E7%B1%BB%E6%A8%A1%E6%9D%BF/" rel="prev" title="C++知识 -- Day07">
+      <i class="fa fa-chevron-left"></i> C++知识 -- Day07
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#C-%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">C++知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88-shared-ptr"><span class="nav-number">1.1.</span> <span class="nav-text">智能指针 shared_ptr</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.1.1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#new-delete%E6%8E%A2%E7%A7%98"><span class="nav-number">1.1.2.</span> <span class="nav-text">new&#x2F;delete探秘</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#new-delete%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">new&#x2F;delete是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#operator-new-%E5%92%8Coperator-delete"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">operator new()和operator delete()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#new%E5%A6%82%E4%BD%95%E8%AE%B0%E5%BD%95%E5%88%86%E9%85%8D%E7%9A%84%E5%86%85%E5%AD%98%E5%A4%A7%E5%B0%8F%E4%BE%9Bdelete%E4%BD%BF%E7%94%A8"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">new如何记录分配的内存大小供delete使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%B3%E8%AF%B7%E5%92%8C%E9%87%8A%E6%94%BE%E4%B8%80%E4%B8%AA%E6%95%B0%E7%BB%84"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">申请和释放一个数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88new-delete%E3%80%81new-delete-%E8%A6%81%E9%85%8D%E5%AF%B9%E4%BD%BF%E7%94%A8"><span class="nav-number">1.1.2.5.</span> <span class="nav-text">为什么new&#x2F;delete、new[]&#x2F;delete[]要配对使用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88%E6%80%BB%E8%BF%B0"><span class="nav-number">1.1.3.</span> <span class="nav-text">智能指针总述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shared-ptr%E5%9F%BA%E7%A1%80"><span class="nav-number">1.1.4.</span> <span class="nav-text">shared_ptr基础</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E8%A7%84%E5%88%9D%E5%A7%8B%E5%8C%96-shared-ptr%E5%92%8Cnew%E9%85%8D%E5%90%88%E4%BD%BF%E7%94%A8"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">常规初始化(shared_ptr和new配合使用)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#make-shared%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">make_shared函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shared-ptr%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E3%80%81%E8%AE%A1%E6%95%B0%E4%B8%8E%E8%87%AA%E5%AE%9A%E4%B9%89%E5%88%A0%E9%99%A4%E5%99%A8%E7%AD%89"><span class="nav-number">1.1.5.</span> <span class="nav-text">shared_ptr常用操作、计数与自定义删除器等</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#shared-ptr%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%E7%9A%84%E5%A2%9E%E5%8A%A0%E5%92%8C%E5%87%8F%E5%B0%91"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">shared_ptr引用计数的增加和减少</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%E7%9A%84%E5%A2%9E%E5%8A%A0"><span class="nav-number">1.1.5.1.1.</span> <span class="nav-text">1.引用计数的增加</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%E7%9A%84%E5%87%8F%E5%B0%91"><span class="nav-number">1.1.5.1.2.</span> <span class="nav-text">2.引用计数的减少</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#shared-ptr%E6%8C%87%E9%92%88%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">shared_ptr指针常用操作</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-use-count%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.5.2.1.</span> <span class="nav-text">1.use_count成员函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-unique%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.5.2.2.</span> <span class="nav-text">2.unique成员函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-reset%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.5.2.3.</span> <span class="nav-text">3.reset成员函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-%E8%A7%A3%E5%BC%95%E7%94%A8"><span class="nav-number">1.1.5.2.4.</span> <span class="nav-text">4. *解引用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-get%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.5.2.5.</span> <span class="nav-text">5.get成员函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-swap%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.5.2.6.</span> <span class="nav-text">6.swap成员函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-nullptr"><span class="nav-number">1.1.5.2.7.</span> <span class="nav-text">7. &#x3D;nullptr</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8-%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88%E5%90%8D%E5%AD%97%E4%BD%9C%E4%B8%BA%E5%88%A4%E6%96%AD%E6%9D%A1%E4%BB%B6"><span class="nav-number">1.1.5.2.8.</span> <span class="nav-text">8.智能指针名字作为判断条件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#9-%E6%8C%87%E5%AE%9A%E5%88%A0%E9%99%A4%E5%99%A8%E5%92%8C%E6%95%B0%E7%BB%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.5.2.9.</span> <span class="nav-text">9.指定删除器和数组问题</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YuanyiZh"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">YuanyiZh</p>
+  <div class="site-description" itemprop="description">随风飘不如迎风上</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/" title="GitHub → https:&#x2F;&#x2F;github.com" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/Bulk_Zhang" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;Bulk_Zhang" rel="noopener" target="_blank"><i class="fa fa-fighter-jet fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.baidu.com/" title="BaiDu → https:&#x2F;&#x2F;www.baidu.com&#x2F;" rel="noopener" target="_blank"><i class="fa fa-bold fa-fw"></i>BaiDu</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YuanyiZh</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">124k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:52</span>
+</div>
+  <div class="powered-by"><a href="https://brkzh.github.io/" class="theme-link" rel="noopener" target="_blank">布鲁克的小溪流</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
