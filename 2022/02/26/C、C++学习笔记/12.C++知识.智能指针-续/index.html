@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="C++知识智能指针-续weak_ptr等">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++知识 -- Day10">
+<meta property="og:url" content="http://example.com/2022/02/26/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/12.C++%E7%9F%A5%E8%AF%86.%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88-%E7%BB%AD/index.html">
+<meta property="og:site_name" content="布鲁克的小溪流">
+<meta property="og:description" content="C++知识智能指针-续weak_ptr等">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/brookzhyy/picture-md/raw/master/PicGo/202202262208879.png">
+<meta property="og:image" content="https://gitee.com/brookzhyy/picture-md/raw/master/PicGo/202202262208527.png">
+<meta property="article:published_time" content="2022-02-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-25T16:00:00.000Z">
+<meta property="article:author" content="YuanyiZh">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/brookzhyy/picture-md/raw/master/PicGo/202202262208879.png">
+
+<link rel="canonical" href="http://example.com/2022/02/26/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/12.C++%E7%9F%A5%E8%AF%86.%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88-%E7%BB%AD/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>C++知识 -- Day10 | 布鲁克的小溪流</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">布鲁克的小溪流</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">21</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/26/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/12.C++%E7%9F%A5%E8%AF%86.%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88-%E7%BB%AD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="YuanyiZh">
+      <meta itemprop="description" content="随风飘不如迎风上">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="布鲁克的小溪流">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++知识 -- Day10
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-02-26 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-26T00:00:00+08:00">2022-02-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C%E3%80%81C/" itemprop="url" rel="index"><span itemprop="name">C、C++</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C%E3%80%81C/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="C-知识"><a href="#C-知识" class="headerlink" title="C++知识"></a>C++知识</h1><h2 id="智能指针-续"><a href="#智能指针-续" class="headerlink" title="智能指针-续"></a>智能指针-续</h2><p>weak_ptr等</p>
+<span id="more"></span>
+
+<h2 id="weak-ptr简介、weak-ptr常用操作与尺寸问题"><a href="#weak-ptr简介、weak-ptr常用操作与尺寸问题" class="headerlink" title="weak_ptr简介、weak_ptr常用操作与尺寸问题"></a>weak_ptr简介、weak_ptr常用操作与尺寸问题</h2><h3 id="weak-ptr简介"><a href="#weak-ptr简介" class="headerlink" title="weak_ptr简介"></a>weak_ptr简介</h3><p>weak_ptr这个智能指针是用来辅助shared_ptr工作的。也是一个类模板。这个智能指针指向一个由shared_ptr管理的对象，但是这种指针并不控制所指向的对象的生存周期。</p>
+<p>弱引用可以理解为监视shared_ptr(强引用)的生命周期用的，是一种shared_ptr的扩充，不是一种独立的智能指针，不能用来操作所指向的资源。</p>
+<p>创建weak_ptr</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> pi = make_shared&lt;<span class="keyword">int</span>&gt;(<span class="number">100</span>);</span><br><span class="line">weak_ptr&lt;<span class="keyword">int</span>&gt;<span class="built_in">piw</span> (pi);  <span class="comment">// piw弱共享pi，pi的强引用计数没有改变。弱引用计数加1</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> pi = make_shared&lt;<span class="keyword">int</span>&gt;(<span class="number">100</span>);</span><br><span class="line">eak_ptr&lt;<span class="keyword">int</span>&gt;piw;</span><br><span class="line">piw2 = pi;  <span class="comment">// 把shared_ptr，赋值给一个weak_ptr， pi和piw两者指向相同位置</span></span><br><span class="line"></span><br><span class="line">weak_ptr&lt;<span class="keyword">int</span>&gt; piw2;</span><br><span class="line">piw2 = piw;  <span class="comment">// 把weak_ptr赋给另外一个weak_ptr，现在pi是一个强引用两个弱引用</span></span><br></pre></td></tr></table></figure>
+
+<p>既然weak_ptr所指向的对象可能会不存在，所以，程序员是不能使用weak_ptr来直接访问对象的，必须要使用一个叫做lock的成员函数，lock的功能就是检查weak_ptr所指向的对象是否还存在，如果存在，lock能够返回一个指向共享对象的shared_ptr(当然原来的shared_ptr引用计数会+1)，如果不存在，则返回一个空的shared_ptr。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> pi = make_shared&lt;<span class="keyword">int</span>&gt;(<span class="number">100</span>);</span><br><span class="line">weak_ptr&lt;<span class="keyword">int</span>&gt;piw;</span><br><span class="line"><span class="keyword">auto</span> pi2 = piw.<span class="built_in">lock</span>();   <span class="comment">//强引用shared_ptr计数会增加1</span></span><br><span class="line"><span class="keyword">if</span>(pi2 != <span class="literal">nullptr</span>)  <span class="comment">// 此时条件成立</span></span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;所指的对象存在&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改下代码，让所指对象不存在的情况</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> pi = make_shared&lt;<span class="keyword">int</span>&gt;(<span class="number">100</span>);</span><br><span class="line">weak_ptr&lt;<span class="keyword">int</span>&gt;piw;</span><br><span class="line">pi.<span class="built_in">reset</span>();  <span class="comment">// pi所指向的对象被释放了，pi为空</span></span><br><span class="line"><span class="keyword">auto</span> pi2 = piw.<span class="built_in">lock</span>();   <span class="comment">//因为所指向的对象被释放了，所以piw弱引用也属于“过期”的了</span></span><br><span class="line"><span class="keyword">if</span>(pi2 != <span class="literal">nullptr</span>)  <span class="comment">// 此时条件不成立</span></span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;所指的对象存在&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，weak_ptr具备能够判断所指向的对象是否存在的能力。</p>
+<h3 id="weak-ptr常用操作"><a href="#weak-ptr常用操作" class="headerlink" title="weak_ptr常用操作"></a>weak_ptr常用操作</h3><h4 id="1-use-count成员函数"><a href="#1-use-count成员函数" class="headerlink" title="1.use_count成员函数"></a>1.use_count成员函数</h4><p>获取与该弱指针共享对象的其他shared_ptr的数量，或者说获得当前所观测资源的引用计数(强引用计数)</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> pi = make_shared&lt;<span class="keyword">int</span>&gt;(<span class="number">100</span>);</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">pi2</span><span class="params">(pi)</span></span>;   <span class="comment">// pi2类型是一个shared_ptr</span></span><br><span class="line">weak_ptr&lt;<span class="keyword">int</span>&gt;<span class="built_in">piw</span>(pi);  </span><br><span class="line"><span class="keyword">int</span> isc = piw.<span class="built_in">use_count</span>();   <span class="comment">// 2:与本piw共享对象的shared_ptr数量</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-expired成员函数"><a href="#2-expired成员函数" class="headerlink" title="2.expired成员函数"></a>2.expired成员函数</h4><p>是否过期的意思，若该指针的use_count为0(表示该弱指针所指向的对象已经不存在)，则返回true，否则返回false。换句话说，判断所观测的对象(资源是否已经被释放)。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> pi = make_shared&lt;<span class="keyword">int</span>&gt;(<span class="number">100</span>);</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">pi2</span><span class="params">(pi)</span></span>; </span><br><span class="line">weak_ptr&lt;<span class="keyword">int</span>&gt;<span class="built_in">piw</span>(pi);  </span><br><span class="line">pi.<span class="built_in">reset</span>();</span><br><span class="line">pi2.<span class="built_in">reset</span>();</span><br><span class="line"><span class="keyword">if</span>(piw.<span class="built_in">expired</span>())  <span class="comment">// 此时条件成立</span></span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;piw已经过期了&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-reset成员函数"><a href="#3-reset成员函数" class="headerlink" title="3.reset成员函数"></a>3.reset成员函数</h4><p>将该弱引用指针设置为空，不影响指向该对象的强引用数量，但指向该对象的弱引用数量会减1</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> pi = make_shared&lt;<span class="keyword">int</span>&gt;(<span class="number">100</span>);</span><br><span class="line">weak_ptr&lt;<span class="keyword">int</span>&gt;<span class="built_in">piw</span>(pi);  </span><br><span class="line">piw.<span class="built_in">reset</span>();   <span class="comment">// pi是1个强引用，无弱引用</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="4-lock成员函数"><a href="#4-lock成员函数" class="headerlink" title="4.lock成员函数"></a>4.lock成员函数</h4><p>获取所监视的shared_ptr。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> p1 = make_shared&lt;<span class="keyword">int</span>&gt;(<span class="number">42</span>);</span><br><span class="line">weak_ptr&lt;<span class="keyword">int</span>&gt; pw;</span><br><span class="line">pw = p1;  <span class="comment">// 可以用shared_ptr给weak_ptr值，现在p1是1个强引用，1个弱引用</span></span><br><span class="line"><span class="keyword">if</span>(!pw.<span class="built_in">expired</span>())  <span class="comment">// 此时条件成立</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 没过期</span></span><br><span class="line">    <span class="keyword">auto</span> p2 = pw.<span class="built_in">lock</span>();  <span class="comment">// 返回的p2是一个shared_ptr，现在p1是2个强引用，1个弱引用</span></span><br><span class="line">    <span class="keyword">if</span>(p2 != <span class="literal">nullptr</span>)  <span class="comment">// 条件成立</span></span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;所指对象存在&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 离开这个范围，p1的强引用计数恢复为1，弱引用保持为1</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;pw已经过期&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 走到这里，p1是1个强引用，1个弱引用</span></span><br><span class="line"></span><br><span class="line">weak_ptr&lt;<span class="keyword">int</span>&gt; pw2</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">auto</span> p2 = make_shared&lt;<span class="keyword">int</span>&gt;(<span class="number">42</span>);</span><br><span class="line">    pw2 = p2;</span><br><span class="line">&#125; <span class="comment">// 离开这里时p2已经失效了，沉思pw2这个weak_ptr就会过期了。</span></span><br><span class="line"><span class="keyword">if</span>(pw2.<span class="built_in">expired</span>())  <span class="comment">// 此时条件成立</span></span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;pw已经过期了&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="尺寸问题"><a href="#尺寸问题" class="headerlink" title="尺寸问题"></a>尺寸问题</h3><p>weak_ptr尺寸（就是大小或者sizeof）和shared_ptr对象尺寸一样大。</p>
+<p>weak_ptr的尺寸是裸指针的2倍。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt;<span class="built_in">p1</span>(<span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(<span class="number">100</span>));</span><br><span class="line">weak_ptr&lt;<span class="keyword">int</span>&gt;<span class="built_in">pw</span>(p1);</span><br><span class="line"><span class="keyword">int</span> ilen = <span class="built_in"><span class="keyword">sizeof</span></span>(p1);   <span class="comment">// 8</span></span><br><span class="line"><span class="keyword">int</span> ilen2 = <span class="built_in"><span class="keyword">sizeof</span></span>(pw);  <span class="comment">// 8</span></span><br></pre></td></tr></table></figure>
+
+<p>在Visual Studio的x86平台下，一个裸指针的sizeof值是4字节，weak_ptr和shared_ptr的尺寸都是8字节，包含了2个裸指针。</p>
+<p><img src="https://gitee.com/brookzhyy/picture-md/raw/master/PicGo/202202262208879.png" alt="image-20220226204334524"></p>
+<p>可以看到：</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1.第一个指针指向的是该智能指针所指向的对象</span><br><span class="line">2.第二个裸指针指向一个很大的数据结构(控制块)。这个控制块里面包含：</span><br><span class="line">  . 所指对象的引用计数</span><br><span class="line">  . 所指对象的弱引用计数</span><br><span class="line">  . 其他数据，如自定义的删除器的指针(如果指定了自定义的删除器)等</span><br><span class="line">这个控制块实际是由shared<span class="built_in">_</span>ptr创建出来的，而后，当使用shared<span class="built_in">_</span>ptr对象创建weak<span class="built_in">_</span>ptr对象时，weak<span class="built_in">_</span>ptr对象也指向了这个控制块。</span><br></pre></td></tr></table></figure>
+
+<h2 id="shared-ptr使用场景、陷阱、性能分析与使用建议"><a href="#shared-ptr使用场景、陷阱、性能分析与使用建议" class="headerlink" title="shared_ptr使用场景、陷阱、性能分析与使用建议"></a>shared_ptr使用场景、陷阱、性能分析与使用建议</h2><h3 id="std-shared-ptr使用场景"><a href="#std-shared-ptr使用场景" class="headerlink" title="std::shared_ptr使用场景"></a>std::shared_ptr使用场景</h3><p>直接看范例</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">shared_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">createO</span><span class="params">(<span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> make_shared&lt;<span class="keyword">int</span>&gt;(value);  <span class="comment">// 返回一个shared_ptr</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myfunc</span><span class="params">(<span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    shared_ptr&lt;<span class="keyword">int</span>&gt; ptmp = <span class="built_in">createO</span>(<span class="number">10</span>);</span><br><span class="line">    <span class="keyword">return</span> ;  <span class="comment">// ptmp 离开了作用域(ptmp是局部变量)，因此它指向的内存会被自动释放</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// main 函数</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">myfunc</span>(<span class="number">12</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码比较简单，现在改造下myfunc函数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt;<span class="built_in">myfunc</span>(<span class="keyword">int</span> value)</span><br><span class="line">&#123;</span><br><span class="line">    shared_ptr&lt;<span class="keyword">int</span>&gt;ptmp = <span class="built_in">createO</span>(<span class="number">10</span>);</span><br><span class="line">    <span class="keyword">return</span> ptmp;  <span class="comment">// 这个return会导致引用计数递增，所以ptmp指向的内存不会释放</span></span><br><span class="line">    <span class="comment">// 这相当于返回了一个ptmp的赋值，ptmp销毁计数-1，return ptmp;使计数+1</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// main函数</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">myfunc</span>(<span class="number">12</span>);  </span><br><span class="line">    <span class="comment">// 如果这里不用变量接收返回结果，则调用myfunc返回的shared_ptr会被销毁，该shared_ptr指向的对象也会被销毁</span></span><br><span class="line">	<span class="comment">// 但是，如果有变量接收，则返回的shared_ptr不会被销毁，所指的对象也不会被释放。</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="std-shared-ptr使用陷阱"><a href="#std-shared-ptr使用陷阱" class="headerlink" title="std::shared_ptr使用陷阱"></a>std::shared_ptr使用陷阱</h3><h4 id="1-慎用裸指针"><a href="#1-慎用裸指针" class="headerlink" title="1.慎用裸指针"></a>1.慎用裸指针</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">proc</span><span class="params">(shared_ptr&lt;<span class="keyword">int</span>&gt; ptr)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> ;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// main函数中</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> *p = <span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(<span class="number">100</span>);  <span class="comment">// 裸指针</span></span><br><span class="line">    <span class="built_in">proc</span>(shared_ptr&lt;<span class="keyword">int</span>&gt;(p));  <span class="comment">// 参数是一个临时shared_ptr,用一个裸指针显式构造的</span></span><br><span class="line">    *p = <span class="number">45</span>;   <span class="comment">// 不可以预测到的结果；因为p指向的内存已经被释放掉了(智能指针自动释放)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意：把一个普通裸指针绑到了一个shared_ptr上，那内存管理的责任就交给了这个shared_ptr，这时就不应该再使用裸指针(内置指针)访问shared_ptr指向的内存了。</p>
+<p>修改上述代码，解决问题</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">shared_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">myp</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">100</span>))</span></span>;</span><br><span class="line">    <span class="built_in">proc</span>(myp);</span><br><span class="line">    *myp = <span class="number">45</span>;  <span class="comment">// myp可是shared_ptr&lt;int&gt;类型，*代表解引用</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>另外，裸指针虽然可以初始化shared_ptr，不要用裸指针初始化多个shared_ptr。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *pi = <span class="keyword">new</span> <span class="keyword">int</span>;</span><br><span class="line"><span class="function">shared_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">p1</span><span class="params">(pi)</span></span>;</span><br><span class="line"><span class="function">shared_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">p2</span><span class="params">(pi)</span></span>; </span><br><span class="line"><span class="comment">/*  p1一个引用，p2一个引用，会导致p1、p2两个指针之间无关联关系(每个的强引用计数都为1)，</span></span><br><span class="line"><span class="comment">所以释放的时候pi所指向的内存释放了2此，这显然会出问题。 */</span></span><br></pre></td></tr></table></figure>
+
+<p>避免这种问题，即便用裸指针，直接传递new运算符而不是传递一个裸指针变量。  <code>shared_ptr&lt;int&gt;(new int );</code></p>
+<h4 id="2-慎用get返回的指针"><a href="#2-慎用get返回的指针" class="headerlink" title="2.慎用get返回的指针"></a>2.慎用get返回的指针</h4><p>get返回的指针不能delete，否则会产生异常。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">shared_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">myp</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">100</span>))</span></span>;  </span><br><span class="line"><span class="keyword">int</span> *p = myp.<span class="built_in">get</span>();  <span class="comment">// 返回myp中保存的指针</span></span><br><span class="line"><span class="keyword">delete</span> p;   <span class="comment">// 不可以这样，会报异常</span></span><br></pre></td></tr></table></figure>
+
+<p>也不可以将其他智能指针绑到get返回的指针上</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt;<span class="built_in">myp</span>(<span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(<span class="number">100</span>));</span><br><span class="line"><span class="keyword">int</span> *p = myp.<span class="built_in">get</span>();  <span class="comment">// 这个指针不能随便释放，否则myp就没有办法正常管理该指针了</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function">shared_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">myp2</span><span class="params">(p)</span></span>;  <span class="comment">// 这行代码万万不可，现在myp和myp2引用计数都为1，但是一旦</span></span><br><span class="line">     <span class="comment">// 跳出这个程序块，往下看，其实测试中发现，这句代码本身就会在程序指向结束时产生异常。</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结论：<strong>永远不要用get的大的指针来初始化另外一个智能指针或者给另外一个智能指针赋值</strong>。</p>
+<h4 id="3-用enable-shared-from-this-返回-this"><a href="#3-用enable-shared-from-this-返回-this" class="headerlink" title="3.用enable_shared_from_this 返回 this"></a>3.用enable_shared_from_this 返回 this</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CT</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    shared_ptr&lt;CT&gt;<span class="built_in">getself</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> shared_ptr&lt;CT&gt;(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">shared_ptr&lt;CT&gt; <span class="title">pct1</span><span class="params">(<span class="keyword">new</span> CT)</span></span>;</span><br><span class="line">    shared_ptr&lt;CT&gt; pct2 = pct1;  <span class="comment">// 这样没有问题</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">shared_ptr&lt;CT&gt; <span class="title">pct1</span><span class="params">(<span class="keyword">new</span> CT)</span></span>;</span><br><span class="line">    shared_ptr&lt;CT&gt; pct2 = pct1-&gt;<span class="built_in">getself</span>();  <span class="comment">// 问题出现</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面代码，使用沟通一个指针构造了两个智能指针 pct1和pct2，这两个指针指针之间没有任何关系。类似于之前说的，用裸指针初始化多个shared_ptr的感觉。也就是在释放时一个对象内存会释放两次。</p>
+<p>那么，要如何才能让pct1和pct2产生关联关系呢？换句话说，也就是安全地通过this指针创建一个shared_ptr呢？</p>
+<p>这里就得用到c++标准库里的类模板 <strong>enable_shared_from_this</strong> </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CT</span> :</span> <span class="keyword">public</span> std::enable_shared_from_this&lt;CT&gt;  <span class="comment">// c++标准库里面提供的类模板</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">shared_ptr&lt;CT&gt; <span class="title">getself</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">shared_from_this</span>();  </span><br><span class="line">        <span class="comment">// 这个是enable_shared_from_this类中方法，要通过此方法返回智能指针</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>enable_shared_from_this是一个类模板，它的类型模板参数就是继承它在子类的类名。该类模板中有一个智能指针weak_ptr，这个弱指针能够观测this，调用shared_from_this方法的时候，这个方法内部实际是调用了这个weak_ptr的lock方法，lock方法会让shared_ptr指针计数+1，同时返回这个shared_ptr。</p>
+<h4 id="4-避免循环引用"><a href="#4-避免循环引用" class="headerlink" title="4.避免循环引用"></a>4.避免循环引用</h4><p>循环引用会导致内存泄露。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CA</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CB</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CA</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    shared_ptr&lt;CB&gt; m_pbs;</span><br><span class="line">    ~<span class="built_in">CA</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;~CA()执行了&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CB</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    shared_ptr&lt;CA&gt; m_pas;</span><br><span class="line">    ~<span class="built_in">CB</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;~CB()执行了&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">shared_ptr&lt;CA&gt; <span class="title">pca</span><span class="params">(<span class="keyword">new</span> CA)</span></span>;</span><br><span class="line">    <span class="function">shared_ptr&lt;CB&gt; <span class="title">pcb</span><span class="params">(<span class="keyword">new</span> CB)</span></span>;</span><br><span class="line">    pca-&gt;m_pbs = pcb;</span><br><span class="line">    pcb-&gt;m_pas = pca;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行的结果就是CA和CB的析构函数都没有被执行，也就是pca和pcb这两个智能指针所指向的对象某没有被删除。</p>
+<p><code>pca-&gt;m_pbs = pcb;</code>  等价于指向CB对象的有两个强引用<br><code>pcb-&gt;m_pas = pca;</code>  等价于指向CA对象的有两个强引用</p>
+<p>可以把CA或者CB类里面的任何一个成员变量修改为weak_ptr即可。</p>
+<h3 id="性能说明"><a href="#性能说明" class="headerlink" title="性能说明"></a>性能说明</h3><h4 id="1-尺寸问题"><a href="#1-尺寸问题" class="headerlink" title="1.尺寸问题"></a>1.尺寸问题</h4><p>shared_ptr的尺寸是裸指针的2倍。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> *p;</span><br><span class="line"><span class="keyword">int</span> ilen = <span class="built_in"><span class="keyword">sizeof</span></span>(p);  <span class="comment">// 4字节</span></span><br><span class="line">shared_ptr&lt;string&gt; p1;</span><br><span class="line"><span class="keyword">int</span> ilensp = <span class="built_in"><span class="keyword">sizeof</span></span>(p1);  <span class="comment">// 8字节</span></span><br></pre></td></tr></table></figure>
+
+<p>这8字节的内容包括两个裸指针，shared_ptr和weak_ptr没啥不同。</p>
+<p><img src="https://gitee.com/brookzhyy/picture-md/raw/master/PicGo/202202262208527.png" alt="image-20220226214927846"></p>
+<p>这个控制块是跟着类的，它的大小可能十几字节甚至更多，如指定了删除器等，那么这里的字节数可能会稍微变大一些。</p>
+<p>这个控制块是<strong>由第一个指向某个指定对象的shared_ptr来创建的</strong>。</p>
+<p>weak_ptr对象也是通过shared_ptr创建出来的，因此weak_ptr对象也使用这个由shared_ptr创建的控制块。</p>
+<p>总结，控制块创建的时机：</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1.make<span class="built_in">_</span>shared：分配并初始化一个对象，返回指向此对象的shared<span class="built_in">_</span>ptr。所以make<span class="built_in">_</span>shared总是创建一个控制块。</span><br><span class="line">  shared<span class="built_in">_</span>ptr&lt;int&gt; spi = make<span class="built_in">_</span>shared&lt;int&gt;(100);</span><br><span class="line">2.使用裸指针来创建一个shared<span class="built_in">_</span>ptr对象时。</span><br><span class="line">  int *p = new int;</span><br><span class="line">  shared<span class="built_in">_</span>ptr&lt;int&gt;p1(p);</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-移动语义"><a href="#2-移动语义" class="headerlink" title="2.移动语义"></a>2.移动语义</h4><p>在shared_ptr智能指针里面，也存在移动语义的概念。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt;<span class="built_in">p1</span>(<span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(<span class="number">100</span>));  <span class="comment">// p1指向了该内存</span></span><br><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt;<span class="built_in">p2</span>(std::<span class="built_in">move</span>(p1));  <span class="comment">// 移动语义，移动构造函数p2，p1不再指向该对象而变成空</span></span><br><span class="line">  <span class="comment">// p2指向了该对象，引用计数保持为1</span></span><br><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt; p3;</span><br><span class="line">p3 = std::<span class="built_in">move</span>(p2);  <span class="comment">// 移动赋值，p2指向空，p3指向该对象，整个对象的有i你用计数依旧为1</span></span><br></pre></td></tr></table></figure>
+
+<p>复制会使shared_ptr的强引用计数递增，而移动并不会。</p>
+<h3 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h3><p>不但可以给shared_ptr提供删除器，还可以给它提供分配器来解决内存分配问题，内存分配器的信息也是保存在控制块中。</p>
+<p><code>shared_ptr&lt;int&gt;p(new int, myDeleter(), myMallocator&lt;int&gt;()); ... </code></p>
+<p>记住：不要违反常理，去new一个shared_ptr，如<code>new shared_ptr&lt;T&gt;</code>，不要去<code>memcpy shared_ptr&lt;T&gt;</code>等。</p>
+<p>优先使用make_shared构造智能指针，编译器内部会有一些针对内存分配的特殊处理，所以会使make_shared效率更高，如消除重复代码、改进安全性等。</p>
+<p><code>shared_ptr&lt;string&gt; ps1(new string(&quot;I Love China&quot;));</code>  这行代码会至少分配两次内存，一次是为string类型的实例分配内存(从而保存字符串”I Love China”)，第二次是在shared_ptr构造函数中给该shared_ptr控制块分配内存。</p>
+<p>针对make_shared，编译器只会分配一次内存，这个内存分配的足够大，既能保存字符串”I Love China”，又能同时保存控制块。</p>
+<p><code>auto ps2 = make_shared&lt;string&gt;(&quot;I Love China&quot;);</code></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/25/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/11.C++%E7%9F%A5%E8%AF%86.%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" rel="prev" title="C++知识 -- Day09">
+      <i class="fa fa-chevron-left"></i> C++知识 -- Day09
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#C-%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">C++知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88-%E7%BB%AD"><span class="nav-number">1.1.</span> <span class="nav-text">智能指针-续</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#weak-ptr%E7%AE%80%E4%BB%8B%E3%80%81weak-ptr%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E4%B8%8E%E5%B0%BA%E5%AF%B8%E9%97%AE%E9%A2%98"><span class="nav-number">1.2.</span> <span class="nav-text">weak_ptr简介、weak_ptr常用操作与尺寸问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#weak-ptr%E7%AE%80%E4%BB%8B"><span class="nav-number">1.2.1.</span> <span class="nav-text">weak_ptr简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#weak-ptr%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C"><span class="nav-number">1.2.2.</span> <span class="nav-text">weak_ptr常用操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-use-count%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">1.use_count成员函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-expired%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">2.expired成员函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-reset%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">3.reset成员函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-lock%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">4.lock成员函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%BA%E5%AF%B8%E9%97%AE%E9%A2%98"><span class="nav-number">1.2.3.</span> <span class="nav-text">尺寸问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shared-ptr%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF%E3%80%81%E9%99%B7%E9%98%B1%E3%80%81%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BD%BF%E7%94%A8%E5%BB%BA%E8%AE%AE"><span class="nav-number">1.3.</span> <span class="nav-text">shared_ptr使用场景、陷阱、性能分析与使用建议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#std-shared-ptr%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">1.3.1.</span> <span class="nav-text">std::shared_ptr使用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#std-shared-ptr%E4%BD%BF%E7%94%A8%E9%99%B7%E9%98%B1"><span class="nav-number">1.3.2.</span> <span class="nav-text">std::shared_ptr使用陷阱</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%85%8E%E7%94%A8%E8%A3%B8%E6%8C%87%E9%92%88"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">1.慎用裸指针</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%85%8E%E7%94%A8get%E8%BF%94%E5%9B%9E%E7%9A%84%E6%8C%87%E9%92%88"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">2.慎用get返回的指针</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E7%94%A8enable-shared-from-this-%E8%BF%94%E5%9B%9E-this"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">3.用enable_shared_from_this 返回 this</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E9%81%BF%E5%85%8D%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8"><span class="nav-number">1.3.2.4.</span> <span class="nav-text">4.避免循环引用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E8%AF%B4%E6%98%8E"><span class="nav-number">1.3.3.</span> <span class="nav-text">性能说明</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%B0%BA%E5%AF%B8%E9%97%AE%E9%A2%98"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">1.尺寸问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E7%A7%BB%E5%8A%A8%E8%AF%AD%E4%B9%89"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">2.移动语义</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A5%E5%85%85"><span class="nav-number">1.3.4.</span> <span class="nav-text">补充</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YuanyiZh"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">YuanyiZh</p>
+  <div class="site-description" itemprop="description">随风飘不如迎风上</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/" title="GitHub → https:&#x2F;&#x2F;github.com" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/Bulk_Zhang" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;Bulk_Zhang" rel="noopener" target="_blank"><i class="fa fa-fighter-jet fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.baidu.com/" title="BaiDu → https:&#x2F;&#x2F;www.baidu.com&#x2F;" rel="noopener" target="_blank"><i class="fa fa-bold fa-fw"></i>BaiDu</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YuanyiZh</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">150k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:16</span>
+</div>
+  <div class="powered-by"><a href="https://brkzh.github.io/" class="theme-link" rel="noopener" target="_blank">布鲁克的小溪流</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
