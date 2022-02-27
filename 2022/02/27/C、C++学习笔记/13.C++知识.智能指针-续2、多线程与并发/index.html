@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="C++知识智能指针-续2、多线程与并发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++知识 -- Day11">
+<meta property="og:url" content="http://example.com/2022/02/27/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/13.C++%E7%9F%A5%E8%AF%86.%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88-%E7%BB%AD2%E3%80%81%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91/index.html">
+<meta property="og:site_name" content="布鲁克的小溪流">
+<meta property="og:description" content="C++知识智能指针-续2、多线程与并发">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/brookzhyy/picture-md/raw/master/PicGo/202202272220990.png">
+<meta property="og:image" content="https://gitee.com/brookzhyy/picture-md/raw/master/PicGo/202202272220861.png">
+<meta property="article:published_time" content="2022-02-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-26T16:00:00.000Z">
+<meta property="article:author" content="YuanyiZh">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/brookzhyy/picture-md/raw/master/PicGo/202202272220990.png">
+
+<link rel="canonical" href="http://example.com/2022/02/27/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/13.C++%E7%9F%A5%E8%AF%86.%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88-%E7%BB%AD2%E3%80%81%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>C++知识 -- Day11 | 布鲁克的小溪流</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">布鲁克的小溪流</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">22</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/27/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/13.C++%E7%9F%A5%E8%AF%86.%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88-%E7%BB%AD2%E3%80%81%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="YuanyiZh">
+      <meta itemprop="description" content="随风飘不如迎风上">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="布鲁克的小溪流">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++知识 -- Day11
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-02-27 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-27T00:00:00+08:00">2022-02-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C%E3%80%81C/" itemprop="url" rel="index"><span itemprop="name">C、C++</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C%E3%80%81C/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>13k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>12 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="C-知识"><a href="#C-知识" class="headerlink" title="C++知识"></a>C++知识</h1><p>智能指针-续2、多线程与并发</p>
+<span id="more"></span>
+
+<h1 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h1><h2 id="智能指针-unique-ptr"><a href="#智能指针-unique-ptr" class="headerlink" title="智能指针-unique_ptr"></a>智能指针-unique_ptr</h2><p>unqiue_ptr智能指针是一种独占式智能指针，同一时刻，只能由一个unique_ptr指针指向这个对象(这块内存)。</p>
+<p>当unique_ptr被销毁的时候，它所指向的对象也会被销毁。</p>
+<p>unique_ptr的一般形式：<code>unique_ptr&lt;指向的对象类型&gt; 智能指针变量名;</code></p>
+<h3 id="1-常规初始化-unique-ptr和new配合"><a href="#1-常规初始化-unique-ptr和new配合" class="headerlink" title="1.常规初始化(unique_ptr和new配合)"></a>1.常规初始化(unique_ptr和new配合)</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">unique_ptr&lt;<span class="keyword">int</span>&gt;pi;</span><br><span class="line"><span class="keyword">if</span>(pi == <span class="literal">nullptr</span>)   <span class="comment">// 此时条件成立</span></span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;pi目前为空指针&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">unique_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">pi2</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">104</span>))</span></span>;  <span class="comment">// 定义该智能指针时，直接把它绑定到一个new返回的指针上</span></span><br><span class="line"> <span class="comment">// 此时，pi2就指向了一个值为104的int对象了。</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-make-unique函数"><a href="#2-make-unique函数" class="headerlink" title="2.make_unique函数"></a>2.make_unique函数</h3><p>C++11中并没有make_unqiue函数，但是c++14里提供了这个函数。</p>
+<p>与常规初始化比，也是要优先使用make_unique函数，这代表着更高的性能。但是，如果想要使用删除器，那么就不能使用make_unique函数，因为make_unique函数不支持指定删除器的语法。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">unique_ptr&lt;<span class="keyword">int</span>&gt; pi = std::make_unique&lt;<span class="keyword">int</span>&gt;(<span class="number">1000</span>);</span><br><span class="line"><span class="keyword">auto</span> pi2 = std::make_unique&lt;<span class="keyword">int</span>&gt;(<span class="number">200</span>);  <span class="comment">//  都可以</span></span><br><span class="line"><span class="comment">// 如果不用make_unique函数，就得这样写</span></span><br><span class="line"><span class="function">unique_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">pi3</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">100</span>))</span></span>;  </span><br></pre></td></tr></table></figure>
+
+<h2 id="unique-ptr常用操作"><a href="#unique-ptr常用操作" class="headerlink" title="unique_ptr常用操作"></a>unique_ptr常用操作</h2><h3 id="1-unique-ptr不支持的操作"><a href="#1-unique-ptr不支持的操作" class="headerlink" title="1.unique_ptr不支持的操作"></a>1.unique_ptr不支持的操作</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">unique_ptr&lt;string&gt; <span class="title">ps1</span><span class="params">(<span class="keyword">new</span> stringa(<span class="string">&quot;I Love China!&quot;</span>))</span></span>;  <span class="comment">// 这没问题</span></span><br><span class="line"><span class="function">unique_ptr&lt;string&gt; <span class="title">ps2</span><span class="params">(ps1)</span></span>;   <span class="comment">// 不允许，智能指针不支持复制动作</span></span><br><span class="line">unique_ptr&lt;string&gt; ps3 = ps1;  <span class="comment">// 不允许，智能指针不支持复制动作</span></span><br><span class="line">unique_ptr&lt;string&gt; ps4;</span><br><span class="line">ps4 = ps1;   <span class="comment">// 不允许，该智能指针不支持赋值动作</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>总结：</strong>unique_ptr不允许复制、赋值等动作，是一个只能移动不能复制的类型。</p>
+<h3 id="2-移动语义"><a href="#2-移动语义" class="headerlink" title="2.移动语义"></a>2.移动语义</h3><p>unique_ptr支持移动。可以通过std::move来将一个unique_ptr转移到其他的unique_ptr：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">unique_ptr&lt;string&gt; <span class="title">ps1</span><span class="params">(<span class="keyword">new</span> string(<span class="string">&quot;I Love China!&quot;</span>))</span></span>;</span><br><span class="line">unique_ptr&lt;string&gt; ps2 = std::<span class="built_in">move</span>(ps1);   <span class="comment">// 转移后，ps1为空了，ps2指向原来ps1所指的地址</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-release成员函数"><a href="#3-release成员函数" class="headerlink" title="3.release成员函数"></a>3.release成员函数</h3><p>放弃对指针的控制权(切断了智能指针和其所指向的对象之间的联系)，返回指针(裸指针)，将智能指针置空。返回的这个裸指针可以手动delete，也可以用来初始化另外一个智能指针，或者给另外一个智能指针赋值。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 将所有权从ps1转移(移动)给ps2</span></span><br><span class="line"><span class="function">unique_ptr&lt;string&gt; <span class="title">ps1</span><span class="params">(<span class="keyword">new</span> string(<span class="string">&quot;Hello World!&quot;</span>))</span></span>;</span><br><span class="line">unique_ptr&lt;<span class="function">string <span class="title">ps2</span><span class="params">(ps1.release())</span></span>;</span><br><span class="line"><span class="keyword">if</span>(ps1 == <span class="literal">nullptr</span>)</span><br><span class="line">&#123;</span><br><span class="line">	cout &lt;&lt;<span class="string">&quot;ps1被置空&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// ps2.release();  // 这会导致内存泄露，因为ps2智能指针放弃了对内存的管理，而程序员有没有接收并且释放，就导致泄露</span></span><br><span class="line"><span class="comment">// 改写成这样就可以了</span></span><br><span class="line">string* temp = ps2.<span class="built_in">release</span>();  <span class="comment">// 或者写成 auto temp = ps.release();</span></span><br><span class="line"><span class="keyword">delete</span> temp;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-reset成员函数"><a href="#4-reset成员函数" class="headerlink" title="4.reset成员函数"></a>4.reset成员函数</h3><p>当reset不带参数时，释放智能指针指向的对象，并将智能指针置空。当reset带参数时，释放智能指针原来所指向的内存，让该智能指针指向新内存。</p>
+<h4 id="reset不带参数版本的"><a href="#reset不带参数版本的" class="headerlink" title="reset不带参数版本的"></a>reset不带参数版本的</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">unique_ptr&lt;string&gt; <span class="title">prs</span><span class="params">(<span class="keyword">new</span> string(<span class="string">&quot;Hello World&quot;</span>))</span></span>;</span><br><span class="line">prs.<span class="built_in">reset</span>();   <span class="comment">// 释放prs指向的对象，并将prs置空</span></span><br><span class="line"><span class="keyword">if</span>(prs == <span class="literal">nullptr</span>)   <span class="comment">// 此时条件成立</span></span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;prs被置空&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="reset带参数版本的"><a href="#reset带参数版本的" class="headerlink" title="reset带参数版本的"></a>reset带参数版本的</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">unique_ptr&lt;string&gt; <span class="title">prs</span><span class="params">(<span class="keyword">new</span> string(<span class="string">&quot;Hello World&quot;</span>))</span></span>;</span><br><span class="line"><span class="function">unique_ptr&lt;string&gt; <span class="title">prs2</span><span class="params">(<span class="keyword">new</span> string(<span class="string">&quot;Hello World!&quot;</span>))</span></span>;</span><br><span class="line">prs2.<span class="built_in">reset</span>(prs.<span class="built_in">release</span>());    </span><br><span class="line"><span class="comment">// reset(...)带参数，释放prs2指向的对象内存，让prs2指向prs所指向的内存，同时prs被置空</span></span><br><span class="line">prs2.<span class="built_in">reset</span>(<span class="keyword">new</span> <span class="built_in">string</span>(<span class="string">&quot;Hello World!!!&quot;</span>)); </span><br><span class="line"><span class="comment">// reset参数可以是一个裸指针，reset释放原来的prs2指向的对象，让prs2指向新的new出来的string</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="5-nullptr"><a href="#5-nullptr" class="headerlink" title="5. =nullptr"></a>5. =nullptr</h3><p>释放智能指针所指向的对象，并将智能指针置空。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">unique_ptr&lt;string&gt; <span class="title">ps1</span><span class="params">(<span class="keyword">new</span> string(<span class="string">&quot;I Love You&quot;</span>))</span></span>;</span><br><span class="line">ps1 = <span class="literal">nullptr</span>;   <span class="comment">// 释放ps1指向的对象，并将ps1置空</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="6-指向一个数组"><a href="#6-指向一个数组" class="headerlink" title="6.指向一个数组"></a>6.指向一个数组</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::unique_ptr&lt;<span class="keyword">int</span>[]&gt; <span class="title">ptarray</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>])</span></span>;  </span><br><span class="line"><span class="comment">// 前面带上[]表示是数组，下面行才可以用[下标]来引用数组元素</span></span><br><span class="line">ptarray[<span class="number">0</span>] = <span class="number">24</span>;</span><br><span class="line">ptarray[<span class="number">1</span>] = <span class="number">24</span>;</span><br><span class="line">ptarray[<span class="number">9</span>] = <span class="number">24</span>;   <span class="comment">// 能访问的下标是 0 ~ 9，不要超过这个范围，否则可能导致程序异常</span></span><br></pre></td></tr></table></figure>
+
+<p>再看看，定义一个有析构函数的类</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">A</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;A()的构造函数被调用&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    ~<span class="built_in">A</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;~A()的析构函数被调用&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// main函数</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">std::unique_ptr&lt;A&gt; <span class="title">pta</span><span class="params">(<span class="keyword">new</span> A[<span class="number">10</span>])</span></span>;  <span class="comment">// 本行会报异常，</span></span><br><span class="line">     <span class="comment">// 一个类A的数组，而且类A有自己的析构函数，但是前面的＜＞中没有用Ａ[]，就报异常。</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 写自己的删除器</span></span><br><span class="line">    <span class="keyword">auto</span> mydel = [] (A* p)&#123;</span><br><span class="line">        <span class="keyword">delete</span>[] p;</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="function">std::unique_ptr&lt;A, <span class="title">decltype</span><span class="params">(mydel)</span>&gt; <span class="title">pta2</span><span class="params">(<span class="keyword">new</span> A[<span class="number">10</span>], mydel)</span></span>; </span><br><span class="line">    <span class="comment">// 带自己的删除器，就不会再报异常，decltype关键字用于推导类型，后面会讲</span></span><br><span class="line">    </span><br><span class="line">    <span class="function">std::unique_ptr&lt;A[]&gt; <span class="title">pta3</span><span class="params">(<span class="keyword">new</span> A[<span class="number">10</span>])</span></span>;  <span class="comment">// 这样写也没有任何问题</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>智能指针数组并不常用，因为<code>std::vector</code>,<code>std::string</code>作用起来比智能指针数组更好用。</p>
+<h3 id="7-get成员函数"><a href="#7-get成员函数" class="headerlink" title="7.get成员函数"></a>7.get成员函数</h3><p>返回智能指针中保存的对象(裸指针)。小心使用，若智能指针释放了所指向的对象，则返回的对象也就变得无效了。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">unique_ptr&lt;string&gt; <span class="title">ps1</span><span class="params">(<span class="keyword">new</span> string(<span class="string">&quot;Hello World&quot;</span>))</span></span>;</span><br><span class="line">string* ps = ps1.<span class="built_in">get</span>();</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span>* cps = ps-&gt;<span class="built_in">c_str</span>();</span><br><span class="line">*ps = <span class="string">&quot;You is My.&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span>* cps2 = ps-&gt;<span class="built_in">c_str</span>();  <span class="comment">// 调试观察发现，cps和cps2是不同的内存地址</span></span><br><span class="line">  <span class="comment">// 这是string内部的工作机制决定的</span></span><br></pre></td></tr></table></figure>
+
+<p>注意，<strong>不要delete这个get到的指针</strong>，否则会产生不可预料的后果。</p>
+<h3 id="8-解引用"><a href="#8-解引用" class="headerlink" title="8. *解引用"></a>8. *解引用</h3><p>*p：解引用，获得p指向的对象。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">unique_ptr&lt;string&gt; <span class="title">ps1</span><span class="params">(<span class="keyword">new</span> string(<span class="string">&quot;Hello World&quot;</span>))</span></span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span>* cp1 = ps1-&gt;<span class="built_in">c_str</span>();</span><br><span class="line">*ps1 = <span class="string">&quot;This is You&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span>* cp2 = ps1-&gt;<span class="built_in">c_str</span>();  <span class="comment">// 调试发现，cp1和cp2是不同的内存地址</span></span><br><span class="line">  <span class="comment">// 这是string内部工作机制决定的</span></span><br><span class="line"><span class="function">std::unique_ptr&lt;<span class="keyword">int</span>[]&gt; <span class="title">ptarr</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>])</span></span>;  <span class="comment">// 对于定义的内容是数组，是没有*解引用运算符的</span></span><br><span class="line"><span class="comment">// *ptarr;    // 这是错误的，不允许的</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="9-swap成员函数"><a href="#9-swap成员函数" class="headerlink" title="9.swap成员函数"></a>9.swap成员函数</h3><p>用于交换两个智能指针所指向的对象。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">unique_ptr&lt;string&gt; <span class="title">ps1</span><span class="params">(<span class="keyword">new</span> string(<span class="string">&quot;Hello Love You&quot;</span>))</span></span>;</span><br><span class="line"><span class="function">unique_ptr&lt;string&gt; <span class="title">ps2</span><span class="params">(<span class="keyword">new</span> string(<span class="string">&quot;Hello Only You&quot;</span>))</span></span>;</span><br><span class="line">std::<span class="built_in">swap</span>(ps1, ps2);   <span class="comment">// 使用std全局函数也可以</span></span><br><span class="line">ps1.<span class="built_in">swap</span>(ps2);   <span class="comment">// 使用成员函数也可以</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="10-智能指针名字作为判断条件"><a href="#10-智能指针名字作为判断条件" class="headerlink" title="10.智能指针名字作为判断条件"></a>10.智能指针名字作为判断条件</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">unique_ptr&lt;string&gt; <span class="title">ps1</span><span class="params">(<span class="keyword">new</span> string(<span class="string">&quot;You YOU&quot;</span>))</span></span>;</span><br><span class="line"><span class="comment">// 若ps1指向一个对象，则为true</span></span><br><span class="line"><span class="keyword">if</span>(ps1)    <span class="comment">// 此时，条件成立</span></span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;ps1指向了一个对象&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="11-转换成shared-ptr类型"><a href="#11-转换成shared-ptr类型" class="headerlink" title="11.转换成shared_ptr类型"></a>11.转换成shared_ptr类型</h3><p>如果unique_ptr为右值，就可以将其赋给shared_ptr。模板shared_ptr包含一个显式构造函数，可以用于将右值unique_ptr转换为shared_ptr，shared_ptr将接管原来归unique_ptr所拥有的对象。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">myfunc</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> unique_ptr&lt;string&gt;(<span class="keyword">new</span> <span class="built_in">string</span>(<span class="string">&quot;Hello World&quot;</span>));  </span><br><span class="line">    <span class="comment">// 这就是一个右值(短暂的临时对象，都是右值)</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// main主函数</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    shared_ptr&lt;string&gt;pss1 = <span class="built_in">myfunc</span>();  <span class="comment">// 可以，引用计数为1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一个shared_ptr创建的时候，它的内部指针会指向一个控制块，那么把unique_ptr转成shared_ptr的时候，系统也会为这个shared_ptr创建控制块。因为unique_ptr并不使用控制块，只有shared_ptr才使用控制块。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">unique_ptr&lt;string&gt;<span class="built_in">ps</span>(<span class="keyword">new</span> <span class="built_in">string</span>(<span class="string">&quot;HELLOOOO&quot;</span>));</span><br><span class="line">shared_ptr&lt;string&gt;pss = std::<span class="built_in">move</span>(ps);  <span class="comment">// 执行后ps为空，pss是shared_ptr并且引用计数为1</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="返回unique-ptr"><a href="#返回unique-ptr" class="headerlink" title="返回unique_ptr"></a>返回unique_ptr</h2><p>可以从函数返回一个unique_ptr。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">unique_ptr&lt;string&gt; <span class="title">getunique</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">unique_ptr&lt;string&gt; <span class="title">pr</span><span class="params">(<span class="keyword">new</span> string(<span class="string">&quot;HELLO YOU&quot;</span>))</span></span>;</span><br><span class="line">    <span class="keyword">return</span> pr;  <span class="comment">// 从函数返回一个局部unique_ptr对象是可以的</span></span><br><span class="line">    <span class="comment">// 返回局部对象pr会导致系统生成临时unique_ptr对象，并调用unique_ptr的移动构造函数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当然，函数也可以写成下面的形式</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">unique_ptr&lt;string&gt; <span class="title">getunique</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> unique_ptr&lt;string&gt;(<span class="keyword">new</span> <span class="built_in">string</span>(<span class="string">&quot;HELLO YOU&quot;</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// main主函数</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    unique_ptr&lt;string&gt; ps;</span><br><span class="line">	ps = <span class="built_in">getunique</span>();   <span class="comment">// 可以用ps接收getunique返回结果</span></span><br><span class="line">	  <span class="comment">// 则临时对象直接构造在ps里，如果不接收，则临时对象会被释放，同时释放掉所指向的对象的内存</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="删除器"><a href="#删除器" class="headerlink" title="删除器"></a>删除器</h2><h3 id="1-指定删除器"><a href="#1-指定删除器" class="headerlink" title="1.指定删除器"></a>1.指定删除器</h3><p>默认情况下，当析构一个unique_ptr时，如果这个智能指针非空(指向一个对象)，则在unique_ptr内部，会用delete来删除unique_ptr所指向的对象(裸指针)。</p>
+<p>所以这里的delete可以看成是unique_ptr智能指针的默认删除器。</p>
+<p>程序员可以自己提供一个删除器，提供位置就在unique_ptr的尖括号&lt;&gt;里面，并在所指向的对象类型之后，格式如下：</p>
+<p><code>unique_ptr&lt;指向的对象类型,删除器&gt; 智能指针变量名;</code></p>
+<p>删除器，其实就是一个可调用对象。</p>
+<p>unique_ptr的删除器相对复杂点，先要在类型模板参数中传递进去类型名，然后在参数中再给具体的删除器名。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 删除器</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mydeleter</span><span class="params">(string* pdel)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">delete</span> pdel;</span><br><span class="line">    pdel = <span class="literal">nullptr</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// main主函数</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">typedef</span> <span class="title">void</span><span class="params">(*fp)</span><span class="params">(string*)</span></span>;  <span class="comment">// 定义一个函数指针类型，类型名为fp</span></span><br><span class="line">    <span class="function">unique_ptr&lt;string, fp&gt; <span class="title">ps1</span><span class="params">(<span class="keyword">new</span> string(<span class="string">&quot;HELLOLLO&quot;</span>), mydeleter)</span></span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>定义函数指针类型，除了typedef外，还可以使用using</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">using</span> fp2 = <span class="built_in"><span class="keyword">void</span></span>(*)(string*);</span><br><span class="line">    <span class="function">unique_ptr&lt;string, fp2&gt; <span class="title">ps1</span><span class="params">(<span class="keyword">new</span> string(<span class="string">&quot;HELLOLLO&quot;</span>), mydeleter)</span></span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>另外，还可以使用decltype类型推导</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">typedef</span> <span class="title">decltype</span><span class="params">(mydeleter)</span>* fp3</span>;  <span class="comment">// 注意这里多了一个*，因为decltype是返回函数类型，</span></span><br><span class="line">     <span class="comment">// 加*表示函数指针类型，现在fp3应该是void*(string*)</span></span><br><span class="line">    <span class="function">unique_ptr&lt;string, fp3&gt; <span class="title">ps3</span><span class="params">(<span class="keyword">new</span> string(<span class="string">&quot;HELLOLLO&quot;</span>), mydeleter)</span></span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>继续修改</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">unique_ptr&lt;string, <span class="title">decltype</span><span class="params">(mydeleter)</span>*&gt; <span class="title">ps4</span><span class="params">(<span class="keyword">new</span> string(<span class="string">&quot;HELLOLLO&quot;</span>), mydeleter)</span></span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>继续，使用lambda表达式的写法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> mydella = [] (string* pdel) &#123;</span><br><span class="line">        <span class="keyword">delete</span> pdel;</span><br><span class="line">        pdel = <span class="literal">nullptr</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="function">std::unique_ptr&lt;string, <span class="title">decltype</span><span class="params">(mydella)</span>&gt; <span class="title">ps5</span><span class="params">(<span class="keyword">new</span> string(<span class="string">&quot;HELLOLLO&quot;</span>), mydella)</span></span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-指定删除器额外说明"><a href="#2-指定删除器额外说明" class="headerlink" title="2.指定删除器额外说明"></a>2.指定删除器额外说明</h3><p>在shared_ptr说过，就算是两个shared_ptr指定的删除器不相同，只要它们所指向的对象相同，那么这两个shared_ptr也属于同一个类型。</p>
+<p>但是，unique_ptr不同，指定unique_ptr中的删除器会影响unique_ptr的类型，因为在unique_ptr中，删除器类型是智能指针类型的一部分(在&lt;&gt;里)。</p>
+<p>shared_ptr删除器不同，但指向类型（所指向对象的类型）相同的shared_ptr，可以放到同一个容器中。</p>
+<p>但是，unique_ptr，如果删除器不同，就等于整个unique_ptr类型不同，无法放到同一个容器中去。</p>
+<h2 id="尺寸问题"><a href="#尺寸问题" class="headerlink" title="尺寸问题"></a>尺寸问题</h2><p>通常情况下，unique_ptr的尺寸和裸指针一样。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">string *p;</span><br><span class="line"><span class="keyword">int</span> ilen = <span class="built_in"><span class="keyword">sizeof</span></span>(p);   <span class="comment">// 4字节</span></span><br><span class="line"><span class="function">unique_ptr&lt;string&gt; <span class="title">ps1</span><span class="params">(<span class="keyword">new</span> string(<span class="string">&quot;I Love YOU&quot;</span>))</span></span>;   </span><br><span class="line"><span class="keyword">int</span> ilen2 = <span class="built_in"><span class="keyword">sizeof</span></span>(ps1);   <span class="comment">// 4字节</span></span><br></pre></td></tr></table></figure>
+
+<p>unique_ptr基本和裸指针一样：足够小，操作速度也够快。但是，如果增加了删除器，那unique_ptr的尺寸可能不变化，也有可能变化。</p>
+<h3 id="1-如果删除器是lambda表达式这种匿名对象，unique-ptr的尺寸就没有变化"><a href="#1-如果删除器是lambda表达式这种匿名对象，unique-ptr的尺寸就没有变化" class="headerlink" title="1.如果删除器是lambda表达式这种匿名对象，unique_ptr的尺寸就没有变化"></a>1.如果删除器是lambda表达式这种匿名对象，unique_ptr的尺寸就没有变化</h3><h3 id="2-如果删除器是一个函数，unique-ptr的尺寸就会发生变化"><a href="#2-如果删除器是一个函数，unique-ptr的尺寸就会发生变化" class="headerlink" title="2.如果删除器是一个函数，unique_ptr的尺寸就会发生变化"></a>2.如果删除器是一个函数，unique_ptr的尺寸就会发生变化</h3><h2 id="智能指针总结"><a href="#智能指针总结" class="headerlink" title="智能指针总结"></a>智能指针总结</h2><p>智能指针主要的目的就是帮助程序员释放内存，以防止忘记释放内存时造成内存泄露。</p>
+<p>auto_ptr是c++98时代的智能指针，具有unique_ptr的部分特性。实际上，在c++11新标准之前，也只有auto_ptr这么一个智能指针。</p>
+<p>auto_ptr有些使用上的限制(缺陷)，如不能再容器中保存auto_ptr，也不能从函数中返回auto_ptr。在c++11新标准中，auto_ptr已经被unique_ptr取代了。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::auto_ptr&lt;std::string&gt; <span class="title">ps</span><span class="params">(<span class="keyword">new</span> std::string(<span class="string">&quot;HELLO&quot;</span>))</span></span>;</span><br><span class="line">std::auto_ptr&lt;std::string&gt; ps2 = ps;  <span class="comment">// ps2指向字符串，ps变为空，这可以防止ps和ps2析构一个string两次</span></span><br></pre></td></tr></table></figure>
+
+<p>现在ps已经变为空了，如果此时使用ps，则系统运行到使用ps的代码行是就会崩溃。这也是auto_ptr用法上的陷阱。</p>
+<p><strong>智能指针的选择</strong>：</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1.如果程序中要使用多个指向同一个对象的指针，应该选shared<span class="built_in">_</span>ptr</span><br><span class="line">2.如果程序中不需要多个指向同一个对象的指针，则可以使用unique<span class="built_in">_</span>ptr</span><br><span class="line">总之，在选择时候，优先考虑使用unique<span class="built_in">_</span>ptr，如果unique<span class="built_in">_</span>ptr不能满足需求，再考虑使用shared<span class="built_in">_</span>ptr</span><br></pre></td></tr></table></figure>
+
+<h1 id="并发与多线程"><a href="#并发与多线程" class="headerlink" title="并发与多线程"></a>并发与多线程</h1><p>并发，表示两个或者更多任务(独立的活动)同时发生(进行)。</p>
+<p>进程：一个可执行程序运行起来，这就叫创建了一个进程。</p>
+<p>线程：每个进程都有一个主线程，这个主线程是唯一的，也就是一个进程中只能有一个主线程。</p>
+<p><strong>C++11新标准线程库</strong>，#include <thread></p>
+<h2 id="线程运行范例"><a href="#线程运行范例" class="headerlink" title="线程运行范例"></a>线程运行范例</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myprint</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;我的子线程要开始了...&quot;</span>&lt;&lt;endl;</span><br><span class="line">    <span class="comment">// ... 线程代码</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;我的子线程要结束了...&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;这是我的主线程&quot;</span>&lt;&lt;endl;</span><br><span class="line">    <span class="function">std::thread <span class="title">mytobj</span><span class="params">(myprint)</span></span>;  <span class="comment">// 这就是创建线程的代码，显然这是一个线程对象，然后给的参数是一个函数名</span></span><br><span class="line">     <span class="comment">// 代表这个线程是从myprint这个函数(初始函数)开始运行</span></span><br><span class="line">    mytobj.<span class="built_in">join</span>();  <span class="comment">// join会卡在这里，等待mytobj线程指向完毕，程序流程才会继续往下走</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;我的主线程要结束了&quot;</span>&lt;&lt;endl;  <span class="comment">// 这行由主线程执行，主线程从main返回，则整个进程执行完毕</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>std::thread mytobj(myprint);</code> 创建一个线程，也可以称为创建一个子线程</p>
+<p>thread是c++标准库里面的类，这个类就是用来创建线程的。 这行代码一执行，新线程就创建出来了，并且立即开始指向新线程的初始函数myprint。</p>
+<p><code>mytobj.join();</code> 加入/汇合。也即 阻塞，主线程等待子线程执行完毕，执行流程最终汇合到一起(子线程执行完毕，执行流程回归主线程并执行完mian主函数)。</p>
+<p>主线程执行完了，那就代表整个进程执行完了。所以，一个书写良好的程序，应该是：<strong>主线程等待子线程执行完毕后，自己才能最终退出</strong>。</p>
+<p><strong><code>detach</code></strong>  :刚才说过，主线程有义务等待所有子线程执行完毕后，自己才能最终退出。这是传统的多线程程序的写法。</p>
+<p>现在也有主线程、子线程分离的写法。就是主线程不和子线程汇合了，主线程执行主线程的，子线程执行子线程的，主线程不必等待子线程指向结束，可以先执行结束，这并不影响子线程的执行。</p>
+<p>当主线程指向完毕，子线程还没有执行完毕，那么子线程就会转入后台继续执行了(被系统接管了)。</p>
+<p><strong>另外：</strong>针对一个线程，一旦调用了detach，就不可以再调用join了，否则会导致程序运行异常。</p>
+<p>detach会导致程序员失去对线程的控制，不推荐使用。如果子线程要做的事情和主线程没有直接关系，那么还是可以使用detach的。</p>
+<p><strong><code>joinable</code></strong> :判断是否可以成功使用join或者detach</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">thread <span class="title">mytobj</span><span class="params">(myprint)</span></span>;</span><br><span class="line"><span class="keyword">if</span>(mytobj.<span class="built_in">joinable</span>())  <span class="comment">// 此时条件成立</span></span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;线程mytobj可以join或者detach&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果调用了join或者detach，那么joinable会变成false。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">thread <span class="title">mytobj</span><span class="params">(myprint)</span></span>;</span><br><span class="line">mytobj.<span class="built_in">join</span>(); </span><br><span class="line"><span class="comment">// 或者 mytobj.detach();  注意，一个线程对象，只能被join或者detach一次</span></span><br><span class="line"><span class="keyword">if</span>(mytobj.<span class="built_in">joinable</span>())  <span class="comment">// 此时条件不成立</span></span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;线程mytobj可以join或者detach&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="comment">// 走这条分支</span></span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;线程mytobj不可以join或者detach&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>joinable有一定的用处——判断针对某个线程是否调用过join或者detach</p>
+<h2 id="创建线程的其他写法"><a href="#创建线程的其他写法" class="headerlink" title="创建线程的其他写法"></a>创建线程的其他写法</h2><p>thread类接受的是一个可调用对象作为参数来创建线程。</p>
+<h3 id="1-用类来创建线程"><a href="#1-用类来创建线程" class="headerlink" title="1.用类来创建线程"></a>1.用类来创建线程</h3><p>创建一个类<strong>TA</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TA</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">()</span>  <span class="comment">// 不带参数</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        cout &lt;&lt;<span class="string">&quot;TA::operator()开始执行了&quot;</span>&lt;&lt;endl;</span><br><span class="line">        <span class="comment">// ... 其他代码</span></span><br><span class="line">        cout &lt;&lt;<span class="string">&quot;TA::operator()执行结束了&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    TA ta;</span><br><span class="line">    <span class="function">thread <span class="title">mytobj3</span><span class="params">(ta)</span></span>;  <span class="comment">//ta，可调用对象：这里不可以是临时对象thread mytobj3(TA());否则编译无法通过</span></span><br><span class="line">    mytobj3.<span class="built_in">join</span>();  </span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;主线程退出&quot;</span>&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>另外，类与detach结合使用可能会带来意外问题</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TA</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span>&amp; m_i;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">TA</span>(<span class="keyword">int</span>&amp; i): <span class="built_in">m_i</span>(i) &#123; cout &lt;&lt;<span class="string">&quot;TA(int&amp;)构造函数执行了&quot;</span>&lt;&lt;endl;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">()</span>  <span class="comment">// 不带参数</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        cout &lt;&lt;<span class="string">&quot;TA::operator()开始执行了&quot;</span>&lt;&lt;endl;</span><br><span class="line">        cout &lt;&lt;<span class="string">&quot;TA对象的m_i=&quot;</span>&lt;&lt;m_i&lt;&lt;endl;    <span class="comment">// 隐患，m_i可能没有有效值</span></span><br><span class="line">        cout &lt;&lt;<span class="string">&quot;TA对象的m_i=&quot;</span>&lt;&lt;m_i&lt;&lt;endl;    <span class="comment">// 隐患，m_i可能没有有效值</span></span><br><span class="line">        cout &lt;&lt;<span class="string">&quot;TA对象的m_i=&quot;</span>&lt;&lt;m_i&lt;&lt;endl;    <span class="comment">// 隐患，m_i可能没有有效值</span></span><br><span class="line">        cout &lt;&lt;<span class="string">&quot;TA::operator()执行结束了&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> myi = <span class="number">6</span>;</span><br><span class="line">    <span class="function">TA <span class="title">ta</span><span class="params">(myi)</span></span>;</span><br><span class="line">    <span class="function">thread <span class="title">mytobj3</span><span class="params">(ta)</span></span>;  <span class="comment">// 创建并执行子线程</span></span><br><span class="line">    mytobj3.<span class="built_in">detach</span>();  </span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;主线程退出&quot;</span>&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>分析上面代码：</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">注意，TA类中，成员变量m<span class="built_in">_</span>i是一个引用，绑定的是main主函数中的myi变量。</span><br><span class="line">所以，当主线程执行结束，很可能子线程再后台继续执行，但是主线程结束时，</span><br><span class="line">myi会被销毁，子线程仍旧使用已经销毁的myi，产生不可预料的后果(也可能么没啥异常,但是一个定时炸弹)。</span><br></pre></td></tr></table></figure>
+
+<p>当然<strong>还有一个疑问</strong>？一旦在main主函数中detach，那么主线程执行结束后，main主函数中的ta对象会被销毁，那么，子线程中看起来正在使用这个ta对象，如果被主线程销毁，是否会出现问题呢？其实<strong>ta对象是会被复制到子线程中的。</strong>所以，虽然执行完主线程后，ta对象被销毁，但是复制到子线程中的对象还在，所以没问题。但是，这个对象中如果存在有引用或者指针，那就另当别论了，那就可能产生问题。</p>
+<p>改造上面的TA了，增加析构函数、拷贝构造函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line">        </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TA</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span>&amp; m_i;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">TA</span>(<span class="keyword">int</span>&amp; i) : <span class="built_in">m_i</span>(i) &#123; cout &lt;&lt; <span class="string">&quot;TA(int&amp;)构造函数执行了:m_i=&quot;</span> &lt;&lt; m_i &lt;&lt; <span class="string">&quot;  this=&quot;</span> &lt;&lt; <span class="keyword">this</span> &lt;&lt; endl; &#125;</span><br><span class="line">    ~<span class="built_in">TA</span>() &#123; cout &lt;&lt; <span class="string">&quot;TA()析构函数执行了:m_i=&quot;</span> &lt;&lt; m_i &lt;&lt; <span class="string">&quot;  this=&quot;</span> &lt;&lt; <span class="keyword">this</span> &lt;&lt; endl; &#125;</span><br><span class="line">    <span class="built_in">TA</span> (<span class="keyword">const</span> TA&amp; tmp) : <span class="built_in">m_i</span>(tmp.m_i)</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;TA(const TA&amp; tmp)拷贝构造函数执行了&quot;</span> &lt;&lt; endl </span><br><span class="line">             &lt;&lt; <span class="string">&quot;m_i=&quot;</span> &lt;&lt; m_i &lt;&lt; <span class="string">&quot;  this=&quot;</span> &lt;&lt; <span class="keyword">this</span> &lt;&lt; endl </span><br><span class="line">             &lt;&lt; <span class="string">&quot;tmp.m_i=&quot;</span> &lt;&lt; tmp.m_i &lt;&lt; <span class="string">&quot;  tmp.this=&quot;</span> &lt;&lt; &amp;tmp &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">()</span>  <span class="comment">// 不带参数</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;TA::operator()开始执行了&quot;</span> &lt;&lt; endl;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;TA对象的m_i=&quot;</span> &lt;&lt; m_i &lt;&lt; <span class="string">&quot;  this=&quot;</span> &lt;&lt; <span class="keyword">this</span> &lt;&lt; endl;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;TA::operator()执行结束了&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> myi = <span class="number">6</span>;</span><br><span class="line">    <span class="function">TA <span class="title">ta</span><span class="params">(myi)</span></span>;</span><br><span class="line">    <span class="function">thread <span class="title">mytobj3</span><span class="params">(ta)</span></span>;  <span class="comment">// 创建并执行子线程</span></span><br><span class="line">    mytobj3.<span class="built_in">join</span>();</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;主线程退出&quot;</span> &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/brookzhyy/picture-md/raw/master/PicGo/202202272220990.png" alt="image-20220227220539291"></p>
+<p>从结果看，先释放复制到线程里面取得ta对象(注意this值)，因为main中的代码一直在join行等待子线程执行完毕，子线程执行完，当然会先把子线程的对象释放(析构)，然后最后一行释放的才是主线程的ta对象。</p>
+<p>还有一个值得注意的问题就是TA类中的m_i成员变量。为了保证detach能够正常地运行(保证不存在任何隐患)，所以TA类中的m_i成员变量不应该是一个引用类型，而应该是一个正常的int类型。</p>
+<h3 id="2-用lambda表达式来创建线程"><a href="#2-用lambda表达式来创建线程" class="headerlink" title="2.用lambda表达式来创建线程"></a>2.用lambda表达式来创建线程</h3><p>修改main主函数中的代码</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;main主函数里面的主线程id=&quot;</span> &lt;&lt; std::this_thread::<span class="built_in">get_id</span>() &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">auto</span> mylamthread = [] &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;我的线程开始了&quot;</span> &lt;&lt; endl;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;lambda表达式里的线程id=&quot;</span> &lt;&lt; std::this_thread::<span class="built_in">get_id</span>() &lt;&lt; endl;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;我的线程执行结束了&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="function">thread <span class="title">mytobj4</span><span class="params">(mylamthread)</span></span>;</span><br><span class="line">    mytobj4.<span class="built_in">join</span>();</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;main主函数执行结束&quot;</span> &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/brookzhyy/picture-md/raw/master/PicGo/202202272220861.png" alt="image-20220227221432276"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/26/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/12.C++%E7%9F%A5%E8%AF%86.%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88-%E7%BB%AD/" rel="prev" title="C++知识 -- Day10">
+      <i class="fa fa-chevron-left"></i> C++知识 -- Day10
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#C-%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">C++知识</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88"><span class="nav-number">2.</span> <span class="nav-text">智能指针</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88-unique-ptr"><span class="nav-number">2.1.</span> <span class="nav-text">智能指针-unique_ptr</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%B8%B8%E8%A7%84%E5%88%9D%E5%A7%8B%E5%8C%96-unique-ptr%E5%92%8Cnew%E9%85%8D%E5%90%88"><span class="nav-number">2.1.1.</span> <span class="nav-text">1.常规初始化(unique_ptr和new配合)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-make-unique%E5%87%BD%E6%95%B0"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.make_unique函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unique-ptr%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C"><span class="nav-number">2.2.</span> <span class="nav-text">unique_ptr常用操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-unique-ptr%E4%B8%8D%E6%94%AF%E6%8C%81%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="nav-number">2.2.1.</span> <span class="nav-text">1.unique_ptr不支持的操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%A7%BB%E5%8A%A8%E8%AF%AD%E4%B9%89"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.移动语义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-release%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.3.</span> <span class="nav-text">3.release成员函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-reset%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.4.</span> <span class="nav-text">4.reset成员函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#reset%E4%B8%8D%E5%B8%A6%E5%8F%82%E6%95%B0%E7%89%88%E6%9C%AC%E7%9A%84"><span class="nav-number">2.2.4.1.</span> <span class="nav-text">reset不带参数版本的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#reset%E5%B8%A6%E5%8F%82%E6%95%B0%E7%89%88%E6%9C%AC%E7%9A%84"><span class="nav-number">2.2.4.2.</span> <span class="nav-text">reset带参数版本的</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-nullptr"><span class="nav-number">2.2.5.</span> <span class="nav-text">5. &#x3D;nullptr</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E6%8C%87%E5%90%91%E4%B8%80%E4%B8%AA%E6%95%B0%E7%BB%84"><span class="nav-number">2.2.6.</span> <span class="nav-text">6.指向一个数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-get%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.7.</span> <span class="nav-text">7.get成员函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E8%A7%A3%E5%BC%95%E7%94%A8"><span class="nav-number">2.2.8.</span> <span class="nav-text">8. *解引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-swap%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.9.</span> <span class="nav-text">9.swap成员函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88%E5%90%8D%E5%AD%97%E4%BD%9C%E4%B8%BA%E5%88%A4%E6%96%AD%E6%9D%A1%E4%BB%B6"><span class="nav-number">2.2.10.</span> <span class="nav-text">10.智能指针名字作为判断条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-%E8%BD%AC%E6%8D%A2%E6%88%90shared-ptr%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.2.11.</span> <span class="nav-text">11.转换成shared_ptr类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%94%E5%9B%9Eunique-ptr"><span class="nav-number">2.3.</span> <span class="nav-text">返回unique_ptr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E5%99%A8"><span class="nav-number">2.4.</span> <span class="nav-text">删除器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%8C%87%E5%AE%9A%E5%88%A0%E9%99%A4%E5%99%A8"><span class="nav-number">2.4.1.</span> <span class="nav-text">1.指定删除器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%8C%87%E5%AE%9A%E5%88%A0%E9%99%A4%E5%99%A8%E9%A2%9D%E5%A4%96%E8%AF%B4%E6%98%8E"><span class="nav-number">2.4.2.</span> <span class="nav-text">2.指定删除器额外说明</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%BA%E5%AF%B8%E9%97%AE%E9%A2%98"><span class="nav-number">2.5.</span> <span class="nav-text">尺寸问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%A6%82%E6%9E%9C%E5%88%A0%E9%99%A4%E5%99%A8%E6%98%AFlambda%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%BF%99%E7%A7%8D%E5%8C%BF%E5%90%8D%E5%AF%B9%E8%B1%A1%EF%BC%8Cunique-ptr%E7%9A%84%E5%B0%BA%E5%AF%B8%E5%B0%B1%E6%B2%A1%E6%9C%89%E5%8F%98%E5%8C%96"><span class="nav-number">2.5.1.</span> <span class="nav-text">1.如果删除器是lambda表达式这种匿名对象，unique_ptr的尺寸就没有变化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%A6%82%E6%9E%9C%E5%88%A0%E9%99%A4%E5%99%A8%E6%98%AF%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0%EF%BC%8Cunique-ptr%E7%9A%84%E5%B0%BA%E5%AF%B8%E5%B0%B1%E4%BC%9A%E5%8F%91%E7%94%9F%E5%8F%98%E5%8C%96"><span class="nav-number">2.5.2.</span> <span class="nav-text">2.如果删除器是一个函数，unique_ptr的尺寸就会发生变化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88%E6%80%BB%E7%BB%93"><span class="nav-number">2.6.</span> <span class="nav-text">智能指针总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">并发与多线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E8%BF%90%E8%A1%8C%E8%8C%83%E4%BE%8B"><span class="nav-number">3.1.</span> <span class="nav-text">线程运行范例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%85%B6%E4%BB%96%E5%86%99%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text">创建线程的其他写法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%94%A8%E7%B1%BB%E6%9D%A5%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B"><span class="nav-number">3.2.1.</span> <span class="nav-text">1.用类来创建线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%94%A8lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%9D%A5%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B"><span class="nav-number">3.2.2.</span> <span class="nav-text">2.用lambda表达式来创建线程</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YuanyiZh"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">YuanyiZh</p>
+  <div class="site-description" itemprop="description">随风飘不如迎风上</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/" title="GitHub → https:&#x2F;&#x2F;github.com" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/Bulk_Zhang" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;Bulk_Zhang" rel="noopener" target="_blank"><i class="fa fa-fighter-jet fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.baidu.com/" title="BaiDu → https:&#x2F;&#x2F;www.baidu.com&#x2F;" rel="noopener" target="_blank"><i class="fa fa-bold fa-fw"></i>BaiDu</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YuanyiZh</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">163k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:28</span>
+</div>
+  <div class="powered-by"><a href="https://brkzh.github.io/" class="theme-link" rel="noopener" target="_blank">布鲁克的小溪流</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
