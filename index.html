@@ -118,12 +118,12 @@
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">23</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">9</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -176,7 +176,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/28/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/14.C++%E7%9F%A5%E8%AF%86.%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91-%E7%BB%AD/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/06/C%E3%80%81C++/C/Win%E7%B3%BB%E7%BB%9Ftcp%E6%A8%A1%E6%8B%9F%E7%B2%98%E5%8C%85Demo%20-%20C%E8%AF%AD%E8%A8%80/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -190,7 +190,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/28/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/14.C++%E7%9F%A5%E8%AF%86.%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91-%E7%BB%AD/" class="post-title-link" itemprop="url">C++知识 -- Day12</a>
+            <a href="/2022/01/06/C%E3%80%81C++/C/Win%E7%B3%BB%E7%BB%9Ftcp%E6%A8%A1%E6%8B%9F%E7%B2%98%E5%8C%85Demo%20-%20C%E8%AF%AD%E8%A8%80/" class="post-title-link" itemprop="url">Win系统tcp模拟粘包Demo - C语言</a>
         </h2>
 
         <div class="post-meta">
@@ -200,7 +200,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-02-28 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-28T00:00:00+08:00">2022-02-28</time>
+              <time title="创建时间：2022-01-06 00:00:00" itemprop="dateCreated datePublished" datetime="2022-01-06T00:00:00+08:00">2022-01-06</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -212,11 +212,7 @@
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C%E3%80%81C/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                  <a href="/categories/C%E3%80%81C/C%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index"><span itemprop="name">C语言</span></a>
                 </span>
             </span>
 
@@ -226,14 +222,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>26k</span>
+              <span>2.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>24 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -245,10 +241,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="C-知识"><a href="#C-知识" class="headerlink" title="C++知识"></a>C++知识</h1><p>线程传参、detach注意事项、多线程、锁</p>
+          <p><strong>粘包</strong>：客户端发送的多个数据包被当做一个数据包接收。</p>
+<p>也叫做 <strong>数据的无边界性</strong></p>
+<p>函数 <code>recv()/read()</code> 是不知道数据包的开始、结束标志的（实际上也没有标志），这两个函数只把数据包当作连续的数据流来处理的。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/02/28/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/14.C++%E7%9F%A5%E8%AF%86.%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91-%E7%BB%AD/#more" rel="contents">
+              <a class="btn" href="/2022/01/06/C%E3%80%81C++/C/Win%E7%B3%BB%E7%BB%9Ftcp%E6%A8%A1%E6%8B%9F%E7%B2%98%E5%8C%85Demo%20-%20C%E8%AF%AD%E8%A8%80/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -272,7 +270,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/27/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/13.C++%E7%9F%A5%E8%AF%86.%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88-%E7%BB%AD2%E3%80%81%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/22/C%E3%80%81C++/C/C%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E8%AF%BB%E5%86%99/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -286,7 +284,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/27/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/13.C++%E7%9F%A5%E8%AF%86.%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88-%E7%BB%AD2%E3%80%81%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91/" class="post-title-link" itemprop="url">C++知识 -- Day11</a>
+            <a href="/2021/12/22/C%E3%80%81C++/C/C%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E8%AF%BB%E5%86%99/" class="post-title-link" itemprop="url">C语言实现配置文件的读写</a>
         </h2>
 
         <div class="post-meta">
@@ -296,8 +294,15 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-02-27 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-27T00:00:00+08:00">2022-02-27</time>
+              <time title="创建时间：2021-12-22 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-22T00:00:00+08:00">2021-12-22</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-12-24 00:00:00" itemprop="dateModified" datetime="2021-12-24T00:00:00+08:00">2021-12-24</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -308,11 +313,7 @@
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C%E3%80%81C/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                  <a href="/categories/C%E3%80%81C/C%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index"><span itemprop="name">C语言</span></a>
                 </span>
             </span>
 
@@ -322,14 +323,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>13k</span>
+              <span>9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>12 分钟</span>
+              <span>8 分钟</span>
             </span>
 
         </div>
@@ -341,10 +342,46 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="C-知识"><a href="#C-知识" class="headerlink" title="C++知识"></a>C++知识</h1><p>智能指针-续2、多线程与并发</p>
+          <h1 id="C语言实现配置文件的读写"><a href="#C语言实现配置文件的读写" class="headerlink" title="C语言实现配置文件的读写"></a>C语言实现配置文件的读写</h1><table>
+<thead>
+<tr>
+<th>文件名</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>global.h</td>
+<td>定义一些宏</td>
+</tr>
+<tr>
+<td>Func.h</td>
+<td>公用函数头文件</td>
+</tr>
+<tr>
+<td>Func.c</td>
+<td>公用函数的实现</td>
+</tr>
+<tr>
+<td>config.h</td>
+<td>读写配置文件的函数声明</td>
+</tr>
+<tr>
+<td>config.c</td>
+<td>读写配置文件的函数实现</td>
+</tr>
+<tr>
+<td>config_main.c</td>
+<td>主函数入口</td>
+</tr>
+<tr>
+<td>config.conf</td>
+<td>配置文件</td>
+</tr>
+</tbody></table>
+<p>直接上代码，一些解释以注释的形式写在了相应的文件里面。请点击 <code>阅读全文</code>来查看所有内容吧。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/02/27/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/13.C++%E7%9F%A5%E8%AF%86.%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88-%E7%BB%AD2%E3%80%81%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91/#more" rel="contents">
+              <a class="btn" href="/2021/12/22/C%E3%80%81C++/C/C%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E8%AF%BB%E5%86%99/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -368,7 +405,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/26/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/12.C++%E7%9F%A5%E8%AF%86.%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88-%E7%BB%AD/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/17/C%E3%80%81C++/C/Linux%E7%B3%BB%E7%BB%9F%E8%8E%B7%E5%8F%96%E7%BD%91%E5%8D%A1Mac%E3%80%81IP%E5%9C%B0%E5%9D%80/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -382,7 +419,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/26/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/12.C++%E7%9F%A5%E8%AF%86.%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88-%E7%BB%AD/" class="post-title-link" itemprop="url">C++知识 -- Day10</a>
+            <a href="/2021/12/17/C%E3%80%81C++/C/Linux%E7%B3%BB%E7%BB%9F%E8%8E%B7%E5%8F%96%E7%BD%91%E5%8D%A1Mac%E3%80%81IP%E5%9C%B0%E5%9D%80/" class="post-title-link" itemprop="url">Linux系统获取网卡Mac、IP地址</a>
         </h2>
 
         <div class="post-meta">
@@ -392,8 +429,15 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-02-26 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-26T00:00:00+08:00">2022-02-26</time>
+              <time title="创建时间：2021-12-17 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-17T00:00:00+08:00">2021-12-17</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-12-20 00:00:00" itemprop="dateModified" datetime="2021-12-20T00:00:00+08:00">2021-12-20</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -404,11 +448,11 @@
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C%E3%80%81C/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                  <a href="/categories/C%E3%80%81C/C%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index"><span itemprop="name">C语言</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
                 </span>
             </span>
 
@@ -418,14 +462,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>7.7k</span>
+              <span>1.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>7 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -437,10 +481,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="C-知识"><a href="#C-知识" class="headerlink" title="C++知识"></a>C++知识</h1><h2 id="智能指针-续"><a href="#智能指针-续" class="headerlink" title="智能指针-续"></a>智能指针-续</h2><p>weak_ptr等</p>
+          <h1 id="获取指定名字的网卡的Mac地址和IP地址"><a href="#获取指定名字的网卡的Mac地址和IP地址" class="headerlink" title="获取指定名字的网卡的Mac地址和IP地址"></a>获取指定名字的网卡的Mac地址和IP地址</h1><p>文件名：<code>get_mac_ip.c</code></p>
+<p>运行环境：<code>Linux</code>、<code>Arm</code></p>
+<p>编译指令：<code>gcc -o get_mac_ip get_mac_ip.c</code></p>
+<p>运行程序：<code>./get_mac_ip eth0</code>   其中<code>eth0</code>是网卡的名字，不同网卡名字一般是不一样的。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/02/26/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/12.C++%E7%9F%A5%E8%AF%86.%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88-%E7%BB%AD/#more" rel="contents">
+              <a class="btn" href="/2021/12/17/C%E3%80%81C++/C/Linux%E7%B3%BB%E7%BB%9F%E8%8E%B7%E5%8F%96%E7%BD%91%E5%8D%A1Mac%E3%80%81IP%E5%9C%B0%E5%9D%80/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -464,7 +511,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/25/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/11.C++%E7%9F%A5%E8%AF%86.%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/16/%E8%84%9A%E6%9C%AC/MacOS%E7%B3%BB%E7%BB%9F%E5%A4%9A%E5%BC%80%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%88%B7%E7%AB%AF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -478,7 +525,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/25/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/11.C++%E7%9F%A5%E8%AF%86.%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" class="post-title-link" itemprop="url">C++知识 -- Day09</a>
+            <a href="/2021/12/16/%E8%84%9A%E6%9C%AC/MacOS%E7%B3%BB%E7%BB%9F%E5%A4%9A%E5%BC%80%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%88%B7%E7%AB%AF/" class="post-title-link" itemprop="url">MacOS系统多开微信客户端</a>
         </h2>
 
         <div class="post-meta">
@@ -488,7 +535,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-02-25 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-25T00:00:00+08:00">2022-02-25</time>
+              <time title="创建时间：2021-12-16 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-16T00:00:00+08:00">2021-12-16</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -496,15 +543,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C%E3%80%81C/" itemprop="url" rel="index"><span itemprop="name">C、C++</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C%E3%80%81C/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                  <a href="/categories/%E8%84%9A%E6%9C%AC/" itemprop="url" rel="index"><span itemprop="name">脚本</span></a>
                 </span>
             </span>
 
@@ -514,14 +553,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>12k</span>
+              <span>1.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>11 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -533,10 +572,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="C-知识"><a href="#C-知识" class="headerlink" title="C++知识"></a>C++知识</h1><h2 id="智能指针-shared-ptr"><a href="#智能指针-shared-ptr" class="headerlink" title="智能指针 shared_ptr"></a>智能指针 shared_ptr</h2>
+          <h1 id="MacOS系统微信客户端多开方法"><a href="#MacOS系统微信客户端多开方法" class="headerlink" title="MacOS系统微信客户端多开方法"></a>MacOS系统微信客户端多开方法</h1><p>MacOS系统微信的默认安装位置是在</p>
+<p><code>/Applications/WeChat.app/Contents/MacOS/WeChat</code></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/02/25/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/11.C++%E7%9F%A5%E8%AF%86.%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/#more" rel="contents">
+              <a class="btn" href="/2021/12/16/%E8%84%9A%E6%9C%AC/MacOS%E7%B3%BB%E7%BB%9F%E5%A4%9A%E5%BC%80%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%88%B7%E7%AB%AF/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -560,7 +600,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/24/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10.C++%E7%9F%A5%E8%AF%86.%E6%A8%A1%E6%9D%BF%E4%B8%8E%E6%B3%9B%E5%9E%8B%E7%BC%96%E7%A8%8B-%E7%BB%AD/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/16/%E8%84%9A%E6%9C%AC/Windows%E7%94%B5%E8%84%91%E5%A4%9A%E5%BC%80%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%88%B7%E7%AB%AF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -574,7 +614,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/24/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10.C++%E7%9F%A5%E8%AF%86.%E6%A8%A1%E6%9D%BF%E4%B8%8E%E6%B3%9B%E5%9E%8B%E7%BC%96%E7%A8%8B-%E7%BB%AD/" class="post-title-link" itemprop="url">C++知识 -- Day08</a>
+            <a href="/2021/12/16/%E8%84%9A%E6%9C%AC/Windows%E7%94%B5%E8%84%91%E5%A4%9A%E5%BC%80%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%88%B7%E7%AB%AF/" class="post-title-link" itemprop="url">Windows电脑多开微信客户端</a>
         </h2>
 
         <div class="post-meta">
@@ -584,7 +624,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-02-24 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-24T00:00:00+08:00">2022-02-24</time>
+              <time title="创建时间：2021-12-16 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-16T00:00:00+08:00">2021-12-16</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -592,15 +632,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C%E3%80%81C/" itemprop="url" rel="index"><span itemprop="name">C、C++</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C%E3%80%81C/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                  <a href="/categories/%E8%84%9A%E6%9C%AC/" itemprop="url" rel="index"><span itemprop="name">脚本</span></a>
                 </span>
             </span>
 
@@ -610,14 +642,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>19k</span>
+              <span>1.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>17 分钟</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -629,10 +661,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="C-知识"><a href="#C-知识" class="headerlink" title="C++知识"></a>C++知识</h1><h2 id="模板与泛型编程"><a href="#模板与泛型编程" class="headerlink" title="模板与泛型编程"></a>模板与泛型编程</h2><p>using、模板全特化、偏特化、可变参模板等。</p>
+          <h1 id="Windows系统微信客户端多开方法"><a href="#Windows系统微信客户端多开方法" class="headerlink" title="Windows系统微信客户端多开方法"></a>Windows系统微信客户端多开方法</h1><p>把下面代码复制到文本文档，并把格式改为<code>bat</code>即可。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/02/24/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10.C++%E7%9F%A5%E8%AF%86.%E6%A8%A1%E6%9D%BF%E4%B8%8E%E6%B3%9B%E5%9E%8B%E7%BC%96%E7%A8%8B-%E7%BB%AD/#more" rel="contents">
+              <a class="btn" href="/2021/12/16/%E8%84%9A%E6%9C%AC/Windows%E7%94%B5%E8%84%91%E5%A4%9A%E5%BC%80%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%88%B7%E7%AB%AF/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -656,7 +688,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/23/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/09.C++%E7%9F%A5%E8%AF%86.%E6%A8%A1%E6%9D%BF%E4%B8%8E%E6%B3%9B%E5%9E%8B%E7%BC%96%E7%A8%8B-%E7%B1%BB%E6%A8%A1%E6%9D%BF/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/14/%E8%84%9A%E6%9C%AC/Windows%E7%B3%BB%E7%BB%9Fcmd%E7%BB%88%E7%AB%AF%E8%AE%BE%E7%BD%AEutf-8%E5%AD%97%E7%AC%A6%E9%9B%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -670,7 +702,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/23/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/09.C++%E7%9F%A5%E8%AF%86.%E6%A8%A1%E6%9D%BF%E4%B8%8E%E6%B3%9B%E5%9E%8B%E7%BC%96%E7%A8%8B-%E7%B1%BB%E6%A8%A1%E6%9D%BF/" class="post-title-link" itemprop="url">C++知识 -- Day07</a>
+            <a href="/2021/12/14/%E8%84%9A%E6%9C%AC/Windows%E7%B3%BB%E7%BB%9Fcmd%E7%BB%88%E7%AB%AF%E8%AE%BE%E7%BD%AEutf-8%E5%AD%97%E7%AC%A6%E9%9B%86/" class="post-title-link" itemprop="url">Windows系统cmd终端设置utf-8字符集</a>
         </h2>
 
         <div class="post-meta">
@@ -680,7 +712,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-02-23 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-23T00:00:00+08:00">2022-02-23</time>
+              <time title="创建时间：2021-12-14 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-14T00:00:00+08:00">2021-12-14</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -688,15 +720,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C%E3%80%81C/" itemprop="url" rel="index"><span itemprop="name">C、C++</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C%E3%80%81C/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                  <a href="/categories/%E8%84%9A%E6%9C%AC/" itemprop="url" rel="index"><span itemprop="name">脚本</span></a>
                 </span>
             </span>
 
@@ -706,14 +730,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>11k</span>
+              <span>594</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>10 分钟</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -725,10 +749,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="C-知识"><a href="#C-知识" class="headerlink" title="C++知识"></a>C++知识</h1><h2 id="类模板"><a href="#类模板" class="headerlink" title="类模板"></a>类模板</h2>
+          <h1 id="Windows系统cmd终端使用utf-8字符集"><a href="#Windows系统cmd终端使用utf-8字符集" class="headerlink" title="Windows系统cmd终端使用utf-8字符集"></a>Windows系统cmd终端使用utf-8字符集</h1><p>有时候cmd终端显示中文为乱码，需要使用utf-8才能正常显示。</p>
+<p>临时方法：在cmd终端中输入 <code>chcp 65001</code>  即可把当前终端的字符集改为<code>utf-8</code>字符集。</p>
+<p>永久方法：点击 <code>阅读全文</code> 查看吧。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/02/23/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/09.C++%E7%9F%A5%E8%AF%86.%E6%A8%A1%E6%9D%BF%E4%B8%8E%E6%B3%9B%E5%9E%8B%E7%BC%96%E7%A8%8B-%E7%B1%BB%E6%A8%A1%E6%9D%BF/#more" rel="contents">
+              <a class="btn" href="/2021/12/14/%E8%84%9A%E6%9C%AC/Windows%E7%B3%BB%E7%BB%9Fcmd%E7%BB%88%E7%AB%AF%E8%AE%BE%E7%BD%AEutf-8%E5%AD%97%E7%AC%A6%E9%9B%86/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -752,7 +778,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/22/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/08.C++%E7%9F%A5%E8%AF%86.%E7%B1%BB-%E7%BB%AD4%E3%80%81%E6%B3%9B%E5%9E%8B%E7%BC%96%E7%A8%8B-%E6%A8%A1%E6%9D%BF%E5%87%BD%E6%95%B0%E5%88%9D%E8%AE%A4%E8%AF%86/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/14/%E8%84%9A%E6%9C%AC/Windows%E7%B3%BB%E7%BB%9F%E9%BC%A0%E6%A0%87%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95%E6%B7%BB%E5%8A%A0%E6%89%93%E5%BC%80cmd%E7%BB%88%E7%AB%AF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -766,7 +792,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/22/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/08.C++%E7%9F%A5%E8%AF%86.%E7%B1%BB-%E7%BB%AD4%E3%80%81%E6%B3%9B%E5%9E%8B%E7%BC%96%E7%A8%8B-%E6%A8%A1%E6%9D%BF%E5%87%BD%E6%95%B0%E5%88%9D%E8%AE%A4%E8%AF%86/" class="post-title-link" itemprop="url">C++知识 -- Day06</a>
+            <a href="/2021/12/14/%E8%84%9A%E6%9C%AC/Windows%E7%B3%BB%E7%BB%9F%E9%BC%A0%E6%A0%87%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95%E6%B7%BB%E5%8A%A0%E6%89%93%E5%BC%80cmd%E7%BB%88%E7%AB%AF/" class="post-title-link" itemprop="url">Windows系统鼠标右键菜单添加打开cmd终端</a>
         </h2>
 
         <div class="post-meta">
@@ -776,7 +802,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-02-22 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-22T00:00:00+08:00">2022-02-22</time>
+              <time title="创建时间：2021-12-14 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-14T00:00:00+08:00">2021-12-14</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -784,15 +810,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C%E3%80%81C/" itemprop="url" rel="index"><span itemprop="name">C、C++</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C%E3%80%81C/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                  <a href="/categories/%E8%84%9A%E6%9C%AC/" itemprop="url" rel="index"><span itemprop="name">脚本</span></a>
                 </span>
             </span>
 
@@ -802,14 +820,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>19k</span>
+              <span>1.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>17 分钟</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -821,10 +839,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="C-知识"><a href="#C-知识" class="headerlink" title="C++知识"></a>C++知识</h1><p>类知识续-4、泛型编程-模板函数初认识。</p>
+          <h1 id="Windows系统鼠标右键菜单添加打开cmd终端"><a href="#Windows系统鼠标右键菜单添加打开cmd终端" class="headerlink" title="Windows系统鼠标右键菜单添加打开cmd终端"></a>Windows系统鼠标右键菜单添加打开cmd终端</h1><p>有时候，当要在某个文件夹下打开cmd终端时，如果没有右键菜单快捷方式，就得打开cmd后，使用cd方式进入 当前目录，很麻烦。</p>
+<p>以下的脚本，可以帮你解决这个问题。 请点击 <code>阅读全文</code> 开查看吧。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/02/22/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/08.C++%E7%9F%A5%E8%AF%86.%E7%B1%BB-%E7%BB%AD4%E3%80%81%E6%B3%9B%E5%9E%8B%E7%BC%96%E7%A8%8B-%E6%A8%A1%E6%9D%BF%E5%87%BD%E6%95%B0%E5%88%9D%E8%AE%A4%E8%AF%86/#more" rel="contents">
+              <a class="btn" href="/2021/12/14/%E8%84%9A%E6%9C%AC/Windows%E7%B3%BB%E7%BB%9F%E9%BC%A0%E6%A0%87%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95%E6%B7%BB%E5%8A%A0%E6%89%93%E5%BC%80cmd%E7%BB%88%E7%AB%AF/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -848,7 +867,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/21/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07.C++%E7%9F%A5%E8%AF%86.%E7%B1%BB-%E7%BB%AD3/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/13/C%E3%80%81C++/C/%E7%9B%91%E5%90%AC%E9%94%AE%E7%9B%98%E8%BE%93%E5%85%A5-C%E8%AF%AD%E8%A8%80/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -862,7 +881,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/21/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07.C++%E7%9F%A5%E8%AF%86.%E7%B1%BB-%E7%BB%AD3/" class="post-title-link" itemprop="url">C++知识 -- Day05</a>
+            <a href="/2021/12/13/C%E3%80%81C++/C/%E7%9B%91%E5%90%AC%E9%94%AE%E7%9B%98%E8%BE%93%E5%85%A5-C%E8%AF%AD%E8%A8%80/" class="post-title-link" itemprop="url">监听键盘输入 C语言</a>
         </h2>
 
         <div class="post-meta">
@@ -872,8 +891,15 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-02-21 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-21T00:00:00+08:00">2022-02-21</time>
+              <time title="创建时间：2021-12-13 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-13T00:00:00+08:00">2021-12-13</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-12-15 00:00:00" itemprop="dateModified" datetime="2021-12-15T00:00:00+08:00">2021-12-15</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -884,11 +910,11 @@
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C%E3%80%81C/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                  <a href="/categories/C%E3%80%81C/C%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index"><span itemprop="name">C语言</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
                 </span>
             </span>
 
@@ -898,14 +924,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>16k</span>
+              <span>1.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>14 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -917,10 +943,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="C-知识"><a href="#C-知识" class="headerlink" title="C++知识"></a>C++知识</h1><h2 id="类知识继续-3"><a href="#类知识继续-3" class="headerlink" title="类知识继续-3"></a>类知识继续-3</h2>
+          <h1 id="监听键盘的输入"><a href="#监听键盘的输入" class="headerlink" title="监听键盘的输入"></a>监听键盘的输入</h1><p>程序编译： <code>gcc -o keyboard_listen keyboard_listen.c</code></p>
+<p>程序运行： <code>./keyboard_listen</code> </p>
+<p>说明：程序运行，当用户敲击键盘时输入字符，敲击回车时，程序会打印出按下的按键。其中<code>q</code>是退出程序。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/02/21/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07.C++%E7%9F%A5%E8%AF%86.%E7%B1%BB-%E7%BB%AD3/#more" rel="contents">
+              <a class="btn" href="/2021/12/13/C%E3%80%81C++/C/%E7%9B%91%E5%90%AC%E9%94%AE%E7%9B%98%E8%BE%93%E5%85%A5-C%E8%AF%AD%E8%A8%80/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -944,7 +972,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/20/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/06.C++%E7%9F%A5%E8%AF%86.%E7%B1%BB-%E7%BB%AD2/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/12/C%E3%80%81C++/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -958,7 +986,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/20/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/06.C++%E7%9F%A5%E8%AF%86.%E7%B1%BB-%E7%BB%AD2/" class="post-title-link" itemprop="url">C++知识 -- Day04</a>
+            <a href="/2021/12/12/C%E3%80%81C++/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
         </h2>
 
         <div class="post-meta">
@@ -968,7 +996,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-02-20 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-20T00:00:00+08:00">2022-02-20</time>
+              <time title="创建时间：2021-12-12 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-12T00:00:00+08:00">2021-12-12</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -978,14 +1006,6 @@
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/C%E3%80%81C/" itemprop="url" rel="index"><span itemprop="name">C、C++</span></a>
                 </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C%E3%80%81C/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-                </span>
             </span>
 
           <br>
@@ -994,14 +1014,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>11k</span>
+              <span>304</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>10 分钟</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -1013,106 +1033,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="C-知识"><a href="#C-知识" class="headerlink" title="C++知识"></a>C++知识</h1><h2 id="类知识继续-2"><a href="#类知识继续-2" class="headerlink" title="类知识继续-2"></a>类知识继续-2</h2>
+          <p>C、C++语言的打印<code>Hello World!</code>代码实现。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/02/20/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/06.C++%E7%9F%A5%E8%AF%86.%E7%B1%BB-%E7%BB%AD2/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/18/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/05.C++%E7%9F%A5%E8%AF%86.%E7%B1%BB-%E7%BB%AD.%E8%B6%85%E7%BA%A7%E9%87%8D%E8%A6%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="YuanyiZh">
-      <meta itemprop="description" content="随风飘不如迎风上">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="布鲁克的小溪流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/18/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/05.C++%E7%9F%A5%E8%AF%86.%E7%B1%BB-%E7%BB%AD.%E8%B6%85%E7%BA%A7%E9%87%8D%E8%A6%81/" class="post-title-link" itemprop="url">C++知识 -- Day03</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-02-18 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-18T00:00:00+08:00">2022-02-18</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C%E3%80%81C/" itemprop="url" rel="index"><span itemprop="name">C、C++</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C%E3%80%81C/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>7.6k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>7 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="C-知识"><a href="#C-知识" class="headerlink" title="C++知识"></a>C++知识</h1><h2 id="类知识继续"><a href="#类知识继续" class="headerlink" title="类知识继续"></a>类知识继续</h2><p><strong>这节超级重要，必须要掌握</strong></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/02/18/C%E3%80%81C++%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/05.C++%E7%9F%A5%E8%AF%86.%E7%B1%BB-%E7%BB%AD.%E8%B6%85%E7%BA%A7%E9%87%8D%E8%A6%81/#more" rel="contents">
+              <a class="btn" href="/2021/12/12/C%E3%80%81C++/hello-world/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1134,9 +1058,6 @@
 
 
   
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
 
 
 
@@ -1203,14 +1124,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>
@@ -1264,12 +1185,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">189k</span>
+    <span title="站点总字数">21k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:52</span>
+    <span title="站点阅读时长">19 分钟</span>
 </div>
   <div class="powered-by"><a href="https://brkzh.github.io/" class="theme-link" rel="noopener" target="_blank">布鲁克的小溪流</a>
   </div>
