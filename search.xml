@@ -13,7 +13,7 @@
       
       <categories>
           
-          <category> C++ </category>
+          <category> CPlusPlus </category>
           
       </categories>
       
@@ -32,9 +32,9 @@
       
       <categories>
           
-          <category> C++ </category>
-          
           <category> Linux </category>
+          
+          <category> CPlusPlus </category>
           
       </categories>
       
@@ -72,9 +72,9 @@
       
       <categories>
           
-          <category> C++ </category>
+          <category> CPlusPlus </category>
           
-          <category> C++11 </category>
+          <category> CPlusPlus11 </category>
           
       </categories>
       
@@ -93,9 +93,9 @@
       
       <categories>
           
-          <category> C++ </category>
+          <category> CPlusPlus </category>
           
-          <category> C++11 </category>
+          <category> CPlusPlus11 </category>
           
       </categories>
       
@@ -114,9 +114,9 @@
       
       <categories>
           
-          <category> C++ </category>
+          <category> CPlusPlus </category>
           
-          <category> C++11 </category>
+          <category> CPlusPlus11 </category>
           
       </categories>
       
@@ -135,9 +135,9 @@
       
       <categories>
           
-          <category> C++ </category>
+          <category> CPlusPlus </category>
           
-          <category> C++11 </category>
+          <category> CPlusPlus11 </category>
           
       </categories>
       
@@ -156,9 +156,9 @@
       
       <categories>
           
-          <category> C++ </category>
+          <category> CPlusPlus </category>
           
-          <category> C++11 </category>
+          <category> CPlusPlus11 </category>
           
       </categories>
       
@@ -177,9 +177,9 @@
       
       <categories>
           
-          <category> C++ </category>
+          <category> CPlusPlus </category>
           
-          <category> C++11 </category>
+          <category> CPlusPlus11 </category>
           
       </categories>
       
@@ -198,9 +198,9 @@
       
       <categories>
           
-          <category> C++ </category>
+          <category> CPlusPlus </category>
           
-          <category> C++11 </category>
+          <category> CPlusPlus11 </category>
           
       </categories>
       
@@ -219,9 +219,9 @@
       
       <categories>
           
-          <category> C++ </category>
+          <category> CPlusPlus </category>
           
-          <category> C++11 </category>
+          <category> CPlusPlus11 </category>
           
       </categories>
       
@@ -240,9 +240,9 @@
       
       <categories>
           
-          <category> C++ </category>
+          <category> CPlusPlus </category>
           
-          <category> C++11 </category>
+          <category> CPlusPlus11 </category>
           
       </categories>
       
@@ -261,9 +261,9 @@
       
       <categories>
           
-          <category> C++ </category>
+          <category> CPlusPlus </category>
           
-          <category> C++11 </category>
+          <category> CPlusPlus11 </category>
           
       </categories>
       
@@ -282,9 +282,9 @@
       
       <categories>
           
-          <category> C++ </category>
+          <category> CPlusPlus </category>
           
-          <category> C++11 </category>
+          <category> CPlusPlus11 </category>
           
       </categories>
       
@@ -303,9 +303,9 @@
       
       <categories>
           
-          <category> C++ </category>
+          <category> CPlusPlus </category>
           
-          <category> C++11 </category>
+          <category> CPlusPlus11 </category>
           
       </categories>
       
@@ -324,9 +324,9 @@
       
       <categories>
           
-          <category> C++ </category>
+          <category> CPlusPlus </category>
           
-          <category> C++11 </category>
+          <category> CPlusPlus11 </category>
           
       </categories>
       
@@ -345,9 +345,9 @@
       
       <categories>
           
-          <category> C++ </category>
+          <category> CPlusPlus </category>
           
-          <category> C++11 </category>
+          <category> CPlusPlus11 </category>
           
       </categories>
       
@@ -366,9 +366,9 @@
       
       <categories>
           
-          <category> C++ </category>
+          <category> CPlusPlus </category>
           
-          <category> C++11 </category>
+          <category> CPlusPlus11 </category>
           
       </categories>
       
@@ -387,9 +387,9 @@
       
       <categories>
           
-          <category> C++ </category>
+          <category> CPlusPlus </category>
           
-          <category> C++11 </category>
+          <category> CPlusPlus11 </category>
           
       </categories>
       
@@ -408,9 +408,9 @@
       
       <categories>
           
-          <category> C++ </category>
+          <category> CPlusPlus </category>
           
-          <category> C++11 </category>
+          <category> CPlusPlus11 </category>
           
       </categories>
       
@@ -429,9 +429,9 @@
       
       <categories>
           
-          <category> C++ </category>
+          <category> CPlusPlus </category>
           
-          <category> C++11 </category>
+          <category> CPlusPlus11 </category>
           
       </categories>
       
@@ -450,9 +450,9 @@
       
       <categories>
           
-          <category> C++ </category>
+          <category> CPlusPlus </category>
           
-          <category> C++11 </category>
+          <category> CPlusPlus11 </category>
           
       </categories>
       
@@ -471,9 +471,9 @@
       
       <categories>
           
-          <category> C++ </category>
+          <category> CPlusPlus </category>
           
-          <category> C++11 </category>
+          <category> CPlusPlus11 </category>
           
       </categories>
       
@@ -492,9 +492,28 @@
       
       <categories>
           
-          <category> C++ </category>
+          <category> CPlusPlus </category>
           
-          <category> C++11 </category>
+          <category> CPlusPlus11 </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>C++11知识点 -- 导航栏</title>
+      <link href="/2023/07/31/CPlusPlus11/000.CPlusPlus11Index/"/>
+      <url>/2023/07/31/CPlusPlus11/000.CPlusPlus11Index/</url>
+      
+        <content type="html"><![CDATA[<p><strong>快速导航</strong></p><span id="more"></span><p><a href="https://brkzh.github.io/2023/08/01/CPlusPlus11/001.AboutAutoDecltype/">C++11知识点 – auto、decltype</a></p><p><a href="https://brkzh.github.io/2023/08/02/CPlusPlus11/002.ReturnValueFypeAfter/">C++11知识点 – 返回值类型后置</a></p><p><a href="https://brkzh.github.io/2023/08/03/CPlusPlus11/003.ImprovementRightAngleBracketsin/">C++11知识点 – 对模板实例化中连续右尖括号&gt;&gt;的改进</a></p><p><a href="https://brkzh.github.io/2023/08/04/CPlusPlus11/004.UsingDefineAliases/">C++11知识点 – 使用using定义别名</a></p><p><a href="https://brkzh.github.io/2023/08/05/CPlusPlus11/005.DefaultTemplateParamForFunctionTemplates/">C++11知识点 – 支持函数模板的默认模板参数</a></p><p><a href="https://brkzh.github.io/2023/08/06/CPlusPlus11/006.AboutTuple/">C++11知识点 – tuple元组</a></p><p><a href="https://brkzh.github.io/2023/08/07/CPlusPlus11/007.InitializationList/">C++11知识点 – 列表初始化</a></p><p><a href="https://brkzh.github.io/2023/08/08/CPlusPlus11/008.LambdaFunc/">C++11知识点 – lambda匿名函数使用详解</a></p><p><a href="https://brkzh.github.io/2023/08/09/CPlusPlus11/009.AboutUnion/">C++11知识点 – 非受限联合体(union)</a></p><p><a href="https://brkzh.github.io/2023/08/10/CPlusPlus11/010.AboutForLoop/">C++11知识点 – for循环</a></p><p><a href="https://brkzh.github.io/2023/08/11/CPlusPlus11/011.AbountConstexprAndConst/">C++11知识点 – constexpr常量表达式相关</a></p><p><a href="https://brkzh.github.io/2023/08/12/CPlusPlus11/012.AboutLongLongDesc/">C++11知识点 – long long超长整形详解</a></p><p><a href="https://brkzh.github.io/2023/08/13/CPlusPlus11/013.RvalueReference/">C++11知识点 – 右值引用</a></p><p><a href="https://brkzh.github.io/2023/08/14/CPlusPlus11/014.MoveConstructorsFunc/">C++11知识点 – 移动构造函数的功能和用法</a></p><p><a href="https://brkzh.github.io/2023/08/15/CPlusPlus11/015.StdMoveFunc/">C++11知识点 – move()函数</a></p><p><a href="https://brkzh.github.io/2023/08/16/CPlusPlus11/016.ReferenceQualifier/">C++11知识点 – 引用限定符</a></p><p><a href="https://brkzh.github.io/2023/08/17/CPlusPlus11/017.PerfectForwarding/">C++11知识点 – 完美转发及其实现</a></p><p><a href="https://brkzh.github.io/2023/08/18/CPlusPlus11/018.AboutNullptr/">C++11知识点 – nullptr：初始化空指针</a></p><p><a href="https://brkzh.github.io/2023/08/19/CPlusPlus11/019.AboutShared_Ptr/">C++11知识点 – shared_ptr智能指针</a></p><p><a href="https://brkzh.github.io/2023/08/20/CPlusPlus11/020.AboutUnique_Ptr/">C++11知识点 – unique_ptr智能指针</a></p><p><a href="https://brkzh.github.io/2023/08/21/CPlusPlus11/021.AboutWeak_Ptr/">C++11知识点 – weak_ptr智能指针</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据结构与算法 </category>
           
       </categories>
       
@@ -774,7 +793,7 @@
       <link href="/2023/05/31/DataStructuresAndAlgorithms/000.DataStructersAndAlgorithmsIndex/"/>
       <url>/2023/05/31/DataStructuresAndAlgorithms/000.DataStructersAndAlgorithmsIndex/</url>
       
-        <content type="html"><![CDATA[<p><strong>快速导航</strong></p><p><a href="https://brkzh.github.io/2023/06/01/DataStructuresAndAlgorithms/001.SeqList/">数据结构与算法 – 顺序表</a></p><p><a href="https://brkzh.github.io/2023/06/02/DataStructuresAndAlgorithms/002.SinglyLinkedList/">数据结构与算法 – 单链表</a></p><p><a href="https://brkzh.github.io/2023/06/03/DataStructuresAndAlgorithms/003.DeList/">数据结构与算法 – 双链表</a></p><p><a href="https://brkzh.github.io/2023/06/04/DataStructuresAndAlgorithms/004.LoopLinkedList/">数据结构与算法 – 循环链表</a></p><p><a href="https://brkzh.github.io/2023/06/05/DataStructuresAndAlgorithms/005.StaticLinkedList/">数据结构与算法 – 静态链表</a></p><p><a href="https://brkzh.github.io/2023/06/06/DataStructuresAndAlgorithms/006.SeqStack/">数据结构与算法 – 顺序栈</a></p><p><a href="https://brkzh.github.io/2023/06/07/DataStructuresAndAlgorithms/007.SharedStack/">数据结构与算法 – 共享栈</a></p><p><a href="https://brkzh.github.io/2023/06/08/DataStructuresAndAlgorithms/008.LinkedStack/">数据结构与算法 – 链式栈</a></p><p><a href="https://brkzh.github.io/2023/06/09/DataStructuresAndAlgorithms/009.SeqQueue/">数据结构与算法 – 顺序队列</a></p><p><a href="https://brkzh.github.io/2023/06/10/DataStructuresAndAlgorithms/010.LinkedQueue/">数据结构与算法 – 链式队列</a></p><p><a href="https://brkzh.github.io/2023/06/11/DataStructuresAndAlgorithms/011.LinkedDequeue/">数据结构与算法 – 双端队列</a></p><p><a href="https://brkzh.github.io/2023/06/12/DataStructuresAndAlgorithms/012.LoopQueue/">数据结构与算法 – 循环队列</a></p><p><a href="https://brkzh.github.io/2023/06/13/DataStructuresAndAlgorithms/013.BinaryTree_SeqStorage/">数据结构与算法 – 二叉树(顺序存储)</a></p><p><a href="https://brkzh.github.io/2023/06/14/DataStructuresAndAlgorithms/014.BinaryTree_LinkedStorage/">数据结构与算法 – 二叉树(链式存储)</a></p>]]></content>
+        <content type="html"><![CDATA[<p><strong>数据结构与算法 - 快速导航</strong></p><span id="more"></span><p><a href="https://brkzh.github.io/2023/06/01/DataStructuresAndAlgorithms/001.SeqList/">数据结构与算法 – 顺序表</a></p><p><a href="https://brkzh.github.io/2023/06/02/DataStructuresAndAlgorithms/002.SinglyLinkedList/">数据结构与算法 – 单链表</a></p><p><a href="https://brkzh.github.io/2023/06/03/DataStructuresAndAlgorithms/003.DeList/">数据结构与算法 – 双链表</a></p><p><a href="https://brkzh.github.io/2023/06/04/DataStructuresAndAlgorithms/004.LoopLinkedList/">数据结构与算法 – 循环链表</a></p><p><a href="https://brkzh.github.io/2023/06/05/DataStructuresAndAlgorithms/005.StaticLinkedList/">数据结构与算法 – 静态链表</a></p><p><a href="https://brkzh.github.io/2023/06/06/DataStructuresAndAlgorithms/006.SeqStack/">数据结构与算法 – 顺序栈</a></p><p><a href="https://brkzh.github.io/2023/06/07/DataStructuresAndAlgorithms/007.SharedStack/">数据结构与算法 – 共享栈</a></p><p><a href="https://brkzh.github.io/2023/06/08/DataStructuresAndAlgorithms/008.LinkedStack/">数据结构与算法 – 链式栈</a></p><p><a href="https://brkzh.github.io/2023/06/09/DataStructuresAndAlgorithms/009.SeqQueue/">数据结构与算法 – 顺序队列</a></p><p><a href="https://brkzh.github.io/2023/06/10/DataStructuresAndAlgorithms/010.LinkedQueue/">数据结构与算法 – 链式队列</a></p><p><a href="https://brkzh.github.io/2023/06/11/DataStructuresAndAlgorithms/011.LinkedDequeue/">数据结构与算法 – 双端队列</a></p><p><a href="https://brkzh.github.io/2023/06/12/DataStructuresAndAlgorithms/012.LoopQueue/">数据结构与算法 – 循环队列</a></p><p><a href="https://brkzh.github.io/2023/06/13/DataStructuresAndAlgorithms/013.BinaryTree_SeqStorage/">数据结构与算法 – 二叉树(顺序存储)</a></p><p><a href="https://brkzh.github.io/2023/06/14/DataStructuresAndAlgorithms/014.BinaryTree_LinkedStorage/">数据结构与算法 – 二叉树(链式存储)</a></p>]]></content>
       
       
       <categories>
