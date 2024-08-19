@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="C++11相关知识点。 [C++11 for循环(基于范围的循环)详解](#C++11 for循环(基于范围的循环)详解) 使用C++11标准的for循环，注意这些坑">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++11知识点 -- for循环">
+<meta property="og:url" content="http://example.com/2023/08/10/CPlusPlus11/010.AboutForLoop/index.html">
+<meta property="og:site_name" content="布鲁克的小溪流">
+<meta property="og:description" content="C++11相关知识点。 [C++11 for循环(基于范围的循环)详解](#C++11 for循环(基于范围的循环)详解) 使用C++11标准的for循环，注意这些坑">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-08-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-08-09T16:00:00.000Z">
+<meta property="article:author" content="ADiZh">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2023/08/10/CPlusPlus11/010.AboutForLoop/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>C++11知识点 -- for循环 | 布鲁克的小溪流</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">布鲁克的小溪流</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/10/CPlusPlus11/010.AboutForLoop/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="ADiZh">
+      <meta itemprop="description" content="随风飘不如迎风上!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="布鲁克的小溪流">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++11知识点 -- for循环
+        </h1>
+
+        <div class="post-meta">
+			
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-08-10 00:00:00" itemprop="dateCreated datePublished" datetime="2023-08-10T00:00:00+08:00">2023-08-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-11/" itemprop="url" rel="index"><span itemprop="name">C++11</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><code>C++11</code>相关知识点。</p>
+<p>[C++11 for循环(基于范围的循环)详解](#C++11 for循环(基于范围的循环)详解)</p>
+<p><a href="#%E4%BD%BF%E7%94%A8C++11%E6%A0%87%E5%87%86%E7%9A%84for%E5%BE%AA%E7%8E%AF%EF%BC%8C%E6%B3%A8%E6%84%8F%E8%BF%99%E4%BA%9B%E5%9D%91">使用C++11标准的for循环，注意这些坑</a></p>
+<span id="more"></span>
+
+<h1 id="C-11-for循环-基于范围的循环-详解"><a href="#C-11-for循环-基于范围的循环-详解" class="headerlink" title="C++11 for循环(基于范围的循环)详解"></a>C++11 for循环(基于范围的循环)详解</h1><p><code>C++11</code>标准之前(<code>C++98/03</code>标准)，如果要用<code>for</code>循环语句遍历每一个数组或者容器，只能使用以下结构：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (表达式<span class="number">1</span>; 表达式<span class="number">2</span>; 表达式<span class="number">3</span>) </span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//循环体</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">for_demo_1</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">char</span> arr[] = <span class="string">&quot;https://brkzh.github.io/&quot;</span>;</span><br><span class="line">	<span class="type">int</span> iCir;</span><br><span class="line">	<span class="comment">//for循环遍历普通数组</span></span><br><span class="line">	<span class="keyword">for</span> (iCir = <span class="number">0</span>; iCir &lt; <span class="built_in">strlen</span>(arr); ++iCir)</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; arr[iCir];</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">	vector&lt;<span class="type">char</span>&gt;<span class="built_in">myVector</span>(arr, arr + <span class="number">11</span>);</span><br><span class="line">	vector&lt;<span class="type">char</span>&gt;::iterator iter;</span><br><span class="line">	<span class="comment">//for循环遍历vector容器</span></span><br><span class="line">	<span class="keyword">for</span> (iter = myVector.<span class="built_in">begin</span>(); iter != myVector.<span class="built_in">end</span>(); ++iter)</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; *iter;</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在<code>c++11</code>标准中，除了可以使用上述的用法外，还为<code>for</code>循环添加了一种全新的语法格式：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (declaration : expression)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//循环体</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中，两个参数各自的含义如下：</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1.declaration：表示此处要定义一个变量，该变量的类型为要遍历序列中存储元素的类型。需要注意的是，c++11中，declaration参数处定义的变量可以使用auto关键字表示，该关键字可以使编译器自行推导该变量的数据类型。</span><br><span class="line">2.expression：表示要遍历的序列，常见的可以为事先定义好的普通数组或者容器，还可以是用&#123;&#125;大括号初始化的序列。</span><br></pre></td></tr></table></figure>
+
+<p>同<code>c++98/03</code>中的<code>for</code>循环的语法格式相比较，此格式并没有明确限定<code>for</code>循环的遍历范围，这是它们最大的区别，即旧格式的<code>for</code>循环可以指定循环的范围，而<code>c++11</code>标准增加的<code>for</code>循环，指挥逐个遍历<code>expression</code>参数处指定的每个元素。</p>
+<p>示例：<code>c++11</code>中的<code>for</code>循环遍历</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">c11_for_demo</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">char</span> arr[] = <span class="string">&quot;https://brkzh.github.io/&quot;</span>;</span><br><span class="line">	<span class="comment">//for循环遍历普通数组</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">char</span> ch : arr)</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; ch;</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;END&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">	vector&lt;<span class="type">char</span>&gt;<span class="built_in">myVector</span>(arr, arr + <span class="number">11</span>);</span><br><span class="line">	<span class="comment">//for循环遍历vector容器</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> ch : myVector)</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; ch;</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;END&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<p>1）程序中在遍历<code>myVector</code>容器是，定义了<code>auto</code>类型的<code>ch</code>变量，当编译器编译程序时，会通过<code>myVector</code>容器中存储的元素类型自动推导出<code>ch</code>为<code>char</code>类型。注意，这里<code>ch</code>不是迭代器类型，而表示的是<code>myVector</code>容器中存储的每个元素。</p>
+<p>除此之外，新语法格式的<code>for</code>循环还支持遍历用<code>&#123;&#125;</code>大括号初始化的列表，如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">c11_for_demo_2</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> num : &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>&#125;)</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; num &lt;&lt; <span class="string">&quot;  &quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>另外，在使用新语法<code>for</code>循环遍历某个序列时，如果需要遍历的同时修改序列中元素的值，实现方法很简单，在<code>declaration</code>参数处定义引用形式的变量即可，例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">c11_fro_demo_3</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">char</span> arr[] = <span class="string">&quot;qwert&quot;</span>;</span><br><span class="line">	vector&lt;<span class="type">char</span>&gt;<span class="built_in">myVector</span>(arr, arr + <span class="number">5</span>);</span><br><span class="line">	<span class="comment">//for循环遍历并修改容器中各个字符的值</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span>&amp; ch : myVector)</span><br><span class="line">	&#123;</span><br><span class="line">		ch++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//for循环遍历输出容器中各个字符</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> ch : myVector)</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; ch;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//rxfsu</span></span><br><span class="line">	cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>declaration</code>参数既可以定义普通形式的变量，也可以定义引用形式的变量，该如何选择呢？</p>
+<p>其实很简单，如果需要在遍历序列的过程中修改内部元素的值，就必须定义引用形式的变量；反之，建议定义<code>const &amp;</code>(常引用)形式的变量(避免了底层复制变量的过程，效率更高)，也可以定义普通变量。</p>
+<h1 id="使用C-11标准的for循环，注意这些坑"><a href="#使用C-11标准的for循环，注意这些坑" class="headerlink" title="使用C++11标准的for循环，注意这些坑"></a>使用C++11标准的for循环，注意这些坑</h1><p><code>for</code>循环的使用注意事项，更准确高效地使用基于范围<code>for</code>循环。</p>
+<p>1）当使用<code>for</code>循环遍历某个序列时，无论该序列是普通数组、容器还是用<code>&#123;&#125;</code>大括号包裹的初始化列表，遍历序列的变量都表示的是当前序列中的各个元素。</p>
+<p>例子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">c11_for_tips_dm</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> ch : &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;)</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; ch;</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">	<span class="type">char</span> arr[] = <span class="string">&quot;https://brkzh.github.io/&quot;</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">char</span> ch : arr)</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; ch;</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">	vector&lt;<span class="type">char</span>&gt;<span class="built_in">myVec</span>(arr, arr + <span class="number">10</span>);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> ch : myVec)</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; ch;</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述程序使用了<code>for</code>循环遍历3中序列的过程，其中前两种情况较容易理解，但对于基于范围<code>for</code>循环遍历容器中的元素，很多人会将<code>ch</code>误认为是指向各个元素的迭代器，其实不是的，它表示的是容器中的各个元素。</p>
+<p>加深对遍历容器的理解，看看下面以<code>map</code>容器的例子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">c11_for_tips_dm2</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	map&lt;std::string, std::string&gt; myMap&#123;</span><br><span class="line">		&#123;<span class="string">&quot;C++11&quot;</span>, <span class="string">&quot;C++11标准&quot;</span>&#125;,</span><br><span class="line">		&#123;<span class="string">&quot;Python&quot;</span>, <span class="string">&quot;Python语言&quot;</span>&#125;,</span><br><span class="line">		&#123;<span class="string">&quot;Java&quot;</span>, <span class="string">&quot;Java开发语言&quot;</span>&#125;</span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="keyword">for</span> (std::pair&lt;std::string, std::string&gt; ch : myMap)</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; ch.first &lt;&lt; <span class="string">&quot;  &quot;</span> &lt;&lt; ch.second &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>要知道，<code>map</code>容器中存储的不再是普通数据类型的数据，而是<code>pair</code>类型的数据，因此程序中在使用基于范围<code>for</code>循环遍历<code>map</code>容器时，定义的是<code>pair</code>类型的变量。</p>
+<p>注意，基于范围<code>for</code>循环也可以直接遍历某个字符串，比如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>( <span class="type">char</span> ch : <span class="string">&quot;https://brkzh.github.io/&quot;</span>) </span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;ch;</span><br><span class="line">&#125;</span><br><span class="line">cout&lt;&lt;endl;</span><br></pre></td></tr></table></figure>
+
+<p>普通数组可以作为被遍历的序列。对于上述的字符串来说，其数据类型为<code>const char[23]</code>，即在编译器看来字符串就是一个普通数组，因此完全可以直接作为遍历的序列。</p>
+<p>当然，基于范围<code>for</code>循环也可以遍历<code>string</code>类型的字符串，这种情况下冒号前定义<code>char</code>类型的变量即可。</p>
+<p>2）基于范围的<code>for</code>循环可以遍历普通数组、<code>string</code>字符串、容器以及初始化列表。除此之外，<code>for</code>循环冒号后还可以放置返回<code>string</code>字符串以及容器对象的函数，比如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">std::string g_str = <span class="string">&quot;https://brkzh.github.io/&quot;</span>;</span><br><span class="line">vector&lt;<span class="type">int</span>&gt; g_myVec = &#123; <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span> &#125;;</span><br><span class="line"><span class="function">std::string <span class="title">retStr</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> g_str;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">retVector</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> g_myVec;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">c11_for_tips_dm3</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">char</span> ch : <span class="built_in">retStr</span>())</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; ch;</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> num : <span class="built_in">retVector</span>())</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; num &lt;&lt; <span class="string">&quot;  &quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意，基于范围的<code>for</code>循环不支持遍历函数返回的以指针形式表示的数组，比如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//错误示例</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">char</span> str[] = <span class="string">&quot;https://brkzh.github.io/&quot;</span>;</span><br><span class="line"><span class="function"><span class="type">char</span>* <span class="title">retStr</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> str;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">char</span> ch: <span class="built_in">retStr</span>()) <span class="comment">//直接报错</span></span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;ch;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>原因很简单，此格式的<code>for</code>循环只能遍历有明确范围的一组数据，上述程序中<code>retStr()</code>函数返回的是指针变量，范围遍历并未明确指明，所以编译失败。</p>
+<p>3）当基于范围的<code>for</code>循环遍历的是某函数返回的<code>string</code>对象或者容器时，遍历整个过程中，函数只会执行一次。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">std::string g_myStr = <span class="string">&quot;https://brkzh.github.io/&quot;</span>;</span><br><span class="line"><span class="function">std::string <span class="title">getStr</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;g_myStr:&quot;</span> &lt;&lt; g_myStr &lt;&lt; endl;</span><br><span class="line">	<span class="keyword">return</span> g_myStr;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">c11_for_tips_dm4</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">char</span> ch : <span class="built_in">getStr</span>())</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; ch;</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; endl;</span><br><span class="line">	<span class="comment">/* 输出内容：</span></span><br><span class="line"><span class="comment">	g_myStr:https://brkzh.github.io/</span></span><br><span class="line"><span class="comment">	https://brkzh.github.io/</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从程序执行结果看，整个<code>for</code>循环遍历<code>g_myStr</code>字符串对象的过程中，<code>getStr()</code>函数仅在遍历开始前执行了1次。</p>
+<p>4）系统学习过<code>STL</code>标准库的都知道，基于关联式容器(包括哈希容器)底层存储机制的限制：</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1.不允许修改map、unordered<span class="built_in">_</span>map、multimap以及unordered<span class="built_in">_</span>multimap容器中存储的键的值；</span><br><span class="line">2.不允许修改set、unordered<span class="built_in">_</span>set、multiset以及unordered<span class="built_in">_</span>multiset容器中存储的元素的值。</span><br></pre></td></tr></table></figure>
+
+<p>因此，当使用基于范围的<code>for</code>循环遍历此类容器时，切勿修改容器中不允许被修改的数据部分，否则会导致程序的执行中出现各种<code>Bug</code></p>
+<p>另外，基于范围<code>for</code>循环完成对容器的遍历，其底层也是借助容器的迭代器实现的，例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::vector&lt;<span class="type">int</span>&gt; vec = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> val: vec)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout&lt;&lt; val &lt;&lt; std::endl;</span><br><span class="line">        vec.<span class="built_in">push_back</span>(<span class="number">10</span>); <span class="comment">//向容器中添加元素</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/* 输出结果(结果不唯一)</span></span><br><span class="line"><span class="comment">    1</span></span><br><span class="line"><span class="comment">    -572662307</span></span><br><span class="line"><span class="comment">    -572662307</span></span><br><span class="line"><span class="comment">    -572662307</span></span><br><span class="line"><span class="comment">    -572662307</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，程序的执行结果并不是我们想要的，就是因为在<code>for</code>循环遍历<code>vec</code>容器的同时向该容器尾部添加了新的元素(对<code>vec</code>容器进行了扩容)，致使遍历容器所使用的迭代器失效，整个遍历过程出现错误。</p>
+<p>在使用基于范围<code>for</code>循环遍历容器时，应避免在循环中修改容器存储元素的个数。</p>
+
+    </div>
+
+    
+    
+    
+
+	
+	   <div>
+		 <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+	   </div>
+	 
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/08/09/CPlusPlus11/009.AboutUnion/" rel="prev" title="C++11知识点 -- 非受限联合体(union)">
+      <i class="fa fa-chevron-left"></i> C++11知识点 -- 非受限联合体(union)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/08/11/CPlusPlus11/011.AbountConstexprAndConst/" rel="next" title="C++11知识点 -- constexpr常量表达式相关">
+      C++11知识点 -- constexpr常量表达式相关 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#C-11-for%E5%BE%AA%E7%8E%AF-%E5%9F%BA%E4%BA%8E%E8%8C%83%E5%9B%B4%E7%9A%84%E5%BE%AA%E7%8E%AF-%E8%AF%A6%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">C++11 for循环(基于范围的循环)详解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8C-11%E6%A0%87%E5%87%86%E7%9A%84for%E5%BE%AA%E7%8E%AF%EF%BC%8C%E6%B3%A8%E6%84%8F%E8%BF%99%E4%BA%9B%E5%9D%91"><span class="nav-number">2.</span> <span class="nav-text">使用C++11标准的for循环，注意这些坑</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ADiZh"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">ADiZh</p>
+  <div class="site-description" itemprop="description">随风飘不如迎风上!</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/brkzh" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;brkzh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/Bulk_Zhang" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;Bulk_Zhang" rel="noopener" target="_blank"><i class="codiepie fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com/" title="https:&#x2F;&#x2F;www.baidu.com" rel="noopener" target="_blank">百度</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-01 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ADiZh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共72k字</span>
+</div>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

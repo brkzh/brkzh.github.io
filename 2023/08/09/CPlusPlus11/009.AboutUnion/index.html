@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="C++11相关知识点。 非受限联合体(union)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++11知识点 -- 非受限联合体(union)">
+<meta property="og:url" content="http://example.com/2023/08/09/CPlusPlus11/009.AboutUnion/index.html">
+<meta property="og:site_name" content="布鲁克的小溪流">
+<meta property="og:description" content="C++11相关知识点。 非受限联合体(union)">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-08-08T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-08-08T16:00:00.000Z">
+<meta property="article:author" content="ADiZh">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2023/08/09/CPlusPlus11/009.AboutUnion/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>C++11知识点 -- 非受限联合体(union) | 布鲁克的小溪流</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">布鲁克的小溪流</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/09/CPlusPlus11/009.AboutUnion/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="ADiZh">
+      <meta itemprop="description" content="随风飘不如迎风上!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="布鲁克的小溪流">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++11知识点 -- 非受限联合体(union)
+        </h1>
+
+        <div class="post-meta">
+			
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-08-09 00:00:00" itemprop="dateCreated datePublished" datetime="2023-08-09T00:00:00+08:00">2023-08-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-11/" itemprop="url" rel="index"><span itemprop="name">C++11</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><code>C++11</code>相关知识点。</p>
+<p>非受限联合体(union)</p>
+<span id="more"></span>
+
+<h1 id="C-11-非受限联合体-union"><a href="#C-11-非受限联合体-union" class="headerlink" title="C++11 非受限联合体(union)"></a>C++11 非受限联合体(union)</h1><p>在<code>c/c++</code>中，联合体(<code>union</code>)时一种构造数据类型。在一个联合体内，可以定义多个不同类型的成员，这些成员将会共享这一块内存空间。老版本的<code>c++</code>为了和<code>c</code>语言保持兼容，对联合体的数据成员的类型进行了很大程度的限制，这些限制在<code>c++11</code>中取消了。</p>
+<p><code>C++11</code>标准规定，任何非引用类型都可以成为联合体的数据成员，这种联合体也被称为非受限联合体，例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Student</span>(<span class="type">bool</span> g, <span class="type">int</span> a): <span class="built_in">gender</span>(g), <span class="built_in">age</span>(a) &#123;&#125;</span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">    <span class="type">bool</span> gender;</span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">union</span> <span class="title class_">T</span></span><br><span class="line">&#123;</span><br><span class="line">    Student s; <span class="comment">//含有非POD类型的成员，gcc-5.1.0 版本报错</span></span><br><span class="line">    <span class="type">char</span> name[<span class="number">10</span>];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述代码，因为<code>Student</code>类带有自定义的构造函数，所以是一个非<code>POD</code>类型的，这导致编译器报错，这种规定只是<code>c++</code>为了兼容<code>c</code>语言而制定的。随着发展，这种规定是没有必要的。</p>
+<p><code>C++11</code>对<code>c++98</code>的改进：</p>
+<p><strong>1）C++11允许非POD类型</strong></p>
+<p><code>C++98</code>不允许联合体的成员是非<code>POD</code>类型，但是<code>C++11</code>中取消了这一规定。</p>
+<p><code>POD</code>是<code>c++</code>中一个比较重要的概念，这里简单介绍下。<code>POD</code>是英文<code>Plain Old Data</code>的缩写，用来描述一个类型的属性。</p>
+<p><code>POD</code>类型一般具有以下几种特征(包括<code>class</code>、<code>union</code>和<code>struct</code>等)：</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">1.没有用户自定义的构造函数、析构函数、拷贝构造函数和移动构造函数</span><br><span class="line">2.不能包含虚函数和虚基类</span><br><span class="line">3.非静态成员必须声明为public</span><br><span class="line">4.类中的第一个非静态成员的类型与基类不同，例如：</span><br><span class="line">class B1&#123;&#125;;</span><br><span class="line">class B2: B1 &#123; B1 b; &#125;;</span><br><span class="line">class B2的第一个非静态成员b是基类类型，所以它不是POD类型</span><br><span class="line">5.在类或者结构体继承时，满足以下两种情况之一：</span><br><span class="line">.派生类中有非静态成员，且只有一个仅包含境内太成员的基类</span><br><span class="line">.基类有非静态成员，而派生类没有非静态成员</span><br><span class="line">看看例子：</span><br><span class="line">class B1&#123; static int m; &#125;;</span><br><span class="line">class B2:B1 &#123; int n1; &#125;;</span><br><span class="line">class B3:B2 &#123; static int n2; &#125;;</span><br><span class="line">对于B2，派生类中有非静态成员，且只有一个仅包含静态成员的基类B1，所以它是POD类型</span><br><span class="line">对于B3，基类B2有非静态成员，而派生类B3没有非静态成员，所以它也是POD类型</span><br><span class="line">6.所有非静态数据成员均和其他基类也符合上述规则（递归定义），也就是说POD类型不能包含非POD类型数据</span><br><span class="line">7.此外，所有兼容C语言的数据类型都是POD类型（struct、union等不能违背上述规则）。</span><br></pre></td></tr></table></figure>
+
+<p><strong>2）C++11允许联合体有静态成员</strong></p>
+<p><code>C++11</code>删除了联合体不允许拥有静态成员的限制，例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">union</span> <span class="title class_">U</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="type">static</span> <span class="type">int</span> <span class="title">func</span><span class="params">()</span> </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="type">int</span> n = <span class="number">3</span>;</span><br><span class="line">        <span class="keyword">return</span> n;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>需要注意，<strong>静态成员变量只能在联合体内定义</strong>，却不能在联合体外使用，这使得该规则很鸡肋、没有用。</p>
+<p><strong>非寿险联合体的赋值注意事项</strong></p>
+<p><code>C++11</code>规定，如果非受限制联合体内有一个非<code>POD</code>的成员，而该成员拥有自定义的构造函数，那么这个非受限联合体的默认构造函数将被编译器删除；其他的特殊成员函数，例如默认拷贝构造函数、拷贝赋值运算符以及析构函数，也将被删除。</p>
+<p>这条规则可能导致对象构造失败，例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">union</span> <span class="title class_">U</span></span><br><span class="line">&#123;</span><br><span class="line">    string s;</span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    U u; <span class="comment">//构造失败，因为U的构造函数被删除</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述例子中，因为<code>string</code>类拥有自定义的构造函数，所以<code>U</code>的默认构造函数被删除；定义<code>U</code>的类型变量<code>u</code>需要调用默认构造函数，所以<code>u</code>也就无法定义成功。</p>
+<p>解决上述问题，一般需要用到<code>placement new</code>定位<code>new</code>，代码如下</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">union</span> <span class="title class_">U</span></span><br><span class="line">&#123;</span><br><span class="line">    string s;</span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">U</span>() &#123; <span class="keyword">new</span>(&amp;s) string; &#125;</span><br><span class="line">    ~<span class="built_in">U</span>() &#123; s.~<span class="built_in">string</span>(); &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    U u;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>构造时，采用<code>placement new</code>将<code>s</code>构造在其地址<code>&amp;s</code>上，这里<code>placement new</code>的唯一作用只是调用了一下<code>string</code>类的构造函数。注意，在析构时还需要调用<code>string</code>类的析构函数。</p>
+<p><strong><code>placement new</code>是什么？</strong></p>
+<p><code>palcement new</code>是<code>new</code>关键字的一种进阶用法，既可以在栈<code>stack</code>上生成对象，也可以在堆<code>heap</code>上生成对象。相对应地，常见的<code>new</code>的用法称为<code>operator new</code>，它只能在<code>heap</code>上生成对象。</p>
+<p><code>placement new</code>的语法格式如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span>(address) <span class="built_in">ClassConstruct</span>(...)</span><br></pre></td></tr></table></figure>
+
+<p><code>address</code>表示已有内存的地址，该内存可以在栈上，也可以在堆上；<code>ClassConstruct(...)</code>表示调用类的构造函数，如果构造函数没有参数，也可以省略括号。</p>
+<p><code>placement new</code>利用已经申请好的内存来生成对象，它不再为对象分配新的内存，而是将对象数据放在<code>address</code>制定的内存中。上述例子中，<code>placement new</code>使用的是<code>s</code>的内存空间。</p>
+<p><strong>非受限联合体的匿名声明和”枚举式类”</strong></p>
+<p>匿名联合体是值不具名的联合体（也即没有名字的联合体），一般定义如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">union</span> <span class="title class_">U</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">union</span> &#123; <span class="type">int</span> x; &#125; <span class="comment">//此联合体为匿名联合体</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，联合体<code>U</code>内定义了一个不具名的联合体，该联合体包含一个<code>int</code>类型的成员变量，称这个联合体为匿名联合体。</p>
+<p>同样的，非受限联合体也可以匿名，而当非受限的匿名联合体运用于类时，这样的类被称为”枚举式类“。示例：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Student</span>(<span class="type">bool</span> g, <span class="type">int</span> a) : <span class="built_in">m_gender</span>(g), <span class="built_in">m_age</span>(a)</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">bool</span> m_gender;</span><br><span class="line">    <span class="type">int</span> m_age;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Singer</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">enum</span> <span class="title class_">Type</span> &#123; STUDENT, NATIVE, FOREIGENR &#125;;</span><br><span class="line">    <span class="built_in">Singer</span>(<span class="type">bool</span> g, <span class="type">int</span> a) : <span class="built_in">m_s</span>(g, a) &#123; <span class="type">m_t</span> = STUDENT; &#125;</span><br><span class="line">    <span class="built_in">Singer</span>(<span class="type">int</span> i) : <span class="built_in">m_id</span>(i)&#123; <span class="type">m_t</span> = NATIVE; &#125;</span><br><span class="line">    <span class="built_in">Singer</span>(<span class="type">const</span> <span class="type">char</span>* n, <span class="type">int</span> s)&#123;</span><br><span class="line">        <span class="type">int</span> size = (s &gt; <span class="number">9</span>) ? <span class="number">9</span> : s;</span><br><span class="line">        <span class="built_in">memcpy</span>(m_name, n, size);</span><br><span class="line">        m_name[s] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">        <span class="type">m_t</span> = FOREIGENR;</span><br><span class="line">    &#125;</span><br><span class="line">    ~<span class="built_in">Singer</span>()</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">    Type <span class="type">m_t</span>;</span><br><span class="line">    <span class="keyword">union</span> </span><br><span class="line">    &#123;</span><br><span class="line">        Student m_s;</span><br><span class="line">        <span class="type">int</span> m_id;</span><br><span class="line">        <span class="type">char</span> m_name[<span class="number">10</span>];</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>上述代码中使用了一个匿名非受限联合体，它作为类<code>Singer</code>的”变长成员”来使用，这样的变长成员给类的编写带来了更大的灵活性，这是<code>c++98</code>标准中无法达到的(编译器会报错:<code>member &#39;Student Singer::&lt;anonymous union&gt;::s&#39; with constructor not allowed in union</code>)。</p>
+
+    </div>
+
+    
+    
+    
+
+	
+	   <div>
+		 <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+	   </div>
+	 
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/08/08/CPlusPlus11/008.LambdaFunc/" rel="prev" title="C++11知识点 -- lambda匿名函数使用详解">
+      <i class="fa fa-chevron-left"></i> C++11知识点 -- lambda匿名函数使用详解
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/08/10/CPlusPlus11/010.AboutForLoop/" rel="next" title="C++11知识点 -- for循环">
+      C++11知识点 -- for循环 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#C-11-%E9%9D%9E%E5%8F%97%E9%99%90%E8%81%94%E5%90%88%E4%BD%93-union"><span class="nav-number">1.</span> <span class="nav-text">C++11 非受限联合体(union)</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ADiZh"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">ADiZh</p>
+  <div class="site-description" itemprop="description">随风飘不如迎风上!</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/brkzh" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;brkzh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/Bulk_Zhang" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;Bulk_Zhang" rel="noopener" target="_blank"><i class="codiepie fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com/" title="https:&#x2F;&#x2F;www.baidu.com" rel="noopener" target="_blank">百度</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-01 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ADiZh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共72k字</span>
+</div>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="C++11相关知识点。 C++11使用using定义别名。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++11知识点 -- 使用using定义别名">
+<meta property="og:url" content="http://example.com/2023/08/01/CPlusPlus11/004.UsingDefineAliases/index.html">
+<meta property="og:site_name" content="布鲁克的小溪流">
+<meta property="og:description" content="C++11相关知识点。 C++11使用using定义别名。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-07-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-31T16:00:00.000Z">
+<meta property="article:author" content="ADiZh">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2023/08/01/CPlusPlus11/004.UsingDefineAliases/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>C++11知识点 -- 使用using定义别名 | 布鲁克的小溪流</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">布鲁克的小溪流</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/01/CPlusPlus11/004.UsingDefineAliases/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="ADiZh">
+      <meta itemprop="description" content="随风飘不如迎风上!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="布鲁克的小溪流">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++11知识点 -- 使用using定义别名
+        </h1>
+
+        <div class="post-meta">
+			
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-08-01 00:00:00" itemprop="dateCreated datePublished" datetime="2023-08-01T00:00:00+08:00">2023-08-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-11/" itemprop="url" rel="index"><span itemprop="name">C++11</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><code>C++11</code>相关知识点。</p>
+<p>C++11使用using定义别名。</p>
+<span id="more"></span>
+
+<h1 id="C-11使用using定义别名"><a href="#C-11使用using定义别名" class="headerlink" title="C++11使用using定义别名"></a>C++11使用using定义别名</h1><p>在<code>C++</code>中可以通过<code>typedef</code>重定义一个类型。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="type">uint_t</span>;</span><br></pre></td></tr></table></figure>
+
+<p>被重定义的类型并不是一个新的类型，仅仅是原有的类型取了一个新的名字。因此，下面的函数重载是非法的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">(<span class="type">uint_t</span>)</span></span>;  <span class="comment">//error: redefinition</span></span><br></pre></td></tr></table></figure>
+
+<p>使用<code>typedef</code>重定义类型是很方便的，但它也有一些限制，比如，无法重定义一个模板。</p>
+<p>如下场景：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> std::map&lt;std::string, <span class="type">int</span>&gt; <span class="type">map_int_t</span>;</span><br><span class="line"><span class="keyword">typedef</span> std::map&lt;std::string, std::string&gt; <span class="type">map_str_t</span>;</span><br></pre></td></tr></table></figure>
+
+<p>我们需要的其实是一个固定以<code>std::string</code>为<code>key</code>的<code>map</code>，它可以映射到<code>int</code>或另一个<code>std::string</code>。然而这个简单的需求仅仅通过<code>typedef</code>却很难办到。</p>
+<p>因此，在<code>c++98/03</code>中往往不得不这样写</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Val&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">str_map</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">typedef</span> std::map&lt;std::string, Val&gt; type;</span><br><span class="line">&#125;;</span><br><span class="line">str_map&lt;<span class="type">int</span>&gt;::type mapl;</span><br></pre></td></tr></table></figure>
+
+<p>一个虽然简单但却略显繁琐的<code>str_map</code>外敷类是必要的。这明显让我们在复用某些泛型代码是非常难受。</p>
+<p>现在，<code>c++11</code>中出现了可以重定义一个模板的语法，看看示例</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Val&gt;</span><br><span class="line"><span class="keyword">using</span> <span class="type">str_map_t</span> = std::map&lt;std::string, Val&gt;;</span><br><span class="line"><span class="type">str_map_t</span>&lt;<span class="type">int</span>&gt; mapl;</span><br></pre></td></tr></table></figure>
+
+<p>这里使用新的<code>using</code>别名语法定义了<code>std::map</code>的模板别名<code>str_map_t</code>。比起前面使用外敷模板加<code>typedef</code>构建的<code>str_map</code>，它完全就像是一个新的<code>map</code>类模板，简洁多了。</p>
+<p>实际上，<code>using</code>的别名语法覆盖了<code>typedef</code>的全部功能。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//重定义unsigned int</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="type">uint_t</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="type">uint_t</span> = <span class="type">unsigned</span> <span class="type">int</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//重定义std::map</span></span><br><span class="line"><span class="keyword">typedef</span> std::map&lt;std::string, <span class="type">int</span>&gt; <span class="type">map_int_t</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="type">map_int_t</span> = std::map&lt;std::string, <span class="type">int</span>&gt;;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，在重定义普通类型上，两种使用方法的效果是等价的，唯一不同的是定义语法。</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">typedef`的定义方法和变量的声明类似；像声明一个变量一样，声明一个重定义类型，之后在声明之前加上`typedef`即可。这种写法凸显了`c/c++`中的语法一致性，但有时候会增加代码的阅读难度。比如重定义一个函数指针时: `typedef void(*func<span class="built_in">_</span>t) (int,int);</span><br></pre></td></tr></table></figure>
+
+<p>与之相比，<code>using</code>后面总是立即跟随新标识符<code>identifier</code>，之后使用类似赋值的语法，把现有的类型<code>type-id</code>赋给新类型；</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="type">func_t</span> = <span class="built_in">void</span>(*)(<span class="type">int</span>,<span class="type">int</span>);</span><br></pre></td></tr></table></figure>
+
+<p>从上面的对比中可以发现，<code>c++11</code>的<code>using</code>别名语法比<code>typedef</code>更加清晰。因为<code>typedef</code>的别名语法本质上类似一种解方程的思路。而<code>using</code>语法通过赋值类定义别名，和我们平时的思考方式一致。 看看下面例子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* c++98/03 */</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">func_t</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">typedef</span>  <span class="title">void</span><span class="params">(*type)</span> <span class="params">(T, T)</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//使用func_t模板</span></span><br><span class="line"><span class="type">func_t</span>&lt;<span class="type">int</span>&gt;::type xx_1;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* c++11 */</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">using</span> <span class="type">func_t</span> = <span class="built_in">void</span>(*)(T,T);</span><br><span class="line"><span class="comment">//使用func_t模板</span></span><br><span class="line"><span class="type">func_t</span>&lt;<span class="type">int</span>&gt; xx_2;</span><br></pre></td></tr></table></figure>
+
+<p>上述例子中，通过<code>using</code>定义模板别名的语法，只是在普通类型别名语法的基础上增加<code>template</code>的参数列表。使用<code>using</code>可以轻松地创建一个新的模板别名，而不需要像<code>c++98/03</code>那样使用繁琐的外敷模板。</p>
+<p>注意，<code>using</code>语法和<code>typedef</code>一样，并不会创建新的类型。也就是说，上面例子中<code>c++11</code>的<code>using</code>写法只是<code>typedef</code>的等价物。虽然<code>using</code>重定义的<code>func_t</code>是一个模板，但<code>func_t&lt;int&gt;</code>定义的<code>xx_2</code>并不是一个由类模板实例化后的类，而是<code>void(*)(int,int)</code>的别名。因此下面函数重载是非法的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">(<span class="type">void</span>(*func_call)(<span class="type">int</span>,<span class="type">int</span>))</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">(<span class="type">func_t</span>&lt;<span class="type">int</span>&gt; func_call)</span></span>; <span class="comment">//error: redefintion</span></span><br></pre></td></tr></table></figure>
+
+<p>同样是无法实现重载的，<code>func_t&lt;int&gt;</code>只是<code>void(*)(int,int)</code>类型的等价物，</p>
+<p><code>using</code>重定义的<code>func_t</code>是一个模板，但它既不是类模板也不是函数模板(函数模板实例化后是一个函数)，而是一种新的模板形式：<strong>别名模板</strong>(<code>alias template</code>)。</p>
+<p>其实，通过<code>using</code>可以轻松定义任意类型的模板表达方式，比如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">using</span> <span class="type">type_t</span> = T;</span><br><span class="line"><span class="comment">//...</span></span><br><span class="line"><span class="type">type_t</span>&lt;<span class="type">int</span>&gt; i;</span><br></pre></td></tr></table></figure>
+
+<p><code>type_t</code>实例化后的类型和它的模板参数类型等价。这里<code>type_t&lt;int&gt;</code>将等价于<code>int</code>。</p>
+
+    </div>
+
+    
+    
+    
+
+	
+	   <div>
+		 <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+	   </div>
+	 
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/06/14/DataStructuresAndAlgorithms/014.BinaryTree_LinkedStorage/" rel="prev" title="数据结构与算法 -- 二叉树(链式存储)">
+      <i class="fa fa-chevron-left"></i> 数据结构与算法 -- 二叉树(链式存储)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/08/01/CPlusPlus11/001.AboutAutoDecltype/" rel="next" title="C++11知识点 -- auto、decltype">
+      C++11知识点 -- auto、decltype <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#C-11%E4%BD%BF%E7%94%A8using%E5%AE%9A%E4%B9%89%E5%88%AB%E5%90%8D"><span class="nav-number">1.</span> <span class="nav-text">C++11使用using定义别名</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ADiZh"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">ADiZh</p>
+  <div class="site-description" itemprop="description">随风飘不如迎风上!</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/brkzh" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;brkzh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/Bulk_Zhang" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;Bulk_Zhang" rel="noopener" target="_blank"><i class="codiepie fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com/" title="https:&#x2F;&#x2F;www.baidu.com" rel="noopener" target="_blank">百度</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-01 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ADiZh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共72k字</span>
+</div>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
