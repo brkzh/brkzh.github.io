@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="二叉树(顺序存储)顺序存储二叉树的C++语言实现，模板方式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构与算法 -- 二叉树(顺序存储)">
+<meta property="og:url" content="http://example.com/2023/06/13/DataStructuresAndAlgorithms/013.BinaryTree_SeqStorage/index.html">
+<meta property="og:site_name" content="布鲁克的小溪流">
+<meta property="og:description" content="二叉树(顺序存储)顺序存储二叉树的C++语言实现，模板方式。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://brkzh.github.io/docPics/DataStructuresAndAlgorithms/docPics/BinaryTree_SeqStorage.png">
+<meta property="article:published_time" content="2023-06-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-12T16:00:00.000Z">
+<meta property="article:author" content="ADiZh">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://brkzh.github.io/docPics/DataStructuresAndAlgorithms/docPics/BinaryTree_SeqStorage.png">
+
+<link rel="canonical" href="http://example.com/2023/06/13/DataStructuresAndAlgorithms/013.BinaryTree_SeqStorage/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>数据结构与算法 -- 二叉树(顺序存储) | 布鲁克的小溪流</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">布鲁克的小溪流</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/06/13/DataStructuresAndAlgorithms/013.BinaryTree_SeqStorage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ADiZh">
+      <meta itemprop="description" content="随风飘不如迎风上!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="布鲁克的小溪流">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据结构与算法 -- 二叉树(顺序存储)
+        </h1>
+
+        <div class="post-meta">
+			
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-06-13 00:00:00" itemprop="dateCreated datePublished" datetime="2023-06-13T00:00:00+08:00">2023-06-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">数据结构与算法</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="二叉树-顺序存储"><a href="#二叉树-顺序存储" class="headerlink" title="二叉树(顺序存储)"></a>二叉树(顺序存储)</h1><p>顺序存储二叉树的C++语言实现，模板方式。</p>
+<span id="more"></span>
+
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MaxSize 100				<span class="comment">// 数组的尺寸</span></span></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">ECCHILDSIGN</span>				<span class="comment">// 节点标记</span></span><br><span class="line">&#123;</span><br><span class="line">    E_Root,						<span class="comment">// 树根</span></span><br><span class="line">    E_ChildLeft,				<span class="comment">// 左孩子</span></span><br><span class="line">    E_ChildRight				<span class="comment">// 右孩子</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 数中每个节点的定义</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;			<span class="comment">// T代表数据元素类型</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">BinaryTreeNode</span></span><br><span class="line">&#123;</span><br><span class="line">    T data;						<span class="comment">// 数据域，用于存放数据元素</span></span><br><span class="line">    <span class="type">bool</span> isValid;				<span class="comment">// 该节点是否有效以应对非完全二叉树(只有保存了实际节点数据的节点才是有效的)</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 二叉树的定义</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BinaryTree</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 构造函数</span></span><br><span class="line">    <span class="built_in">BinaryTree</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= MaxSize; ++i)	<span class="comment">// 这里数组大小是MaxSize +1，所以这里i的终止值没有问题</span></span><br><span class="line">        &#123;</span><br><span class="line">            SqBiTree[i].isValid = <span class="literal">false</span>;	<span class="comment">// 开始时节点无效，没有保存任何数据</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~<span class="built_in">BinaryTree</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 析构函数</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 创建一个树节点</span></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">CreateNode</span><span class="params">(<span class="type">int</span> parindex, ECCHILDSIGN pointSign, <span class="type">const</span> T&amp; e)</span></span>;</span><br><span class="line">    <span class="comment">// 获取父节点的下标</span></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">GetParentIdx</span><span class="params">(<span class="type">int</span> sonindex)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!ifValidRangeIdx(sonindex))		<span class="comment">// 位置不合理</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (SqBiTree[sonindex].isValid == <span class="literal">false</span>)<span class="comment">// 不是一个合理的节点，不要尝试找父节点</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">int</span>(sonindex / <span class="number">2</span>); <span class="comment">// i的父节点是(i/2)向下取整</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 获取某个节点所在的高度</span></span><br><span class="line">    <span class="comment">// 根据二叉树的性质5：具有n(n&gt;0)个节点的完全二叉树的高度log2(n+1) 向上取整 或者是 log2(n) 向下取整 再来 + 1</span></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">GetPointLevel</span><span class="params">(<span class="type">int</span> index)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (ifValidRangeIdx(index) == <span class="literal">false</span>)<span class="comment">// 位置不合理</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">if</span> (SqBiTree[index].isValid == <span class="literal">false</span>)<span class="comment">// 不是一个合理的节点，不要尝试找父节点</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        <span class="comment">// 采用公式计算：log2(n) 向下取整 再来 +1</span></span><br><span class="line">        <span class="type">int</span> level = <span class="built_in">int</span>(<span class="built_in">log</span>(index) / <span class="built_in">log</span>(<span class="number">2</span>)) + <span class="number">1</span>;</span><br><span class="line">        <span class="comment">// c++中的log(n)函数求的是以e(2.71828)为底的对数值，如果要求以数字m为底的，则需要 log(n) / log(m)</span></span><br><span class="line">        <span class="keyword">return</span> level;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 获取二叉树的深度</span></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">GetLevel</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (SqBiTree[<span class="number">1</span>].isValid == <span class="literal">false</span>)	<span class="comment">// 树 没根</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> i;</span><br><span class="line">        <span class="keyword">for</span> (i = MaxSize; i &gt;= <span class="number">1</span>; --i)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (SqBiTree[i].isValid == <span class="literal">true</span>)<span class="comment">// 找到了最后一个有效节点</span></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">GetPointLevel</span>(i);<span class="comment">// 最后一个有效节点的高度，就是整个二叉树的深度</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 判断是否是个完全二叉树</span></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">IfCompleteBT</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (SqBiTree[<span class="number">1</span>].isValid == <span class="literal">false</span>)<span class="comment">// 树 没根</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="type">int</span> i;</span><br><span class="line">        <span class="keyword">for</span> (i = MaxSize; i &gt;= <span class="number">1</span>; --i)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (SqBiTree[i].isValid == <span class="literal">true</span>)<span class="comment">// 找到了最后一个有效节点</span></span><br><span class="line">                <span class="keyword">break</span>;<span class="comment">// 找到最后一个有效节点</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 最后一个有效节点之前的所有下标必须都是有效的，才是一颗完全二叉树</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> k = <span class="number">1</span>; k &lt;= i; ++k)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (SqBiTree[k].isValid == <span class="literal">false</span>)<span class="comment">// 所有节点必须都要有效</span></span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 前序遍历二叉树，其他的遍历方式在二叉树的链式存储中再详细书写代码</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">PreOrder</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (SqBiTree[<span class="number">1</span>].isValid == <span class="literal">false</span>)<span class="comment">// 树 没根</span></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        <span class="built_in">PreOrder</span>(<span class="number">1</span>);<span class="comment">// 根节点的数组下标是1，所以这里把根的下标传递进去</span></span><br><span class="line">        cout &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">PreOrder</span><span class="params">(<span class="type">int</span> index)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (ifValidRangeIdx(index) == <span class="literal">false</span>)<span class="comment">// 位置不合理</span></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">if</span> (SqBiTree[index].isValid == <span class="literal">false</span>)<span class="comment">// 不是一个合理的节点</span></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 根左右顺序</span></span><br><span class="line">        cout &lt;&lt; (<span class="type">char</span>)SqBiTree[index].data &lt;&lt; <span class="string">&quot;  &quot;</span>;</span><br><span class="line">        <span class="comment">// 输出节点的数据域的值，为了方便观察，这里用char以显示字符</span></span><br><span class="line">        <span class="built_in">PreOrder</span>(<span class="number">2</span> * index);	<span class="comment">// 递归遍历左子树</span></span><br><span class="line">        <span class="built_in">PreOrder</span>(<span class="number">2</span> * index + <span class="number">1</span>);<span class="comment">// 递归遍历右子树</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 中序遍历二叉树</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">inOrder</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (SqBiTree[<span class="number">1</span>].isValid == <span class="literal">false</span>)</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        <span class="built_in">inOrder</span>(<span class="number">1</span>);</span><br><span class="line">        cout &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">inOrder</span><span class="params">(<span class="type">int</span> index)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (ifValidRangeIdx(index) == <span class="literal">false</span>)</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">if</span> (SqBiTree[index].isValid == <span class="literal">false</span>)</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        <span class="comment">// 左右根 顺序</span></span><br><span class="line">        <span class="built_in">inOrder</span>(<span class="number">2</span> * index);</span><br><span class="line">        cout &lt;&lt; (<span class="type">char</span>)SqBiTree[index].data &lt;&lt; <span class="string">&quot;  &quot;</span>;</span><br><span class="line">        <span class="built_in">inOrder</span>(<span class="number">2</span> * index + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 后序遍历二叉树</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">posOrder</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (SqBiTree[<span class="number">1</span>].isValid == <span class="literal">false</span>)</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        <span class="built_in">posOrder</span>(<span class="number">1</span>);</span><br><span class="line">        cout &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">posOrder</span><span class="params">(<span class="type">int</span> index)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (ifValidRangeIdx(index) == <span class="literal">false</span>)</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">if</span> (SqBiTree[index].isValid == <span class="literal">false</span>)</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        <span class="comment">// 左右根 顺序</span></span><br><span class="line">        <span class="built_in">posOrder</span>(<span class="number">2</span> * index);</span><br><span class="line">        <span class="built_in">posOrder</span>(<span class="number">2</span> * index + <span class="number">1</span>);</span><br><span class="line">        cout &lt;&lt; (<span class="type">char</span>)SqBiTree[index].data &lt;&lt; <span class="string">&quot;  &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">    <span class="comment">// 判断下标是否有效</span></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">ifValidRangeIdx</span><span class="params">(<span class="type">int</span> index)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// 位置必须合理</span></span><br><span class="line">        <span class="keyword">if</span> (index &lt; <span class="number">1</span> || index &gt; MaxSize)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">    BinaryTreeNode&lt;T&gt; SqBiTree[MaxSize + <span class="number">1</span>];</span><br><span class="line">    <span class="comment">// 存储二叉树节点的数组，为了写程序方便，下标为0的数组元素不使用，因此这里需要+1</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建一个树节点</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="comment">// 参数1：父节点所在的数组下标</span></span><br><span class="line"><span class="comment">// 参数2：标记所创建的是树根、左孩子、右孩子</span></span><br><span class="line"><span class="comment">// 参数3：插入的数据节点的元素值</span></span><br><span class="line"><span class="type">int</span> BinaryTree&lt;T&gt;::<span class="built_in">CreateNode</span>(<span class="type">int</span> parindex, ECCHILDSIGN pointSign, <span class="type">const</span> T&amp; e)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (pointSign != E_Root)</span><br><span class="line">    &#123;<span class="comment">// 创建的是 非根节点，则一定是子节点，要求parindex一定是个合理值</span></span><br><span class="line">        <span class="keyword">if</span> (ifValidRangeIdx(parindex) == <span class="literal">false</span>)	<span class="comment">// 位置不合理</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">if</span> (SqBiTree[parindex].isValid == <span class="literal">false</span>)<span class="comment">// 不是一个合理的节点</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> index = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">if</span> (pointSign == E_Root)<span class="comment">// 创建的是根</span></span><br><span class="line">    &#123;</span><br><span class="line">        index = <span class="number">1</span>;<span class="comment">// 根节点固定存储在下标为1的位置</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (pointSign == E_ChildLeft)<span class="comment">// 左孩子</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 创建的是左孩子的节点，节点i的左孩子节点的下标是2*i	</span></span><br><span class="line">        index = <span class="number">2</span> * parindex;</span><br><span class="line">        <span class="keyword">if</span> (ifValidRangeIdx(index) == <span class="literal">false</span>)<span class="comment">// 位置不合理</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span><span class="comment">// 右孩子</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 创建的是右孩子的节点，节点i的右孩子节点的下标是2*i + 1</span></span><br><span class="line">        index = <span class="number">2</span> * parindex + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (ifValidRangeIdx(index) == <span class="literal">false</span>)<span class="comment">// 位置不合理</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    SqBiTree[index].data = e;</span><br><span class="line">    SqBiTree[index].isValid = <span class="literal">true</span>;	<span class="comment">// 标记该下标中有有效数据</span></span><br><span class="line">    <span class="keyword">return</span> index;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h2><p><code>main</code>源文件</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;MySeqBinaryTree.hpp&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    BinaryTree&lt;<span class="type">int</span>&gt; mytree;</span><br><span class="line">    <span class="comment">// 创建一颗二叉树</span></span><br><span class="line">    <span class="type">int</span> indexRoot = mytree.<span class="built_in">CreateNode</span>(<span class="number">-1</span>, E_Root, <span class="string">&#x27;A&#x27;</span>);		<span class="comment">// 创建树根节点A</span></span><br><span class="line">    <span class="type">int</span> indexNodeB = mytree.<span class="built_in">CreateNode</span>(indexRoot, E_ChildLeft, <span class="string">&#x27;B&#x27;</span>);		<span class="comment">// 创建根节点的左孩子节点B</span></span><br><span class="line">    <span class="type">int</span> indexNodeC = mytree.<span class="built_in">CreateNode</span>(indexRoot, E_ChildRight, <span class="string">&#x27;C&#x27;</span>);		<span class="comment">// 创建根节点的右孩子节点C</span></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> indexNodeD = mytree.<span class="built_in">CreateNode</span>(indexNodeB, E_ChildLeft, <span class="string">&#x27;D&#x27;</span>);		<span class="comment">// 创建节点B的左孩子节点D</span></span><br><span class="line">    <span class="type">int</span> indexNodeE = mytree.<span class="built_in">CreateNode</span>(indexNodeB, E_ChildRight, <span class="string">&#x27;E&#x27;</span>);		<span class="comment">// 创建节点C的右孩子节点E</span></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> indexNodeG = mytree.<span class="built_in">CreateNode</span>(indexNodeD, E_ChildRight, <span class="string">&#x27;G&#x27;</span>);</span><br><span class="line">    <span class="type">int</span> indexNodeH = mytree.<span class="built_in">CreateNode</span>(indexNodeE, E_ChildLeft, <span class="string">&#x27;H&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> indexNodeF = mytree.<span class="built_in">CreateNode</span>(indexNodeC, E_ChildRight, <span class="string">&#x27;F&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> iParentIndexE = mytree.<span class="built_in">GetParentIdx</span>(indexNodeE);					<span class="comment">// 获取某个节点父节点的下标</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;节点E的父节点的下标是:&quot;</span> &lt;&lt; iParentIndexE &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> iLevel = mytree.<span class="built_in">GetPointLevel</span>(indexNodeD);							<span class="comment">// 获取某个节点所在的高度/深度</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;节点D所在的高度/深度是:&quot;</span> &lt;&lt; iLevel &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    iLevel = mytree.<span class="built_in">GetPointLevel</span>(indexNodeB);								<span class="comment">// 获取某个节点所在的高度/深度</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;节点B所在的高度/深度是:&quot;</span> &lt;&lt; iLevel &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;整个二叉树的深度是:&quot;</span> &lt;&lt; mytree.<span class="built_in">GetLevel</span>() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;二叉树是个完全二叉树码? &quot;</span> &lt;&lt; (mytree.<span class="built_in">IfCompleteBT</span>() ? <span class="string">&quot;是的&quot;</span> : <span class="string">&quot;不是&quot;</span>) &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;---------------------------------&quot;</span> &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;前序遍历序列为:&quot;</span>;</span><br><span class="line">    mytree.<span class="built_in">PreOrder</span>();</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;中序遍历序列为:&quot;</span>;</span><br><span class="line">    mytree.<span class="built_in">inOrder</span>();</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;后序遍历序列为:&quot;</span>;</span><br><span class="line">    mytree.<span class="built_in">posOrder</span>();</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">	节点E的父节点的下标是:2</span></span><br><span class="line"><span class="comment">	节点D所在的高度/深度是:3</span></span><br><span class="line"><span class="comment">	节点B所在的高度/深度是:2</span></span><br><span class="line"><span class="comment">	整个二叉树的深度是:4</span></span><br><span class="line"><span class="comment">	二叉树是个完全二叉树码? 不是</span></span><br><span class="line"><span class="comment">	---------------------------------</span></span><br><span class="line"><span class="comment">	前序遍历序列为:A  B  D  G  E  H  C  F</span></span><br><span class="line"><span class="comment">	中序遍历序列为:D  G  B  H  E  A  C  F</span></span><br><span class="line"><span class="comment">	后序遍历序列为:G  D  H  E  B  F  C  A</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h2><p><img src="https://brkzh.github.io/docPics/DataStructuresAndAlgorithms/docPics/BinaryTree_SeqStorage.png" alt="BinaryTree_SeqStorage"></p>
+
+    </div>
+
+    
+    
+    
+
+	
+	   <div>
+		 <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+	   </div>
+	 
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/06/12/DataStructuresAndAlgorithms/012.LoopQueue/" rel="prev" title="数据结构与算法 -- 循环队列">
+      <i class="fa fa-chevron-left"></i> 数据结构与算法 -- 循环队列
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/06/14/DataStructuresAndAlgorithms/014.BinaryTree_LinkedStorage/" rel="next" title="数据结构与算法 -- 二叉树(链式存储)">
+      数据结构与算法 -- 二叉树(链式存储) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91-%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8"><span class="nav-number">1.</span> <span class="nav-text">二叉树(顺序存储)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.1.</span> <span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81"><span class="nav-number">1.2.</span> <span class="nav-text">测试代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C"><span class="nav-number">1.3.</span> <span class="nav-text">测试结果</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ADiZh"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ADiZh</p>
+  <div class="site-description" itemprop="description">随风飘不如迎风上!</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/brkzh" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;brkzh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/Bulk_Zhang" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;Bulk_Zhang" rel="noopener" target="_blank"><i class="codiepie fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com/" title="https:&#x2F;&#x2F;www.baidu.com" rel="noopener" target="_blank">百度</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-01 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ADiZh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共29.6k字</span>
+</div>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
