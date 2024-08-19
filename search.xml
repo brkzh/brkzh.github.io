@@ -395,7 +395,9 @@
       
       <categories>
           
-          <category> -[Linux] -[C] </category>
+          <category> C </category>
+          
+          <category> Linux </category>
           
       </categories>
       
