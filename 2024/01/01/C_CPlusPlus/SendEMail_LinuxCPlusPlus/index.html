@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Linux C++ 发送验证码邮件Linux下环境能直接运行。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux C++ 发送验证码邮件">
+<meta property="og:url" content="http://example.com/2024/01/01/C_CPlusPlus/SendEMail_LinuxCPlusPlus/index.html">
+<meta property="og:site_name" content="布鲁克的小溪流">
+<meta property="og:description" content="Linux C++ 发送验证码邮件Linux下环境能直接运行。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://brkzh.github.io/docPics/C_CPlusPlus/SendEMail_LinuxCPlusPlus/SendEMail_LinuxCPlusPlus.png">
+<meta property="article:published_time" content="2023-12-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-12-31T16:00:00.000Z">
+<meta property="article:author" content="ADiZh">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://brkzh.github.io/docPics/C_CPlusPlus/SendEMail_LinuxCPlusPlus/SendEMail_LinuxCPlusPlus.png">
+
+<link rel="canonical" href="http://example.com/2024/01/01/C_CPlusPlus/SendEMail_LinuxCPlusPlus/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Linux C++ 发送验证码邮件 | 布鲁克的小溪流</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">布鲁克的小溪流</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/01/01/C_CPlusPlus/SendEMail_LinuxCPlusPlus/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ADiZh">
+      <meta itemprop="description" content="随风飘不如迎风上!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="布鲁克的小溪流">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux C++ 发送验证码邮件
+        </h1>
+
+        <div class="post-meta">
+			
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-01-01 00:00:00" itemprop="dateCreated datePublished" datetime="2024-01-01T00:00:00+08:00">2024-01-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Linux-C-发送验证码邮件"><a href="#Linux-C-发送验证码邮件" class="headerlink" title="Linux C++ 发送验证码邮件"></a>Linux C++ 发送验证码邮件</h1><p><code>Linux</code>下环境能直接运行。</p>
+<span id="more"></span>
+
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><p><strong>头文件</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//文件名:my_smtp.h</span></span><br><span class="line"><span class="meta">#<span class="keyword">ifndef</span> __MY_SMTP_H__</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> __MY_SMTP_H__</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;netdb.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sstream&gt;</span></span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> SMTP_MAXLEN = <span class="number">1024</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">C_MY_SMTP</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">C_MY_SMTP</span>(<span class="type">void</span>);</span><br><span class="line">    <span class="built_in">C_MY_SMTP</span>(</span><br><span class="line">        <span class="type">int</span> port,</span><br><span class="line">        std::string srvDomain,              <span class="comment">// smtp服务器域名  smtp@163.com 等</span></span><br><span class="line">        std::string userName,               <span class="comment">// 用户名 邮箱账号</span></span><br><span class="line">        std::string passWord,               <span class="comment">// 密码 邮箱 SMTP授权码</span></span><br><span class="line">        std::string targetEmail,            <span class="comment">// 目标邮箱 账号</span></span><br><span class="line">        std::string emailTitle,             <span class="comment">// 邮件主题</span></span><br><span class="line">        std::string content                <span class="comment">// 邮件内容</span></span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ~<span class="built_in">C_MY_SMTP</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span> m_port;                               <span class="comment">// 端口号，一般是25</span></span><br><span class="line">    std::string m_domain;</span><br><span class="line">    std::string m_user;</span><br><span class="line">    std::string m_pass;</span><br><span class="line">    std::string m_targetUser;</span><br><span class="line">    std::string m_title;</span><br><span class="line">    std::string m_content;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">char</span> m_buff[SMTP_MAXLEN + <span class="number">1</span>];</span><br><span class="line">    <span class="type">int</span> m_buffLen;</span><br><span class="line">    <span class="type">int</span> m_sockClient;                        <span class="comment">// 客户端套接字</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">CreateConn</span><span class="params">()</span></span>;                      <span class="comment">// 创建连接</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">Send</span><span class="params">(std::string &amp;message)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">Recv</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">FormatEmailHead</span><span class="params">(std::string &amp;email)</span></span>;               <span class="comment">// 格式化要发送的邮件头部</span></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">Login</span><span class="params">()</span></span>;                                            <span class="comment">// 登录邮箱账号</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">SendEmailHead</span><span class="params">()</span></span>;                                   <span class="comment">// 发送邮件头部信息</span></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">SendTextBody</span><span class="params">()</span></span>;                                    <span class="comment">// 发送邮件正文（文本信息）</span></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">SendEnd</span><span class="params">()</span></span>;                                         <span class="comment">// 发送邮件尾部</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">SetSrvDomain</span><span class="params">(std::string domain)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        m_domain = domain;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">std::string <span class="title">GetSrvDomain</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> m_domain; &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">SetUserName</span><span class="params">(std::string user)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        m_user = user;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">std::string <span class="title">GetUserName</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> m_user; &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">SetPass</span><span class="params">(std::string pass)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        m_pass = pass;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">std::string <span class="title">GetPass</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> m_pass; &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">SetTargetEmail</span><span class="params">(std::string targetAddr)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        m_targetUser = targetAddr;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">std::string <span class="title">GetTargetEmail</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> m_targetUser; &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">SetEmailTitle</span><span class="params">(std::string title)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        m_title = title;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">std::string <span class="title">GetEmailTitle</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> m_title; &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">SetContent</span><span class="params">(std::string content)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        m_content = content;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">std::string <span class="title">GetContent</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> m_content; &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">SetPort</span><span class="params">(<span class="type">int</span> port)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        m_port = port;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">GetPort</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> m_port; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">SendEmail_Ex</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="comment">// 关于错误码的说明：1.网络错误导致的错误，2.用户名错误，3.密码错误 0.成功</span></span><br><span class="line">    <span class="function"><span class="type">char</span>* <span class="title">base64Encode</span><span class="params">(<span class="type">char</span> <span class="type">const</span>* origSigned, <span class="type">unsigned</span> origLength)</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span> <span class="comment">// __MY_SMTP_H__</span></span></span><br></pre></td></tr></table></figure>
+
+<p><strong>源文件</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//文件名:my_smtp.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;my_smtp.h&quot;</span></span></span><br><span class="line"><span class="type">static</span> <span class="type">const</span> <span class="type">char</span> SMTP_base64Char[] = <span class="string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">char</span>* <span class="title">C_MY_SMTP::base64Encode</span><span class="params">(<span class="type">char</span> <span class="type">const</span>* origSigned, <span class="type">unsigned</span> origLength)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">char</span> <span class="type">const</span>* orig = (<span class="type">unsigned</span> <span class="type">char</span> <span class="type">const</span>*)origSigned; <span class="comment">// in case any input bytes have the MSB set</span></span><br><span class="line">	<span class="keyword">if</span> (orig == <span class="literal">NULL</span>) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">const</span> numOrig24BitValues = origLength / <span class="number">3</span>;</span><br><span class="line">	<span class="type">bool</span> havePadding = origLength &gt; numOrig24BitValues * <span class="number">3</span>;</span><br><span class="line">	<span class="type">bool</span> havePadding2 = origLength == numOrig24BitValues * <span class="number">3</span> + <span class="number">2</span>;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">const</span> numResultBytes = <span class="number">4</span> * (numOrig24BitValues + havePadding);</span><br><span class="line">	<span class="type">char</span>* result = <span class="keyword">new</span> <span class="type">char</span>[numResultBytes + <span class="number">3</span>]; <span class="comment">// allow for trailing &#x27;/0&#x27;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// Map each full group of 3 input bytes into 4 output base-64 characters:</span></span><br><span class="line">	<span class="type">unsigned</span> i;</span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; numOrig24BitValues; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		result[<span class="number">4</span> * i + <span class="number">0</span>] = SMTP_base64Char[(orig[<span class="number">3</span> * i] &gt;&gt; <span class="number">2</span>) &amp; <span class="number">0x3F</span>];</span><br><span class="line">		result[<span class="number">4</span> * i + <span class="number">1</span>] = SMTP_base64Char[(((orig[<span class="number">3</span> * i] &amp; <span class="number">0x3</span>) &lt;&lt; <span class="number">4</span>) | (orig[<span class="number">3</span> * i + <span class="number">1</span>] &gt;&gt; <span class="number">4</span>)) &amp; <span class="number">0x3F</span>];</span><br><span class="line">		result[<span class="number">4</span> * i + <span class="number">2</span>] = SMTP_base64Char[((orig[<span class="number">3</span> * i + <span class="number">1</span>] &lt;&lt; <span class="number">2</span>) | (orig[<span class="number">3</span> * i + <span class="number">2</span>] &gt;&gt; <span class="number">6</span>)) &amp; <span class="number">0x3F</span>];</span><br><span class="line">		result[<span class="number">4</span> * i + <span class="number">3</span>] = SMTP_base64Char[orig[<span class="number">3</span> * i + <span class="number">2</span>] &amp; <span class="number">0x3F</span>];</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Now, take padding into account.  (Note: i == numOrig24BitValues)</span></span><br><span class="line">	<span class="keyword">if</span> (havePadding)</span><br><span class="line">	&#123;</span><br><span class="line">		result[<span class="number">4</span> * i + <span class="number">0</span>] = SMTP_base64Char[(orig[<span class="number">3</span> * i] &gt;&gt; <span class="number">2</span>) &amp; <span class="number">0x3F</span>];</span><br><span class="line">		<span class="keyword">if</span> (havePadding2)</span><br><span class="line">		&#123;</span><br><span class="line">			result[<span class="number">4</span> * i + <span class="number">1</span>] = SMTP_base64Char[(((orig[<span class="number">3</span> * i] &amp; <span class="number">0x3</span>) &lt;&lt; <span class="number">4</span>) | (orig[<span class="number">3</span> * i + <span class="number">1</span>] &gt;&gt; <span class="number">4</span>)) &amp; <span class="number">0x3F</span>];</span><br><span class="line">			result[<span class="number">4</span> * i + <span class="number">2</span>] = SMTP_base64Char[(orig[<span class="number">3</span> * i + <span class="number">1</span>] &lt;&lt; <span class="number">2</span>) &amp; <span class="number">0x3F</span>];</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			result[<span class="number">4</span> * i + <span class="number">1</span>] = SMTP_base64Char[((orig[<span class="number">3</span> * i] &amp; <span class="number">0x3</span>) &lt;&lt; <span class="number">4</span>) &amp; <span class="number">0x3F</span>];</span><br><span class="line">			result[<span class="number">4</span> * i + <span class="number">2</span>] = <span class="string">&#x27;=&#x27;</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		result[<span class="number">4</span> * i + <span class="number">3</span>] = <span class="string">&#x27;=&#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	result[numResultBytes] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 默认构造函数</span></span><br><span class="line">C_MY_SMTP::<span class="built_in">C_MY_SMTP</span>(<span class="type">void</span>):<span class="built_in">m_port</span>(<span class="number">25</span>),<span class="built_in">m_domain</span>(<span class="string">&quot;&quot;</span>), <span class="built_in">m_user</span>(<span class="string">&quot;&quot;</span>), <span class="built_in">m_pass</span>(<span class="string">&quot;&quot;</span>), <span class="built_in">m_targetUser</span>(<span class="string">&quot;&quot;</span>), <span class="built_in">m_title</span>(<span class="string">&quot;&quot;</span>), <span class="built_in">m_content</span>(<span class="string">&quot;&quot;</span>)</span><br><span class="line">&#123;</span><br><span class="line">    m_sockClient = <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 析构函数</span></span><br><span class="line">C_MY_SMTP::~<span class="built_in">C_MY_SMTP</span>()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(m_sockClient != <span class="number">-1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">close</span>(m_sockClient);</span><br><span class="line">        m_sockClient = <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 带参数的构造函数</span></span><br><span class="line">C_MY_SMTP::<span class="built_in">C_MY_SMTP</span>(</span><br><span class="line">        <span class="type">int</span> port,</span><br><span class="line">        std::string srvDomain,              <span class="comment">// smtp服务器域名  smtp@163.com 等</span></span><br><span class="line">        std::string userName,               <span class="comment">// 用户名 邮箱账号</span></span><br><span class="line">        std::string passWord,               <span class="comment">// 密码 邮箱 SMTP授权码</span></span><br><span class="line">        std::string targetEmail,            <span class="comment">// 目标邮箱 账号</span></span><br><span class="line">        std::string emailTitle,             <span class="comment">// 邮件主题</span></span><br><span class="line">        std::string content                <span class="comment">// 邮件内容</span></span><br><span class="line">    ): <span class="built_in">m_port</span>(port), <span class="built_in">m_domain</span>(srvDomain), <span class="built_in">m_user</span>(userName), <span class="built_in">m_pass</span>(passWord), <span class="built_in">m_targetUser</span>(targetEmail), <span class="built_in">m_title</span>(emailTitle), <span class="built_in">m_content</span>(content)</span><br><span class="line">&#123;</span><br><span class="line">    m_sockClient = <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建创建socket并连接</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">C_MY_SMTP::CreateConn</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 创建socket</span></span><br><span class="line">    m_sockClient = <span class="built_in">socket</span>(AF_INET, SOCK_STREAM, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span>(m_sockClient &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 创建失败</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">sockaddr_in</span> addrSrv;</span><br><span class="line">    hostent * pHostent = <span class="built_in">gethostbyname</span>(m_domain.<span class="built_in">c_str</span>());               <span class="comment">// 得到有关的域名的信息</span></span><br><span class="line">    <span class="keyword">if</span>(pHostent == <span class="literal">nullptr</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    addrSrv.sin_addr.s_addr = *((<span class="type">uint32_t</span>*)pHostent-&gt;h_addr);</span><br><span class="line">    addrSrv.sin_family = AF_INET;</span><br><span class="line">    addrSrv.sin_port = <span class="built_in">htons</span>(m_port);</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">connect</span>(m_sockClient, (<span class="keyword">struct</span> sockaddr*)&amp;addrSrv, <span class="built_in">sizeof</span>(<span class="keyword">struct</span> sockaddr)) &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">C_MY_SMTP::Send</span><span class="params">(std::string&amp; message)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> need_send = message.<span class="built_in">length</span>();</span><br><span class="line">    <span class="type">char</span>* tmp_send = (<span class="type">char</span>*)message.<span class="built_in">c_str</span>();</span><br><span class="line">    <span class="type">int</span> curr_send = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;</span><br><span class="line">        curr_send = <span class="built_in">send</span>(m_sockClient, tmp_send, need_send, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">if</span>(curr_send &lt;= <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        need_send -= curr_send;</span><br><span class="line">        tmp_send += curr_send;</span><br><span class="line">    &#125; <span class="keyword">while</span> (need_send &gt; <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">C_MY_SMTP::Recv</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(m_buff, <span class="number">0</span>, <span class="built_in">sizeof</span>(m_buff));</span><br><span class="line">    <span class="type">int</span> reco = <span class="built_in">recv</span>(m_sockClient, m_buff, SMTP_MAXLEN, <span class="number">0</span>);      <span class="comment">// 收数据</span></span><br><span class="line">    <span class="keyword">if</span>(reco == <span class="number">-1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// TODO 这里需要注意一下，越界问题</span></span><br><span class="line">    m_buff[reco] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">C_MY_SMTP::Login</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 这里可以改为 char数组，提高效率</span></span><br><span class="line">    std::string sendBuff;</span><br><span class="line">    sendBuff = <span class="string">&quot;EHLO &quot;</span>;</span><br><span class="line">    sendBuff += m_user;</span><br><span class="line">    sendBuff += <span class="string">&quot;\r\n&quot;</span>;</span><br><span class="line">    <span class="keyword">if</span>(<span class="literal">false</span> == <span class="built_in">Send</span>(sendBuff) || <span class="literal">false</span> == <span class="built_in">Recv</span>())      <span class="comment">// 既要接收 也要发送</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;       <span class="comment">// 表示发送失败由于网络</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    sendBuff.<span class="built_in">empty</span>();</span><br><span class="line">    sendBuff = <span class="string">&quot;AUTH LOGIN\r\n&quot;</span>;</span><br><span class="line">    <span class="keyword">if</span>(<span class="literal">false</span> == <span class="built_in">Send</span>(sendBuff) || <span class="literal">false</span> == <span class="built_in">Recv</span>())      <span class="comment">// 请求登录</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;       <span class="comment">// 表示发送失败由于网络</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    sendBuff.<span class="built_in">empty</span>();</span><br><span class="line">    sendBuff = m_user;</span><br><span class="line"></span><br><span class="line">    <span class="type">char</span>* ecode;</span><br><span class="line">    <span class="comment">/*在这里顺带扯一句，关于string类的length函数与C语言中的strlen函数的区别,strlen计算出来的长度，只到&#x27;\0&#x27;字符为止,而string::length()函数实际上返回的是string类中字符数组的大小,你自己可以测试一下，这也是为什么我下面不使用string::length()的原因*/</span></span><br><span class="line"></span><br><span class="line">    ecode = <span class="built_in">base64Encode</span>(sendBuff.<span class="built_in">c_str</span>(),<span class="built_in">strlen</span>(sendBuff.<span class="built_in">c_str</span>()));</span><br><span class="line">    sendBuff.<span class="built_in">empty</span>();</span><br><span class="line">    sendBuff = ecode;</span><br><span class="line">    sendBuff += <span class="string">&quot;\r\n&quot;</span>;</span><br><span class="line">    <span class="keyword">delete</span>[] ecode;</span><br><span class="line">    <span class="keyword">if</span>(<span class="literal">false</span> == <span class="built_in">Send</span>(sendBuff) || <span class="literal">false</span> == <span class="built_in">Recv</span>())      <span class="comment">// 发送用户名，并接收服务器的返回</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    sendBuff.<span class="built_in">empty</span>();</span><br><span class="line">    ecode = <span class="built_in">base64Encode</span>(m_pass.<span class="built_in">c_str</span>(), <span class="built_in">strlen</span>(m_pass.<span class="built_in">c_str</span>()));</span><br><span class="line">    sendBuff = ecode;</span><br><span class="line">    sendBuff += <span class="string">&quot;\r\n&quot;</span>;</span><br><span class="line">    <span class="keyword">delete</span>[] ecode;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(<span class="literal">false</span> == <span class="built_in">Send</span>(sendBuff) || <span class="literal">false</span> == <span class="built_in">Recv</span>())      <span class="comment">// 发送用户密码，并接收服务器的返回</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(<span class="literal">nullptr</span> != <span class="built_in">strstr</span>(m_buff, <span class="string">&quot;550&quot;</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span>;               <span class="comment">// 错误码2表示用户名错误</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(<span class="literal">nullptr</span> != <span class="built_in">strstr</span>(m_buff, <span class="string">&quot;535&quot;</span>))            <span class="comment">// 535是认证失败的返回</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">3</span>;               <span class="comment">// 错误码3表示密码错误</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;                   <span class="comment">// 返回0 表示成功</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">C_MY_SMTP::SendEmailHead</span><span class="params">()</span>                 <span class="comment">// 发送邮件头部信息</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::string sendBuff;</span><br><span class="line">    sendBuff = <span class="string">&quot;MAIL From: &lt;&quot;</span> + m_user + <span class="string">&quot;&gt;\r\n&quot;</span>;</span><br><span class="line">    <span class="keyword">if</span>(<span class="literal">false</span> == <span class="built_in">Send</span>(sendBuff) || <span class="literal">false</span> == <span class="built_in">Recv</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;       <span class="comment">// 网络错误导致失败</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">std::istringstream <span class="title">is_tmp</span><span class="params">(m_targetUser)</span></span>;</span><br><span class="line">    std::string tmpadd;</span><br><span class="line">    <span class="keyword">while</span>(is_tmp &gt;&gt; tmpadd)</span><br><span class="line">    &#123;</span><br><span class="line">        sendBuff.<span class="built_in">empty</span>();</span><br><span class="line">        sendBuff = <span class="string">&quot;RCPT TO: &lt;&quot;</span> + tmpadd + <span class="string">&quot;&gt;\r\n&quot;</span>;</span><br><span class="line">        <span class="keyword">if</span>(<span class="literal">false</span> == <span class="built_in">Send</span>(sendBuff) || <span class="literal">false</span> == <span class="built_in">Recv</span>())</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    sendBuff.<span class="built_in">empty</span>();</span><br><span class="line">    sendBuff = <span class="string">&quot;DATA\r\n&quot;</span>;</span><br><span class="line">    <span class="keyword">if</span>(<span class="literal">false</span> == <span class="built_in">Send</span>(sendBuff) || <span class="literal">false</span> == <span class="built_in">Recv</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    sendBuff.<span class="built_in">empty</span>();</span><br><span class="line">    <span class="built_in">FormatEmailHead</span>(sendBuff);</span><br><span class="line">    <span class="keyword">if</span>(<span class="literal">false</span> == <span class="built_in">Send</span>(sendBuff))</span><br><span class="line">    <span class="comment">// 发送完头部之后不必调用接收函数，因为没有\r\n</span></span><br><span class="line">    <span class="comment">// 没有\r\n 结尾，服务器认为你没有发完数据，所以不会返回什么值</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;       </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 格式化要发送的内容</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">C_MY_SMTP::FormatEmailHead</span><span class="params">(std::string&amp; email)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    email = <span class="string">&quot;From: &quot;</span>;</span><br><span class="line">    email += m_user;</span><br><span class="line">    email += <span class="string">&quot;\r\n&quot;</span>;</span><br><span class="line"></span><br><span class="line">    email += <span class="string">&quot;To: &quot;</span>;</span><br><span class="line">    email += m_targetUser;</span><br><span class="line">    email += <span class="string">&quot;\r\n&quot;</span>;</span><br><span class="line"></span><br><span class="line">    email += <span class="string">&quot;Subject: &quot;</span>;</span><br><span class="line">    email += m_title;</span><br><span class="line">    email += <span class="string">&quot;\r\n&quot;</span>;</span><br><span class="line"></span><br><span class="line">    email += <span class="string">&quot;MIME_Version: 1.0&quot;</span>;</span><br><span class="line">    email += <span class="string">&quot;\r\n&quot;</span>;</span><br><span class="line"></span><br><span class="line">    email += <span class="string">&quot;Content-Type: multipart/mixed;boundary=qwertyuiop&quot;</span>;</span><br><span class="line">    email += <span class="string">&quot;\r\n&quot;</span>;</span><br><span class="line">    email += <span class="string">&quot;\r\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发送邮件正文（文本）</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">C_MY_SMTP::SendTextBody</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::string sendBuff;</span><br><span class="line">    sendBuff = <span class="string">&quot;--qwertyuiop\r\n&quot;</span>;</span><br><span class="line">    sendBuff += <span class="string">&quot;Content-Type: text/plain;&quot;</span>;</span><br><span class="line">    sendBuff += <span class="string">&quot;charset=\&quot;utf-8\&quot;\r\n\r\n&quot;</span>;</span><br><span class="line">    sendBuff += m_content;</span><br><span class="line">    sendBuff += <span class="string">&quot;\r\n\r\n&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Send</span>(sendBuff);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发送结尾信息</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">C_MY_SMTP::SendEnd</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::string sendBuf;</span><br><span class="line">    sendBuf = <span class="string">&quot;--qwertyuiop--&quot;</span>;</span><br><span class="line">    sendBuf += <span class="string">&quot;\r\n.\r\n&quot;</span>;</span><br><span class="line">    <span class="keyword">if</span>(<span class="literal">false</span> == <span class="built_in">Send</span>(sendBuf) || <span class="literal">false</span> == <span class="built_in">Recv</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    sendBuf.<span class="built_in">empty</span>();</span><br><span class="line">    sendBuf = <span class="string">&quot;QUIT\r\n&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> (<span class="built_in">Send</span>(sendBuf) &amp;&amp; <span class="built_in">Recv</span>());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">C_MY_SMTP::SendEmail_Ex</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="literal">false</span> == <span class="built_in">CreateConn</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Recv()</span></span><br><span class="line">    <span class="type">int</span> err = <span class="built_in">Login</span>();          <span class="comment">// 登录</span></span><br><span class="line">    <span class="keyword">if</span>(err != <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> err;             <span class="comment">// 错误</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(<span class="literal">false</span> == <span class="built_in">SendEmailHead</span>())        <span class="comment">// 发送EMAIL头部信息</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(<span class="literal">false</span> == <span class="built_in">SendTextBody</span>())         <span class="comment">// 发送邮件正文（文本）</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(<span class="literal">false</span> == <span class="built_in">SendEnd</span>())              <span class="comment">// 发送邮件结尾</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;                           <span class="comment">// 发送成功</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h1><p><code>main</code>源文件</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;my_smtp.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;   </span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;测试通过SMTP发送邮件到指定邮箱。&quot;</span>&lt;&lt;endl;</span><br><span class="line">    <span class="type">time_t</span> start_time1 = <span class="built_in">time</span>(<span class="literal">nullptr</span>);</span><br><span class="line">    <span class="function">C_MY_SMTP <span class="title">smtp_cli</span><span class="params">(<span class="number">25</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">                       <span class="comment">// smtp服务 端口 25固定的</span></span></span></span><br><span class="line"><span class="params"><span class="function">                        <span class="string">&quot;smtp.163.com&quot;</span>, </span></span></span><br><span class="line"><span class="params"><span class="function">                       <span class="comment">//因为我发送的邮箱是163邮箱,所以这里是163邮箱的smtp服务域名</span></span></span></span><br><span class="line"><span class="params"><span class="function">                        <span class="string">&quot;你的邮箱账号@163.com&quot;</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">                       <span class="comment">// 发送邮件的邮箱</span></span></span></span><br><span class="line"><span class="params"><span class="function">                        <span class="string">&quot;1234567891352465&quot;</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">                       <span class="comment">// 发送邮件的邮箱的授权码</span></span></span></span><br><span class="line"><span class="params"><span class="function">                        <span class="string">&quot;你的需要接收的邮箱账号@m.scnu.edu.cn&quot;</span>,  </span></span></span><br><span class="line"><span class="params"><span class="function">                       <span class="comment">// 接收邮件的邮箱</span></span></span></span><br><span class="line"><span class="params"><span class="function">                        <span class="string">&quot;Linux SMTP Client Test!&quot;</span>, </span></span></span><br><span class="line"><span class="params"><span class="function">                       <span class="comment">// 邮件的主题</span></span></span></span><br><span class="line"><span class="params"><span class="function">                        <span class="string">&quot;这是一个测试我的程序的邮件，若成功收到了我的邮件，说明我的程序是OK的。&quot;</span>           </span></span></span><br><span class="line"><span class="params"><span class="function">                       <span class="comment">// 邮件的正文</span></span></span></span><br><span class="line"><span class="params"><span class="function">                    )</span></span>;</span><br><span class="line">    <span class="type">time_t</span> start_time2 = <span class="built_in">time</span>(<span class="literal">nullptr</span>);</span><br><span class="line">    smtp_cli.<span class="built_in">SendEmail_Ex</span>();                                                                    <span class="comment">// 发送邮件</span></span><br><span class="line">    <span class="type">time_t</span> start_time3 = <span class="built_in">time</span>(<span class="literal">nullptr</span>);</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;time3=&quot;</span>&lt;&lt;start_time3&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;time2=&quot;</span>&lt;&lt;start_time2&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;time1=&quot;</span>&lt;&lt;start_time1&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;构造对象使用的时间:&quot;</span>&lt;&lt;start_time2 - start_time1&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;发送邮件使用的时间:&quot;</span>&lt;&lt;start_time3 - start_time2&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="运行测试"><a href="#运行测试" class="headerlink" title="运行测试"></a>运行测试</h1><p><img src="https://brkzh.github.io/docPics/C_CPlusPlus/SendEMail_LinuxCPlusPlus/SendEMail_LinuxCPlusPlus.png" alt="SendEMail_LinuxCPlusPlus"></p>
+
+    </div>
+
+    
+    
+    
+
+	
+	   <div>
+		 <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+	   </div>
+	 
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/06/14/DataStructuresAndAlgorithms/014.BinaryTree_LinkedStorage/" rel="prev" title="数据结构与算法 -- 二叉树(链式存储)">
+      <i class="fa fa-chevron-left"></i> 数据结构与算法 -- 二叉树(链式存储)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/01/01/C_CPlusPlus/ConfigurationFileLoading_Demo/" rel="next" title="配置文件加载 -- C++">
+      配置文件加载 -- C++ <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-C-%E5%8F%91%E9%80%81%E9%AA%8C%E8%AF%81%E7%A0%81%E9%82%AE%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">Linux C++ 发送验证码邮件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">测试代码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%B5%8B%E8%AF%95"><span class="nav-number">4.</span> <span class="nav-text">运行测试</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ADiZh"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ADiZh</p>
+  <div class="site-description" itemprop="description">随风飘不如迎风上!</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/brkzh" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;brkzh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/Bulk_Zhang" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;Bulk_Zhang" rel="noopener" target="_blank"><i class="codiepie fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com/" title="https:&#x2F;&#x2F;www.baidu.com" rel="noopener" target="_blank">百度</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-01 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ADiZh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共36.1k字</span>
+</div>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
