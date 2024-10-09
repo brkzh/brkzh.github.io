@@ -270,7 +270,7 @@
 
 <figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">说明：</span><br><span class="line">	Host 别名,自定义</span><br><span class="line">	HostName 远程主机地址</span><br><span class="line">	Port 远程主机ssh端口,默认22</span><br><span class="line">	User 远程主机用户名</span><br><span class="line">	IdentityFile 密钥文件路径</span><br></pre></td></tr></table></figure>
 
-<h1 id="远程Ubuntu的配置"><a href="#远程Ubuntu的配置" class="headerlink" title="远程Ubuntu的配置"></a>远程Ubuntu的配置</h1><p>修改远程 <code>Ubuntu</code>系统的<code>ssh</code>配置文件</p>
+<h2 id="远程Ubuntu的配置"><a href="#远程Ubuntu的配置" class="headerlink" title="远程Ubuntu的配置"></a>远程Ubuntu的配置</h2><p>修改远程 <code>Ubuntu</code>系统的<code>ssh</code>配置文件</p>
 <p><code>sudo vim /etc/ssh/sshd_config</code></p>
 <p>这里最重要的是我们要把<code>PubkeyAuthentication</code>配置为<code>yes</code>允许使用基于密钥认证的方式登录。</p>
 <p>重启<code>ssh</code>服务</p>
@@ -374,7 +374,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#VSCode%E9%85%8D%E7%BD%AE%E5%85%8D%E5%AF%86%E8%BF%9C%E7%A8%8BUbuntu"><span class="nav-number">1.</span> <span class="nav-text">VSCode配置免密远程Ubuntu</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E6%9C%BA%E5%99%A8%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.</span> <span class="nav-text">本地机器配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8BUbuntu%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">远程Ubuntu的配置</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#VSCode%E9%85%8D%E7%BD%AE%E5%85%8D%E5%AF%86%E8%BF%9C%E7%A8%8BUbuntu"><span class="nav-number">1.</span> <span class="nav-text">VSCode配置免密远程Ubuntu</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E6%9C%BA%E5%99%A8%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.</span> <span class="nav-text">本地机器配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8BUbuntu%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.</span> <span class="nav-text">远程Ubuntu的配置</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
